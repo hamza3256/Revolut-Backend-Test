@@ -8,10 +8,10 @@ import io.javalin.http.Context
 import logging.info
 import logging.verbose
 import logging.warn
+import money.account.AccountCreator.Result.Created
 import money.account.AccountCreator.Result.Failed
 import money.account.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
 import money.account.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
-import money.account.AccountCreator.Result.Created
 import money.account.CreateAccount.PARAM_CLIENT_ID
 import money.account.CreateAccount.PATH
 import utils.requireParam
@@ -46,13 +46,13 @@ class AccountHandler(
 
         when (val result = accountCreator.create(client, request)) {
             is Created -> {
-                verbose { "Successfully created account for request=$request" }
+                verbose { "Successfully created ${result.account} for request=$request" }
                 ctx.status(200)
             }
             is Failed -> {
                 when (result.cause) {
                     ALREADY_EXISTS -> {
-                        verbose { "$client already has an account with currency=${request.money.currency}" }
+                        verbose { "$client already has an account with currency=${request.startingMoney.currency}" }
                         ctx.status(400)
                         ctx.result("Account with given currency already exists")
                     }
