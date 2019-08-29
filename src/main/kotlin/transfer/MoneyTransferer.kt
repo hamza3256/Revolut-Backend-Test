@@ -5,10 +5,7 @@ import logging.verbose
 import money.Money
 import money.account.AccountRepository
 import money.transactions.TransactionCreator
-import transfer.TransferResult.Failed
-import transfer.TransferResult.Failed.Cause.INSUFFICIENT_FUNDS
-import transfer.TransferResult.Failed.Cause.NEGATIVE_MONEY
-import transfer.TransferResult.Success
+import transfer.TransferResult.*
 
 interface MoneyTransferer {
 
@@ -29,14 +26,9 @@ interface MoneyTransferer {
 sealed class TransferResult {
 
     object Success : TransferResult()
-    data class Failed(val cause: Cause) : TransferResult() {
+    object InsufficientFunds: TransferResult()
+    object NegativeMoney: TransferResult()
 
-        //TODO don' use an enum, instead use another sealed class so we can know much money is still required when using INSUFFICIENT_FUNDS
-        enum class Cause {
-            INSUFFICIENT_FUNDS,
-            NEGATIVE_MONEY
-        }
-    }
 }
 
 class MoneyTransfererImpl(
@@ -49,7 +41,7 @@ class MoneyTransfererImpl(
 
         if (money.isNegative()) {
             verbose { "Cannot transfer negative money=$money" }
-            return Failed(NEGATIVE_MONEY)
+            return NegativeMoney
         }
 
         if (money.isZero()) {
@@ -60,7 +52,7 @@ class MoneyTransfererImpl(
         val fromAccount = accountRepository.getAccount(from, money.currency)
         if (fromAccount == null) {
             verbose { "$from doesn't have an account for currency=${money.currency}" }
-            return Failed(INSUFFICIENT_FUNDS)
+            return InsufficientFunds
         }
 
         return if (fromAccount hasFunds money) {
@@ -71,7 +63,7 @@ class MoneyTransfererImpl(
             Success
         } else {
             verbose { "$from has insufficient funds to transfer $money to $to" }
-            Failed(INSUFFICIENT_FUNDS)
+            InsufficientFunds
         }
     }
 }

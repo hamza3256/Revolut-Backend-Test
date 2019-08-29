@@ -56,10 +56,10 @@ class TransferHandler(
                         ctx.status(200)
                         return
                     }
-                    is TransferResult.Failed -> {
+                    else -> {
                         info { "Failed to perform transfer for request $request: $transferResult" }
                         ctx.status(400)
-                        ctx.result("Failed to perform transfer: ${transferResult.cause}")
+                        ctx.result("Failed to perform transfer: $transferResult")
                         return
                     }
                 }

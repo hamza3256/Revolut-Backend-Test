@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6c7e2f8b-4863-46d6-b9c6-b9fdfe46ff31" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/money/account/InMemoryAccountRepositoryTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/account/AccountRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/account/AccountRepository.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/transfer/TransferHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/transfer/TransferHandler.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -23,31 +23,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/kotlin/money/account/InMemoryAccountRepositoryTest.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="571">
-              <caret line="56" column="60" selection-start-line="56" selection-start-column="60" selection-end-line="56" selection-end-column="60" />
+            <state relative-caret-position="285">
+              <caret line="19" column="21" lean-forward="true" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
               <folding>
-                <element signature="e#23#205#0" expanded="true" />
+                <element signature="e#18#198#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/kotlin/clients/InMemoryClientRepositoryTest.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/transfer/TransferHandler.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/account/AccountRepository.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="511">
-              <caret line="42" column="62" selection-start-line="42" selection-start-column="62" selection-end-line="42" selection-end-column="62" />
+            <state relative-caret-position="750">
+              <caret line="59" column="46" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="46" />
             </state>
           </provider>
         </entry>
@@ -87,8 +78,6 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionFactory.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/Program.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/wallet/WalletRepository.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/transfer/TransferHandler.kt" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/wallet/Wallet.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/wallet/Account.kt" />
@@ -100,8 +89,6 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/clients/Provider.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/clients/ClientRepository.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionRepository.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionCreator.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/logging/Logger.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/BaseHandler.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/Money.kt" />
@@ -126,6 +113,10 @@
         <option value="$PROJECT_DIR$/src/test/kotlin/money/account/InMemoryAccountRepositoryTest.java" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/account/AccountRepository.kt" />
         <option value="$PROJECT_DIR$/src/test/kotlin/money/account/InMemoryAccountRepositoryTest.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionCreator.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/transfer/TransferHandler.kt" />
       </list>
     </option>
   </component>
@@ -318,7 +309,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.InMemoryAccountRepositoryTest">
+  <component name="RunManager" selected="Kotlin.RevolutAppKt">
     <configuration name="AccountCreatorImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="revolut-backend.test" />
       <extension name="coverage">
@@ -394,11 +385,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Kotlin.RevolutAppKt" />
         <item itemvalue="JUnit.InMemoryAccountRepositoryTest" />
         <item itemvalue="JUnit.AccountCreatorImplTest" />
         <item itemvalue="JUnit.InMemoryClientRepositoryTest" />
         <item itemvalue="JUnit.ClientCreatorImplTest" />
-        <item itemvalue="Kotlin.RevolutAppKt" />
       </list>
     </recent_temporary>
   </component>
@@ -417,7 +408,7 @@
       <workItem from="1566988484887" duration="19775000" />
       <workItem from="1567009336461" duration="16649000" />
       <workItem from="1567072588631" duration="8858000" />
-      <workItem from="1567092395086" duration="1754000" />
+      <workItem from="1567092395086" duration="2582000" />
     </task>
     <task id="LOCAL-00001" summary="Always create a new Client for each POST request">
       <created>1567073862921</created>
@@ -461,13 +452,24 @@
       <option name="project" value="LOCAL" />
       <updated>1567080854080</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Add tests for InMemoryAccountRepository and return a Set instead of List for getAccounts(client)">
+      <created>1567094300748</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1567094300748</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Remove invalid TODO">
+      <created>1567094462166</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1567094462166</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ClientCreatorImplTest - 2019.08.29 at 13h 05m 02s.xml">
-      <configuration name="ClientCreatorImplTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ClientCreatorImplTest - 2019.08.29 at 13h 12m 39s.xml">
       <configuration name="ClientCreatorImplTest" configurationId="JUnit" />
     </history-entry>
@@ -495,9 +497,12 @@
     <history-entry file="InMemoryAccountRepositoryTest - 2019.08.29 at 17h 51m 58s.xml">
       <configuration name="InMemoryAccountRepositoryTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="InMemoryAccountRepositoryTest - 2019.08.29 at 17h 56m 38s.xml">
+      <configuration name="InMemoryAccountRepositoryTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72846000" />
+    <option name="totallyTimeSpent" value="73674000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -512,14 +517,14 @@
     <frame x="0" y="30" width="1600" height="870" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26512226" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26512226" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32884097" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.31983805" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31983805" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -580,7 +585,9 @@
     <MESSAGE value="Test InMemoryClientRepository" />
     <MESSAGE value="Add test for AccountCreatorImpl" />
     <MESSAGE value="Improve documentation in ClientCreator.kt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improve documentation in ClientCreator.kt" />
+    <MESSAGE value="Add tests for InMemoryAccountRepository and return a Set instead of List for getAccounts(client)" />
+    <MESSAGE value="Remove invalid TODO" />
+    <option name="LAST_COMMIT_MESSAGE" value="Remove invalid TODO" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/concurrent/atomic/AtomicLong.class">
@@ -632,13 +639,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
           <caret line="58" column="76" lean-forward="true" selection-start-line="58" selection-start-column="76" selection-end-line="58" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -701,20 +701,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionCreator.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="30" selection-start-line="5" selection-start-column="30" selection-end-line="5" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionRepository.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="38" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/Money.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -722,13 +708,6 @@
           <folding>
             <element signature="e#15#61#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/transfer/TransferHandler.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="40" column="35" lean-forward="true" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -856,16 +835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="36" column="12" selection-start-line="36" selection-start-column="12" selection-end-line="36" selection-end-column="12" />
-          <folding>
-            <element signature="e#18#364#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/kotlin/Utils.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -921,19 +890,60 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/account/AccountRepository.kt">
+    <entry file="file://$PROJECT_DIR$/src/test/kotlin/money/account/InMemoryAccountRepositoryTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="511">
-          <caret line="42" column="62" selection-start-line="42" selection-start-column="62" selection-end-line="42" selection-end-column="62" />
+        <state relative-caret-position="135">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+          <folding>
+            <element signature="e#23#205#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/kotlin/money/account/InMemoryAccountRepositoryTest.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/account/AccountRepository.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="571">
-          <caret line="56" column="60" selection-start-line="56" selection-start-column="60" selection-end-line="56" selection-end-column="60" />
+        <state relative-caret-position="271">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionRepository.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="8" lean-forward="true" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="5" column="44" selection-start-line="5" selection-start-column="44" selection-end-line="5" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionCreator.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="36" lean-forward="true" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="36" />
           <folding>
-            <element signature="e#23#205#0" expanded="true" />
+            <element signature="e#28#180#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/transfer/TransferHandler.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="750">
+          <caret line="59" column="46" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" column="21" lean-forward="true" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+          <folding>
+            <element signature="e#18#198#0" expanded="true" />
           </folding>
         </state>
       </provider>
