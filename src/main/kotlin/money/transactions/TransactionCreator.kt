@@ -20,7 +20,6 @@ class TransactionCreatorImpl(private val repository: TransactionRepository) : Tr
     private val nextId = AtomicLong()
 
     override fun createTransferTransactions(request: TransactionCreator.Request): TransferTransactions {
-
         with(request) {
             val fromId = nextId.getAndIncrement()
             val toId = nextId.getAndIncrement()
