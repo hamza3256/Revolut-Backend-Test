@@ -6,15 +6,15 @@ import java.util.*
 interface AccountRepository {
 
     /**
-     * Creates an account for the given client if they do not have an account with such a currency.
-     * @return true if the account was created, or false when the client already has an account with the given currency
+     * Adds an account for the given client if they do not have an account with such a currency.
+     * @return true if the account was added, or false when the client already has an account with the given currency
      * */
     fun addAccount(client: Client, account: Account): Boolean
 
     /**
-     * @return a list of all distinct accounts by currency for [client]. Can be empty.
+     * @return a set of all distinct accounts by currency for [client]. Can be empty.
      * */
-    fun getAccounts(client: Client): List<Account>
+    fun getAccounts(client: Client): Set<Account>
 
     /**
      * Gets [client]s Account for the given [currency], or null if [client] doesn't have an account for such a [currency]
@@ -39,8 +39,8 @@ class InMemoryAccountRepository : AccountRepository {
         }
     }
 
-    override fun getAccounts(client: Client): List<Account> {
-        return clientIdsToAccounts[client.id]?.values?.toList() ?: emptyList()
+    override fun getAccounts(client: Client): Set<Account> {
+        return clientIdsToAccounts[client.id]?.values?.toSet() ?: emptySet()
     }
 
     override fun getAccount(client: Client, currency: Currency): Account? {
