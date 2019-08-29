@@ -33,7 +33,7 @@ class ClientCreatorImpl(private val clientRepository: ClientRepository) : Client
                 surname = surname
             ).also { client ->
                 //insert into repository
-                if (!clientRepository.addClient(client)) {
+                if (clientRepository.addClient(client).not()) {
                     //this shouldn't ever happen -> we create a new id each time we create a new client instance
                     error { "Failed to add client to repository for request=$request, client=$client" }
                     throw RuntimeException("Could not create client=$client as it already exists in the repository")

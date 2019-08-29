@@ -7,10 +7,13 @@ interface AccountRepository {
 
     /**
      * Creates an account for the given client if they do not have an account with such a currency.
-     * @return false when the client already has an account with the given currency, true otherwise
+     * @return true if the account was created, or false when the client already has an account with the given currency
      * */
     fun addAccount(client: Client, account: Account): Boolean
 
+    /**
+     * @return a list of all distinct accounts by currency for [client]. Can be empty.
+     * */
     fun getAccounts(client: Client): List<Account>
 
     /**
@@ -43,21 +46,4 @@ class InMemoryAccountRepository : AccountRepository {
     override fun getAccount(client: Client, currency: Currency): Account? {
         return clientIdsToAccounts[client.id]?.get(currency)
     }
-
-/*
-    override fun getAccount(client: Client): Account {
-        return transactionRepository.getAll(client).let { transactions ->
-            val moneyInEachCurrency: Map<Currency, BigDecimal> = transactions.filter { it.to == client }
-                .groupBy(
-                    keySelector = { transaction -> transaction.money.currency },
-                    valueTransform = { transaction -> transaction.money.amount }
-                )
-                .mapValues {
-                    it.value.sum()
-                }
-
-            Account(moneyInEachCurrency)
-        }
-    }
-*/
 }
