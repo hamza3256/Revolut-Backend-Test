@@ -3,7 +3,6 @@ package clients
 import BaseHandler
 import io.javalin.Javalin
 import io.javalin.http.Context
-import logging.info
 import logging.verbose
 
 class ClientHandler(private val clientCreator: ClientCreator) : BaseHandler {
@@ -14,19 +13,12 @@ class ClientHandler(private val clientCreator: ClientCreator) : BaseHandler {
     }
 
     override fun handle(ctx: Context) {
+        verbose { "Requested to create new Client" }
         val request = ctx.body<ClientCreator.Request>()
-        when (val result = clientCreator.create(request)) {
-            is ClientCreator.Result.Success -> {
-                info { "Client created as $result" }
-                ctx.status(200)
-                ctx.json(result.client)
-            }
-            is ClientCreator.Result.AlreadyCreated -> {
-                info { "Client already exists" }
-                ctx.status(200)
-                ctx.json(result.client)
-            }
-        }
+        val client = clientCreator.create(request)
+        verbose { "Created $client for $request" }
+        ctx.status(200)
+        ctx.json(client)
     }
 }
 
