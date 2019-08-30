@@ -1,12 +1,16 @@
 package clients.accounts
 
-import money.Money
 import clients.transactions.TransactionRepository
-import money.NegativeMoneyException
 import money.CurrencyMismatchException
+import money.Money
+import money.NegativeMoneyException
 import utils.sumBy
 
-data class AccountState(val account: Account, val money: Money){
+/**
+ * Represents the state of an account
+ * [money] represents the current amount of money in [account]
+ * */
+data class AccountState(val account: Account, val money: Money) {
     //TODO handle NegativeMoneyException
     infix fun hasFunds(money: Money): Boolean {
         if (money.isNegative()) {
@@ -27,8 +31,14 @@ data class AccountState(val account: Account, val money: Money){
 
 }
 
+/**
+ * Used to query the current state of an account.
+ * */
 interface AccountStateQuerier {
 
+    /**
+     * Return the current state of the given [account], including how much money there is.
+     * */
     fun getCurrentState(account: Account): AccountState
 
 }
