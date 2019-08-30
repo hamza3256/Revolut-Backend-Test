@@ -2,6 +2,8 @@ package money.account
 
 import Currencies.GBP
 import Currencies.USD
+import GBP
+import USD
 import clients.Client
 import org.junit.Assert.*
 import org.junit.Before
@@ -19,7 +21,7 @@ class InMemoryAccountRepositoryTest {
 
     @Test
     fun `adding an account for the first time should succeed`() {
-        val account = Account(0, USD, emptyList(), 0.toBigDecimal())
+        val account = Account(0, client, 0.USD)
 
         assertTrue(repository.addAccount(client, account))
         assertEquals(account, repository.getAccount(client, USD))
@@ -27,7 +29,7 @@ class InMemoryAccountRepositoryTest {
 
     @Test
     fun `adding an account when the client already has an account with the given currency should return false`() {
-        val usdAccount = Account(0, USD, emptyList(), 0.toBigDecimal())
+        val usdAccount = Account(0, client, 0.USD)
         val usdAccountCopy = usdAccount.copy(id = 1)
 
         assertTrue(repository.addAccount(client, usdAccount))
@@ -36,8 +38,8 @@ class InMemoryAccountRepositoryTest {
 
     @Test
     fun `adding multiple accounts with different currencies should succeed`() {
-        val usdAccount = Account(0, USD, emptyList(), 0.toBigDecimal())
-        val gbpAccount = Account(1, GBP, emptyList(), 0.toBigDecimal())
+        val usdAccount = Account(0, client, 0.USD)
+        val gbpAccount = Account(1, client, 0.GBP)
 
         assertTrue(repository.addAccount(client, usdAccount))
         assertTrue(repository.addAccount(client, gbpAccount))
@@ -46,7 +48,7 @@ class InMemoryAccountRepositoryTest {
 
     @Test
     fun `getAccount() should return null for client without an account for the given currency`() {
-        val usdAccount = Account(0, USD, emptyList(), 0.toBigDecimal())
+        val usdAccount = Account(0, client, 0.USD)
         repository.addAccount(client, usdAccount)
 
         assertNull(repository.getAccount(client, GBP))

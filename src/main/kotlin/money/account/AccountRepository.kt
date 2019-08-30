@@ -9,7 +9,10 @@ interface AccountRepository {
      * Adds an account for the given client if they do not have an account with such a currency.
      * @return true if the account was added, or false when the client already has an account with the given currency
      * */
-    fun addAccount(client: Client, account: Account): Boolean
+    fun addAccount(
+        client: Client,
+        account: Account
+    ): Boolean //TODO Account already contains Client field, so remove from this method
 
     /**
      * @return a set of all distinct accounts by currency for [client]. Can be empty.
@@ -21,6 +24,14 @@ interface AccountRepository {
      * */
     fun getAccount(client: Client, currency: Currency): Account?
 
+}
+
+inline fun AccountRepository.getAccountOrElse(
+    client: Client,
+    currency: Currency,
+    whenNoAccount: () -> Account
+): Account {
+    return this.getAccount(client, currency) ?: whenNoAccount()
 }
 
 class InMemoryAccountRepository : AccountRepository {

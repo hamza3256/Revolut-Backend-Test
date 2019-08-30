@@ -1,40 +1,28 @@
 package money.account
 
+import clients.Client
 import money.Money
 import money.exceptions.CurrencyMismatchException
 import money.exceptions.NegativeMoneyException
-import money.transactions.Transaction
-import utils.sumBy
 import java.math.BigDecimal
+import java.math.BigDecimal.ZERO
 import java.util.*
 
 data class Account(
     val id: Long,
-    val currency: Currency,
-    val transactions: List<Transaction>,
-    val startingMoney: BigDecimal
+    val client: Client,
+    val startingMoney: Money
 ) {
 
-    private val money = Money(
-        amount = startingMoney + transactions.sumBy { it.money.amount },
-        currency = currency
+    val currency = startingMoney.currency
+
+    //TODO use this constructor where applicable
+    constructor(id: Long, client: Client, currency: Currency, startingMoney: BigDecimal = ZERO) : this(
+        id = id,
+        client = client,
+        startingMoney = Money(
+            currency = currency,
+            amount = startingMoney
+        )
     )
-
-    //TODO handle NegativeMoneyException
-    infix fun hasFunds(money: Money): Boolean {
-        if (money.isNegative()) {
-            throw NegativeMoneyException(money)
-        }
-
-        if (this.currency != money.currency) {
-            throw CurrencyMismatchException(
-                expected = this.currency,
-                actual = money.currency
-            )
-        }
-
-        if (money.isZero()) return true
-
-        return this.money.amount >= money.amount
-    }
 }

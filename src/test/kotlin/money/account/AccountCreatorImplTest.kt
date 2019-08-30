@@ -52,7 +52,7 @@ class AccountCreatorImplTest {
         val usdAccountRequest = Request(1000.USD)
         val result = accountCreator.create(client, usdAccountRequest) as Created
 
-        assertEquals(1000.toBigDecimal(), result.account.startingMoney)
+        assertEquals(1000.USD, result.account.startingMoney)
     }
 
     @Test
@@ -96,7 +96,7 @@ class AccountCreatorImplTest {
         val secondUsdAccountRequest = Request(2.USD)
         accountCreator.create(client, secondUsdAccountRequest)
 
-        assertEquals(1.toBigDecimal(), accountRepository.getAccount(client, USD)?.startingMoney)
+        assertEquals(1.USD, accountRepository.getAccount(client, USD)?.startingMoney)
     }
 
     @Test

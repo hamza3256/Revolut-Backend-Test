@@ -4,10 +4,7 @@ import clients.ClientRepository
 import clients.InMemoryClientRepository
 import io.javalin.Javalin
 import logging.info
-import money.account.AccountCreator
-import money.account.AccountCreatorImpl
-import money.account.AccountRepository
-import money.account.InMemoryAccountRepository
+import money.account.*
 import money.transactions.InMemoryTransactionRepository
 import money.transactions.TransactionCreator
 import money.transactions.TransactionCreatorImpl
@@ -28,17 +25,18 @@ class RevolutApp {
         val clientRepository: ClientRepository = InMemoryClientRepository()
         val clientCreator: ClientCreator = ClientCreatorImpl(clientRepository)
 
-        //accounts
-        val accountRepository: AccountRepository = InMemoryAccountRepository()
-        val accountCreator: AccountCreator = AccountCreatorImpl(accountRepository)
-
         //transactions
         val transactionRepository: TransactionRepository = InMemoryTransactionRepository()
         val transactionCreator: TransactionCreator = TransactionCreatorImpl(transactionRepository)
 
+        //accounts
+        val accountRepository: AccountRepository = InMemoryAccountRepository()
+        val accountCreator: AccountCreator = AccountCreatorImpl(accountRepository)
+        val accountStateQuerie: AccountStateQuerier = AccountStateQuerierImpl(transactionRepository)
+
         //transfer
         val transferParamsParser = TransferParamsParser()
-        val moneyTransferer: MoneyTransferer = MoneyTransfererImpl(accountRepository, transactionCreator)
+        val moneyTransferer: MoneyTransferer = MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerie)
 
         val handlers = Handlers(transferParamsParser, clientRepository, clientCreator, moneyTransferer, accountCreator)
 

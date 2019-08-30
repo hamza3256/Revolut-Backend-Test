@@ -1,13 +1,13 @@
 package money.transactions
 
-import clients.Client
 import money.Money
+import money.account.Account
 import money.transactions.TransactionCreator.TransferTransactions
 import java.util.concurrent.atomic.AtomicLong
 
 interface TransactionCreator {
 
-    data class Request(val money: Money, val from: Client, val to: Client)
+    data class Request(val money: Money, val from: Account, val to: Account)
 
     fun createTransferTransactions(request: Request): TransferTransactions
 
@@ -24,8 +24,8 @@ class TransactionCreatorImpl(private val repository: TransactionRepository) : Tr
             val fromId = nextId.getAndIncrement()
             val toId = nextId.getAndIncrement()
 
-            val withdraw = Transaction(id = fromId, mirrorTransactionId = toId, money = -money, from = from, to = to)
-            val deposit = Transaction(id = toId, mirrorTransactionId = fromId, money = money, from = from, to = to)
+            val withdraw = Transaction(id = fromId, mirrorTransactionId = toId, money = -money, account = from)
+            val deposit = Transaction(id = toId, mirrorTransactionId = fromId, money = money, account = to)
 
             repository.add(withdraw)
             repository.add(deposit)

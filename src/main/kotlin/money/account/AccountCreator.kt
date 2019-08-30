@@ -19,6 +19,8 @@ interface AccountCreator {
     sealed class Result {
 
         data class Created(val account: Account) : Result()
+
+        //TODO replace with separate classes instead of using enums
         data class Failed(val cause: Cause) : Result() {
 
             enum class Cause {
@@ -41,9 +43,8 @@ class AccountCreatorImpl(private val accountRepository: AccountRepository) : Acc
 
             return Account(
                 id = nextId.getAndIncrement(),
-                currency = startingMoney.currency,
-                transactions = emptyList(),
-                startingMoney = startingMoney.amount
+                startingMoney = request.startingMoney,
+                client = client
             ).let { account ->
                 if (accountRepository.addAccount(client, account)) {
                     //added
