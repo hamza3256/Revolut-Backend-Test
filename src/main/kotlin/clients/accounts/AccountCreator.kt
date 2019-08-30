@@ -1,13 +1,13 @@
-package money.account
+package clients.accounts
 
 import clients.Client
 import money.Money
-import money.account.AccountCreator.Request
-import money.account.AccountCreator.Result
-import money.account.AccountCreator.Result.Created
-import money.account.AccountCreator.Result.Failed
-import money.account.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
-import money.account.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
+import clients.accounts.AccountCreator.Request
+import clients.accounts.AccountCreator.Result
+import clients.accounts.AccountCreator.Result.Created
+import clients.accounts.AccountCreator.Result.Failed
+import clients.accounts.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
+import clients.accounts.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
 import java.util.concurrent.atomic.AtomicLong
 
 interface AccountCreator {

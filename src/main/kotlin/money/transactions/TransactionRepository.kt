@@ -1,7 +1,7 @@
 package money.transactions
 
 import clients.Client
-import money.account.Account
+import clients.accounts.Account
 
 interface TransactionRepository {
 

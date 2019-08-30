@@ -4,7 +4,7 @@ import clients.ClientRepository
 import clients.InMemoryClientRepository
 import io.javalin.Javalin
 import logging.info
-import money.account.*
+import clients.accounts.*
 import money.transactions.InMemoryTransactionRepository
 import money.transactions.TransactionCreator
 import money.transactions.TransactionCreatorImpl

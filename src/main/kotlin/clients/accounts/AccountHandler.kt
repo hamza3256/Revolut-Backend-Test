@@ -1,4 +1,4 @@
-package money.account
+package clients.accounts
 
 import BaseHandler
 import clients.ClientRepository
@@ -8,12 +8,12 @@ import io.javalin.http.Context
 import logging.info
 import logging.verbose
 import logging.warn
-import money.account.AccountCreator.Result.Created
-import money.account.AccountCreator.Result.Failed
-import money.account.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
-import money.account.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
-import money.account.CreateAccount.PARAM_CLIENT_ID
-import money.account.CreateAccount.PATH
+import clients.accounts.AccountCreator.Result.Created
+import clients.accounts.AccountCreator.Result.Failed
+import clients.accounts.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
+import clients.accounts.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
+import clients.accounts.CreateAccount.PARAM_CLIENT_ID
+import clients.accounts.CreateAccount.PATH
 import utils.requireParam
 import utils.toLong
 

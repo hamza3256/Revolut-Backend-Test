@@ -1,9 +1,7 @@
-package money.account
+package clients.accounts
 
 import clients.Client
 import money.Money
-import money.exceptions.CurrencyMismatchException
-import money.exceptions.NegativeMoneyException
 import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
 import java.util.*

@@ -3,7 +3,7 @@ package transfer
 import Currencies.USD
 import USD
 import clients.Client
-import money.account.*
+import clients.accounts.*
 import money.transactions.InMemoryTransactionRepository
 import money.transactions.TransactionCreator
 import money.transactions.TransactionCreatorImpl

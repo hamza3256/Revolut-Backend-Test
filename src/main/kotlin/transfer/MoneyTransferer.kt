@@ -3,9 +3,9 @@ package transfer
 import clients.Client
 import logging.verbose
 import money.Money
-import money.account.AccountRepository
-import money.account.AccountStateQuerier
-import money.account.getAccountOrElse
+import clients.accounts.AccountRepository
+import clients.accounts.AccountStateQuerier
+import clients.accounts.getAccountOrElse
 import money.transactions.TransactionCreator
 import transfer.TransferResult.*
 

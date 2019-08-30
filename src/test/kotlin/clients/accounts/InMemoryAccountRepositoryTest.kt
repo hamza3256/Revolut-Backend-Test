@@ -1,4 +1,4 @@
-package money.account
+package clients.accounts
 
 import Currencies.GBP
 import Currencies.USD

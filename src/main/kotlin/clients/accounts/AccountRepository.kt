@@ -1,4 +1,4 @@
-package money.account
+package clients.accounts
 
 import clients.Client
 import java.util.*

@@ -1,15 +1,15 @@
-package money.account
+package clients.accounts
 
 import Currencies.GBP
 import Currencies.USD
 import GBP
 import USD
 import clients.Client
-import money.account.AccountCreator.Request
-import money.account.AccountCreator.Result.Created
-import money.account.AccountCreator.Result.Failed
-import money.account.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
-import money.account.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
+import clients.accounts.AccountCreator.Request
+import clients.accounts.AccountCreator.Result.Created
+import clients.accounts.AccountCreator.Result.Failed
+import clients.accounts.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
+import clients.accounts.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

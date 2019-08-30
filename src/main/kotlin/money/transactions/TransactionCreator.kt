@@ -1,7 +1,7 @@
 package money.transactions
 
 import money.Money
-import money.account.Account
+import clients.accounts.Account
 import money.transactions.TransactionCreator.TransferTransactions
 import java.util.concurrent.atomic.AtomicLong
 

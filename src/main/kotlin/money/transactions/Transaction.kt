@@ -1,7 +1,7 @@
 package money.transactions
 
 import money.Money
-import money.account.Account
+import clients.accounts.Account
 
 data class Transaction internal constructor(
     val id: Long,

@@ -1,4 +1,4 @@
-package money.account
+package clients.accounts
 
 import money.Money
 import money.transactions.TransactionRepository

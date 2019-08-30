@@ -1,8 +1,8 @@
 import clients.ClientCreator
 import clients.ClientHandler
 import clients.ClientRepository
-import money.account.AccountCreator
-import money.account.AccountHandler
+import clients.accounts.AccountCreator
+import clients.accounts.AccountHandler
 import transfer.MoneyTransferer
 import transfer.TransferHandler
 import transfer.TransferParamsParser
