@@ -5,9 +5,21 @@ import clients.accounts.Account
 
 interface TransactionRepository {
 
+    /**
+     * Returns a list of all transactions across all of the [client] accounts
+     * */
     fun getAll(client: Client): List<Transaction>
+
+    /**
+     * Returns a list of all transactions for a given [account]
+     * */
     fun getAll(account: Account): List<Transaction>
-    fun add(transaction: Transaction)
+
+    /**
+     * Adds a transaction.
+     * @return true if such a transaction didn't exist and was inserted, or false when it already exists and wasn't inserted
+     * */
+    fun add(transaction: Transaction): Boolean
 
 }
 
@@ -22,7 +34,7 @@ class InMemoryTransactionRepository : TransactionRepository {
         return transactions.filter { it.account == account }
     }
 
-    override fun add(transaction: Transaction) {
-        transactions.add(transaction)
+    override fun add(transaction: Transaction): Boolean {
+        return transactions.add(transaction)
     }
 }
