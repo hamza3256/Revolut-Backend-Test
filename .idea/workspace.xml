@@ -2,22 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6c7e2f8b-4863-46d6-b9c6-b9fdfe46ff31" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/clients/accounts/Account.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountCreator.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountRepository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountStateQuerier.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/clients/accounts/AccountCreatorImplTest.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/clients/accounts/InMemoryAccountRepositoryTest.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/money/account/AccountCreatorImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/money/account/AccountCreatorImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Handlers.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Handlers.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/RevolutApp.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/RevolutApp.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionCreator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransferer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/transfer/MoneyTransfererImplTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/transfer/MoneyTransfererImplTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountStateQuerier.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountStateQuerier.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/exceptions/CurrencyMismatchException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/CurrencyMismatchException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/exceptions/InsufficientFundsException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/InsufficientMoneyException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/exceptions/MoneyException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/MoneyException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/money/exceptions/NegativeMoneyException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/money/NegativeMoneyException.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -36,94 +26,37 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountCreator.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/NegativeMoneyException.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="706">
-              <caret line="56" column="9" lean-forward="true" selection-start-line="56" selection-start-column="9" selection-end-line="56" selection-end-column="9" />
-              <folding>
-                <element signature="e#23#439#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="30">
+              <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountHandler.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/MoneyException.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="46" column="49" lean-forward="true" selection-start-line="46" selection-start-column="49" selection-end-line="46" selection-end-column="57" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountRepository.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="35" column="26" lean-forward="true" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountStateQuerier.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="35" column="14" selection-start-line="35" selection-start-column="14" selection-end-line="35" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="5" column="42" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
+            <state relative-caret-position="30">
+              <caret line="2" column="42" lean-forward="true" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/kotlin/clients/accounts/AccountCreatorImplTest.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/InsufficientMoneyException.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="249">
-              <caret line="84" column="26" lean-forward="true" selection-start-line="84" selection-start-column="26" selection-end-line="84" selection-end-column="26" />
+            <state relative-caret-position="45">
+              <caret line="3" column="63" selection-start-line="3" selection-start-column="63" selection-end-line="3" selection-end-column="63" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/Account.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/CurrencyMismatchException.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="20" column="32" lean-forward="true" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/exceptions/CurrencyMismatchException.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="38" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/exceptions/InsufficientFundsException.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="47" lean-forward="true" selection-start-line="4" selection-start-column="47" selection-end-line="4" selection-end-column="47" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/exceptions/MoneyException.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+            <state relative-caret-position="75">
+              <caret line="5" column="9" lean-forward="true" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -153,12 +86,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/kotlin/transfer/MoneyTransfererImpl.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/money/BigDecimals.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionManager.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionFactory.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/Program.kt" />
-        <option value="$PROJECT_DIR$/src/main/kotlin/money/wallet/WalletRepository.kt" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/wallet/Wallet.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/wallet/Account.kt" />
@@ -204,6 +131,12 @@
         <option value="$PROJECT_DIR$/src/main/kotlin/money/account/AccountRepository.kt" />
         <option value="$PROJECT_DIR$/src/test/kotlin/money/account/AccountCreatorImplTest.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/exceptions/InsufficientFundsException.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/exceptions/InsufficientMoneyException.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/CurrencyMismatchException.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/MoneyException.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/NegativeMoneyException.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/money/InsufficientMoneyException.kt" />
       </list>
     </option>
   </component>
@@ -259,32 +192,6 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="kotlin" type="462c0819:PsiDirectoryNode" />
               <item name="clients" type="462c0819:PsiDirectoryNode" />
-              <item name="accounts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="revolut-backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="revolut-backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="money" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="revolut-backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="revolut-backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="money" type="462c0819:PsiDirectoryNode" />
-              <item name="exceptions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="revolut-backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="revolut-backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="money" type="462c0819:PsiDirectoryNode" />
               <item name="transactions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -293,15 +200,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="transfer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="revolut-backend" type="b2602c69:ProjectViewProjectNode" />
-              <item name="revolut-backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="money" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="revolut-backend" type="b2602c69:ProjectViewProjectNode" />
@@ -379,9 +278,9 @@
       <recent name="money" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="money" />
       <recent name="money.account.state" />
       <recent name="money.transactions" />
-      <recent name="money" />
       <recent name="money.exception" />
       <recent name="money.wallet" />
     </key>
@@ -500,7 +399,7 @@
       <workItem from="1567009336461" duration="16649000" />
       <workItem from="1567072588631" duration="8858000" />
       <workItem from="1567092395086" duration="11918000" />
-      <workItem from="1567154779841" duration="6540000" />
+      <workItem from="1567154779841" duration="6936000" />
     </task>
     <task id="LOCAL-00001" summary="Always create a new Client for each POST request">
       <created>1567073862921</created>
@@ -586,13 +485,24 @@
       <option name="project" value="LOCAL" />
       <updated>1567162059972</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Move /money/account to /clients/accounts">
+      <created>1567163012092</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1567163012093</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Move /money/transactions to /clients/transactions">
+      <created>1567163103301</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1567163103301</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="MoneyTransfererImplTest - 2019.08.29 at 19h 38m 14s.xml">
-      <configuration name="MoneyTransfererImplTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="MoneyTransfererImplTest - 2019.08.29 at 19h 40m 08s.xml">
       <configuration name="MoneyTransfererImplTest" configurationId="JUnit" />
     </history-entry>
@@ -620,9 +530,12 @@
     <history-entry file="kotlin_in_revolut-backend_test - 2019.08.30 at 12h 46m 39s.xml">
       <configuration name="kotlin in revolut-backend.test" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="kotlin_in_revolut-backend_test - 2019.08.30 at 13h 02m 27s.xml">
+      <configuration name="kotlin in revolut-backend.test" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="89550000" />
+    <option name="totallyTimeSpent" value="89946000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -711,7 +624,9 @@
     <MESSAGE value="Don't store transactions or current money in Account. Add tests for MoneyTransferer" />
     <MESSAGE value="Use other constructor for creating Account when we don't want to start with any initial money" />
     <MESSAGE value="Don't pass Client to AccountRepository.addAccount" />
-    <option name="LAST_COMMIT_MESSAGE" value="Don't pass Client to AccountRepository.addAccount" />
+    <MESSAGE value="Move /money/account to /clients/accounts" />
+    <MESSAGE value="Move /money/transactions to /clients/transactions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Move /money/transactions to /clients/transactions" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionFactory.kt" />
@@ -905,14 +820,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/exceptions/NegativeMoneyException.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="50" lean-forward="true" selection-start-line="4" selection-start-column="50" selection-end-line="4" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionRepository.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/transactions/TransactionRepository.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
@@ -922,7 +830,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/TransactionCreator.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/transactions/TransactionCreator.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="315">
           <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
@@ -1011,35 +919,14 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/Account.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
-          <caret line="20" column="32" lean-forward="true" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/exceptions/CurrencyMismatchException.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="38" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/exceptions/InsufficientFundsException.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="47" lean-forward="true" selection-start-line="4" selection-start-column="47" selection-end-line="4" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/exceptions/MoneyException.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+          <caret line="20" column="32" selection-start-line="20" selection-start-column="32" selection-end-line="20" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountCreator.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="706">
-          <caret line="56" column="9" lean-forward="true" selection-start-line="56" selection-start-column="9" selection-end-line="56" selection-end-column="9" />
+          <caret line="56" column="9" selection-start-line="56" selection-start-column="9" selection-end-line="56" selection-end-column="9" />
           <folding>
             <element signature="e#23#439#0" expanded="true" />
           </folding>
@@ -1049,25 +936,25 @@
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountHandler.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
-          <caret line="46" column="49" lean-forward="true" selection-start-line="46" selection-start-column="49" selection-end-line="46" selection-end-column="57" />
+          <caret line="46" column="49" selection-start-line="46" selection-start-column="49" selection-end-line="46" selection-end-column="57" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountRepository.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="286">
-          <caret line="35" column="26" lean-forward="true" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
+          <caret line="35" column="26" selection-start-line="35" selection-start-column="26" selection-end-line="35" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountStateQuerier.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="436">
-          <caret line="35" column="14" selection-start-line="35" selection-start-column="14" selection-end-line="35" selection-end-column="14" />
+          <caret line="34" column="14" selection-start-line="34" selection-start-column="14" selection-end-line="34" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/transactions/Transaction.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/transactions/Transaction.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="5" column="42" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
@@ -1076,8 +963,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/kotlin/clients/accounts/AccountCreatorImplTest.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="84" column="26" lean-forward="true" selection-start-line="84" selection-start-column="26" selection-end-line="84" selection-end-column="26" />
+        <state relative-caret-position="316">
+          <caret line="97" lean-forward="true" selection-start-line="97" selection-end-line="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/CurrencyMismatchException.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="9" lean-forward="true" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/NegativeMoneyException.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="41" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/MoneyException.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="42" lean-forward="true" selection-start-line="2" selection-start-column="42" selection-end-line="2" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/money/InsufficientMoneyException.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="63" selection-start-line="3" selection-start-column="63" selection-end-line="3" selection-end-column="63" />
         </state>
       </provider>
     </entry>

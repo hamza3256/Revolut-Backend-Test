@@ -1,4 +1,4 @@
-package money.exceptions
+package money
 
 import java.util.*
 

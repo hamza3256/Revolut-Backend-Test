@@ -2,8 +2,8 @@ package clients.accounts
 
 import money.Money
 import clients.transactions.TransactionRepository
-import money.exceptions.NegativeMoneyException
-import  money.exceptions.CurrencyMismatchException
+import money.NegativeMoneyException
+import money.CurrencyMismatchException
 import utils.sumBy
 
 data class AccountState(val account: Account, val money: Money){
