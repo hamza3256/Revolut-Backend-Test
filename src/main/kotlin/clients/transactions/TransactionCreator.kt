@@ -1,17 +1,23 @@
 package clients.transactions
 
-import money.Money
 import clients.accounts.Account
-import clients.transactions.TransactionCreator.TransferTransactions
+import money.Money
 import java.util.concurrent.atomic.AtomicLong
 
+/**
+ * Used to create new Transactions, such as transfers between accounts.
+ * */
 interface TransactionCreator {
 
+    /**
+     * The request holds information on how much money is being transferred and from/to who.
+     * */
     data class Request(val money: Money, val from: Account, val to: Account)
 
-    fun createTransferTransactions(request: Request): TransferTransactions
-
-    data class TransferTransactions(val withdraw: Transaction, val deposit: Transaction)
+    /**
+     * Create and persists Transactions for the given [request]
+     * */
+    fun createTransferTransactions(request: Request)
 
 }
 
@@ -19,7 +25,7 @@ class TransactionCreatorImpl(private val repository: TransactionRepository) : Tr
 
     private val nextId = AtomicLong()
 
-    override fun createTransferTransactions(request: TransactionCreator.Request): TransferTransactions {
+    override fun createTransferTransactions(request: TransactionCreator.Request) {
         with(request) {
             val fromId = nextId.getAndIncrement()
             val toId = nextId.getAndIncrement()
@@ -29,8 +35,6 @@ class TransactionCreatorImpl(private val repository: TransactionRepository) : Tr
 
             repository.add(withdraw)
             repository.add(deposit)
-
-            return TransferTransactions(withdraw = withdraw, deposit = deposit)
         }
     }
 }
