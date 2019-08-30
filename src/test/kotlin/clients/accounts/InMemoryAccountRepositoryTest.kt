@@ -1,16 +1,16 @@
 package clients.accounts
 
+import Clients
 import Currencies.GBP
 import Currencies.USD
-import clients.Client
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 class InMemoryAccountRepositoryTest {
 
-    lateinit var repository: AccountRepository
-    private val client = Client(0, "Nikolay", "Storonsky")
+    private lateinit var repository: AccountRepository
+    private val client = Clients.nikolay()
 
     @Before
     fun beforeEachTest() {

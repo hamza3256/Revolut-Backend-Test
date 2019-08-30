@@ -1,10 +1,10 @@
 package clients.accounts
 
+import Clients
 import Currencies.GBP
 import Currencies.USD
 import GBP
 import USD
-import clients.Client
 import clients.accounts.AccountCreator.Request
 import clients.accounts.AccountCreator.Result.Created
 import clients.accounts.AccountCreator.Result.Failed
@@ -16,10 +16,10 @@ import org.junit.Test
 
 class AccountCreatorImplTest {
 
-    lateinit var accountRepository: AccountRepository
-    lateinit var accountCreator: AccountCreatorImpl
+    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountCreator: AccountCreatorImpl
 
-    private val client = Client(0, "Nikolay", "Storonsky")
+    private val client = Clients.nikolay()
 
     @Before
     fun beforeEachTest() {

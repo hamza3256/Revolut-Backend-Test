@@ -15,7 +15,7 @@ class InMemoryClientRepositoryTest {
 
     @Test
     fun `adding a client should imply that you can get it`() {
-        val client = Client(0, "Nikolay", "Storonsky")
+        val client = Clients.nikolay(id = 0)
 
         //shouldn't exist yet
         assertNull(repository.getClient(0))
@@ -27,8 +27,8 @@ class InMemoryClientRepositoryTest {
 
     @Test
     fun `adding a client with the same id should return false`() {
-        val client = Client(0, "Nikolay", "Storonsky")
-        val clientWithSameId = Client(0, "Vlad", "Yatsenko")
+        val client = Clients.nikolay(id = 0)
+        val clientWithSameId = Clients.vlad(id = 0)
 
         assertTrue(repository.addClient(client))
         assertFalse(repository.addClient(clientWithSameId))
