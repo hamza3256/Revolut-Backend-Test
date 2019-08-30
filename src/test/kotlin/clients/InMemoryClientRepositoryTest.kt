@@ -35,6 +35,18 @@ class InMemoryClientRepositoryTest {
     }
 
     @Test
+    fun `adding a client with the same id shouldn't replace the original client`(){
+        val client = Clients.nikolay(id = 0)
+        assertTrue(repository.addClient(client))
+
+        val clientWithSameId = Clients.vlad(id = 0)
+        assertFalse(repository.addClient(clientWithSameId))
+
+        //shouldn't have been replaced
+        assertEquals(client, repository.getClient(0))
+    }
+
+    @Test
     fun `getting a client for an invalid id should return null`() {
         assertNull(repository.getClient(0))
     }
