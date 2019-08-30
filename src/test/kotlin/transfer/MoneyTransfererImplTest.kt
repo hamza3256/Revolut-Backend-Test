@@ -4,10 +4,10 @@ import Currencies.USD
 import USD
 import clients.Client
 import clients.accounts.*
-import money.transactions.InMemoryTransactionRepository
-import money.transactions.TransactionCreator
-import money.transactions.TransactionCreatorImpl
-import money.transactions.TransactionRepository
+import clients.transactions.InMemoryTransactionRepository
+import clients.transactions.TransactionCreator
+import clients.transactions.TransactionCreatorImpl
+import clients.transactions.TransactionRepository
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

@@ -6,7 +6,7 @@ import money.Money
 import clients.accounts.AccountRepository
 import clients.accounts.AccountStateQuerier
 import clients.accounts.getAccountOrElse
-import money.transactions.TransactionCreator
+import clients.transactions.TransactionCreator
 import transfer.TransferResult.*
 
 interface MoneyTransferer {

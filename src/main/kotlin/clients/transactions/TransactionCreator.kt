@@ -1,8 +1,8 @@
-package money.transactions
+package clients.transactions
 
 import money.Money
 import clients.accounts.Account
-import money.transactions.TransactionCreator.TransferTransactions
+import clients.transactions.TransactionCreator.TransferTransactions
 import java.util.concurrent.atomic.AtomicLong
 
 interface TransactionCreator {

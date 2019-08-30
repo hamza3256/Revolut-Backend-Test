@@ -1,4 +1,4 @@
-package money.transactions
+package clients.transactions
 
 import clients.Client
 import clients.accounts.Account

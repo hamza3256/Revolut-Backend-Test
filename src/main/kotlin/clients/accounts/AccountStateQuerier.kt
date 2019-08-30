@@ -1,7 +1,7 @@
 package clients.accounts
 
 import money.Money
-import money.transactions.TransactionRepository
+import clients.transactions.TransactionRepository
 import money.exceptions.NegativeMoneyException
 import  money.exceptions.CurrencyMismatchException
 import utils.sumBy

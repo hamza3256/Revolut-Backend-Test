@@ -5,10 +5,10 @@ import clients.InMemoryClientRepository
 import io.javalin.Javalin
 import logging.info
 import clients.accounts.*
-import money.transactions.InMemoryTransactionRepository
-import money.transactions.TransactionCreator
-import money.transactions.TransactionCreatorImpl
-import money.transactions.TransactionRepository
+import clients.transactions.InMemoryTransactionRepository
+import clients.transactions.TransactionCreator
+import clients.transactions.TransactionCreatorImpl
+import clients.transactions.TransactionRepository
 import transfer.MoneyTransferer
 import transfer.MoneyTransfererImpl
 import transfer.TransferParamsParser
