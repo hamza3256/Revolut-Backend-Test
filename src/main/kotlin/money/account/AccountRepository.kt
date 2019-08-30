@@ -9,10 +9,7 @@ interface AccountRepository {
      * Adds an account for the given client if they do not have an account with such a currency.
      * @return true if the account was added, or false when the client already has an account with the given currency
      * */
-    fun addAccount(
-        client: Client,
-        account: Account
-    ): Boolean //TODO Account already contains Client field, so remove from this method
+    fun addAccount(account: Account): Boolean
 
     /**
      * @return a set of all distinct accounts by currency for [client]. Can be empty.
@@ -38,9 +35,9 @@ class InMemoryAccountRepository : AccountRepository {
 
     private val clientIdsToAccounts = mutableMapOf<Long, MutableMap<Currency, Account>>()
 
-    override fun addAccount(client: Client, account: Account): Boolean {
+    override fun addAccount(account: Account): Boolean {
         val currency = account.currency
-        val accountsForClient = clientIdsToAccounts.getOrPut(client.id) { mutableMapOf() }
+        val accountsForClient = clientIdsToAccounts.getOrPut(account.client.id) { mutableMapOf() }
         return if (currency in accountsForClient) {
             //account with given currency already exists
             false

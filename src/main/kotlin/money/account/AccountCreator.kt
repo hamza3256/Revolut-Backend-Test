@@ -46,7 +46,7 @@ class AccountCreatorImpl(private val accountRepository: AccountRepository) : Acc
                 startingMoney = request.startingMoney,
                 client = client
             ).let { account ->
-                if (accountRepository.addAccount(client, account)) {
+                if (accountRepository.addAccount(account)) {
                     //added
                     Created(account)
                 } else {
