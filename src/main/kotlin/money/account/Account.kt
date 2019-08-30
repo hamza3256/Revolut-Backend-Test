@@ -16,7 +16,6 @@ data class Account(
 
     val currency = startingMoney.currency
 
-    //TODO use this constructor where applicable
     constructor(id: Long, client: Client, currency: Currency, startingMoney: BigDecimal = ZERO) : this(
         id = id,
         client = client,
