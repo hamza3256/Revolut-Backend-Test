@@ -18,7 +18,7 @@ interface MoneyTransferer {
      * If either the recipient or the sender do not have an account, then a [MissingAccount] result is returned
      *
      * */
-    fun transferMoney(
+    fun transfer(
         money: Money,
         from: Client,
         to: Client
@@ -42,7 +42,7 @@ class MoneyTransfererImpl(
     private val accountStateQuerier: AccountStateQuerier
 ) : MoneyTransferer {
 
-    override fun transferMoney(money: Money, from: Client, to: Client): TransferResult {
+    override fun transfer(money: Money, from: Client, to: Client): TransferResult {
         verbose { "Money transfer requested: money=$money, from=$from, to=$to" }
 
         if (from.id == to.id) {

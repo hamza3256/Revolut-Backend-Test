@@ -50,7 +50,7 @@ class TransferHandler(
                 }
 
                 verbose { "Valid transfer request $request, transferring ${request.money} from $fromClient to $toClient" }
-                when (val transferResult = transferer.transferMoney(request.money, from = fromClient, to = toClient)) {
+                when (val transferResult = transferer.transfer(request.money, from = fromClient, to = toClient)) {
                     is TransferResult.Success -> {
                         verbose { "Successfully completed transfer for request $request" }
                         ctx.status(200)

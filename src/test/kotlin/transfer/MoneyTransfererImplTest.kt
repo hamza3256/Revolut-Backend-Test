@@ -2,7 +2,6 @@ package transfer
 
 import Currencies.USD
 import USD
-import clients.Client
 import clients.accounts.*
 import clients.transactions.InMemoryTransactionRepository
 import clients.transactions.TransactionCreator
@@ -35,7 +34,7 @@ class MoneyTransfererImplTest {
         val vlad = Clients.vlad(0)
         val nikolay = Clients.nikolay(1)
 
-        val result = moneyTransferer.transferMoney(10.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(10.USD, from = vlad, to = nikolay)
         assertTrue(result is MissingAccount)
     }
 
@@ -44,7 +43,7 @@ class MoneyTransfererImplTest {
         val vlad = Clients.vlad(0)
         val nikolay = Clients.nikolay(1)
 
-        val result = moneyTransferer.transferMoney(0.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(0.USD, from = vlad, to = nikolay)
         assertTrue(result is Success)
     }
 
@@ -54,7 +53,7 @@ class MoneyTransfererImplTest {
         val account = Account(0, vlad, 1000.USD)
         accountRepository.addAccount(account)
 
-        val result = moneyTransferer.transferMoney(10.USD, from = vlad, to = vlad)
+        val result = moneyTransferer.transfer(10.USD, from = vlad, to = vlad)
         assertEquals(SameAccount, result)
 
         //check no transactions - we could have also used Mockito's `verifyNoMoreInteractions` were the object mocked
@@ -73,7 +72,7 @@ class MoneyTransfererImplTest {
         assertNull(accountRepository.getAccount(nikolay, USD))
 
         //transfer $10 from vlad to nikolay
-        val result = moneyTransferer.transferMoney(10.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(10.USD, from = vlad, to = nikolay)
         assertTrue(result is MissingAccount)
         result as MissingAccount
 
@@ -94,7 +93,7 @@ class MoneyTransfererImplTest {
         accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer $1001 from vlad to nikolay
-        val result = moneyTransferer.transferMoney(1001.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(1001.USD, from = vlad, to = nikolay)
         assertTrue(result is InsufficientFunds)
     }
 
@@ -111,7 +110,7 @@ class MoneyTransfererImplTest {
         accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer all of vlads USD money to nikolay
-        val result = moneyTransferer.transferMoney(from = vlad, to = nikolay, money = 1000.USD)
+        val result = moneyTransferer.transfer(from = vlad, to = nikolay, money = 1000.USD)
         assertTrue(result is Success)
     }
 
@@ -128,7 +127,7 @@ class MoneyTransfererImplTest {
         accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer $500 from vlad to nikolay
-        val result = moneyTransferer.transferMoney(500.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(500.USD, from = vlad, to = nikolay)
         assertTrue(result is Success)
 
         //vlad should now have $500
@@ -149,7 +148,7 @@ class MoneyTransfererImplTest {
         accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer $500 from vlad to nikolay
-        val result = moneyTransferer.transferMoney(500.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(500.USD, from = vlad, to = nikolay)
         assertTrue(result is Success)
 
         //nikolay should now have $500

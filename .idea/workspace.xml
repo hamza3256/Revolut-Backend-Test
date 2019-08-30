@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6c7e2f8b-4863-46d6-b9c6-b9fdfe46ff31" name="Default Changelist" comment="Cleanup exceptions in /money/">
-      <change afterPath="$PROJECT_DIR$/src/test/kotlin/TestClients.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/clients/InMemoryClientRepositoryTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/clients/InMemoryClientRepositoryTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/clients/accounts/AccountCreatorImplTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/clients/accounts/AccountCreatorImplTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/clients/accounts/InMemoryAccountRepositoryTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/clients/accounts/InMemoryAccountRepositoryTest.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/transfer/MoneyTransfererImplTest.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/transfer/MoneyTransfererImplTest.kt" afterDir="false" />
+    <list default="true" id="6c7e2f8b-4863-46d6-b9c6-b9fdfe46ff31" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/utils/BigDecimals.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/utils/BigDecimals.kt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -25,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/kotlin/TestClients.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="39" lean-forward="true" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+            <state relative-caret-position="150">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
             </state>
           </provider>
         </entry>
@@ -82,6 +77,27 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/Account.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/utils/BigDecimals.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
+              <folding>
+                <element signature="e#15#75#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -107,7 +123,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/kotlin/clients/ClientIdProvider.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/clients/IdProvider.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/clients/Provider.kt" />
         <option value="$PROJECT_DIR$/src/main/kotlin/clients/ClientRepository.kt" />
@@ -158,6 +173,7 @@
         <option value="$PROJECT_DIR$/src/test/kotlin/clients/InMemoryClientRepositoryTest.kt" />
         <option value="$PROJECT_DIR$/src/test/kotlin/transfer/MoneyTransfererImplTest.kt" />
         <option value="$PROJECT_DIR$/src/test/kotlin/TestClients.kt" />
+        <option value="$PROJECT_DIR$/src/main/kotlin/utils/BigDecimals.kt" />
       </list>
     </option>
   </component>
@@ -214,6 +230,14 @@
               <item name="kotlin" type="462c0819:PsiDirectoryNode" />
               <item name="clients" type="462c0819:PsiDirectoryNode" />
               <item name="accounts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="revolut-backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="revolut-backend" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="kotlin" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="revolut-backend" type="b2602c69:ProjectViewProjectNode" />
@@ -405,7 +429,7 @@
       <workItem from="1567009336461" duration="16649000" />
       <workItem from="1567072588631" duration="8858000" />
       <workItem from="1567092395086" duration="11918000" />
-      <workItem from="1567154779841" duration="8420000" />
+      <workItem from="1567154779841" duration="8511000" />
     </task>
     <task id="LOCAL-00001" summary="Always create a new Client for each POST request">
       <created>1567073862921</created>
@@ -512,7 +536,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567163438952</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Create a class to easily create a new Client for Nikolay Storonsky/Vlad Yatsenko when testing">
+      <created>1567164861580</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1567164861580</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -548,7 +579,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="91430000" />
+    <option name="totallyTimeSpent" value="91521000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -570,7 +601,7 @@
       <window_info id="Favorites" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.585695" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.31983805" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.31983805" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -640,7 +671,8 @@
     <MESSAGE value="Move /money/account to /clients/accounts" />
     <MESSAGE value="Move /money/transactions to /clients/transactions" />
     <MESSAGE value="Cleanup exceptions in /money/" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanup exceptions in /money/" />
+    <MESSAGE value="Create a class to easily create a new Client for Nikolay Storonsky/Vlad Yatsenko when testing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Create a class to easily create a new Client for Nikolay Storonsky/Vlad Yatsenko when testing" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.javalin/javalin/3.4.1/15bb5ac503a878dfe09943281c7c503e6cc2212d/javalin-3.4.1-sources.jar!/io/javalin/http/Context.kt">
@@ -833,16 +865,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/utils/BigDecimals.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="20" selection-start-line="13" selection-start-column="20" selection-end-line="13" selection-end-column="20" />
-          <folding>
-            <element signature="e#15#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/utils/Contexts.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -930,13 +952,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/Account.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="8" column="18" selection-start-line="8" selection-start-column="18" selection-end-line="8" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/AccountCreator.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -1011,8 +1026,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/kotlin/TestClients.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="39" lean-forward="true" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+        <state relative-caret-position="150">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/clients/accounts/Account.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="16" column="14" selection-start-line="16" selection-start-column="14" selection-end-line="16" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/utils/BigDecimals.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#15#75#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
