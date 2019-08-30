@@ -6,35 +6,41 @@ import clients.accounts.Account
 interface TransactionRepository {
 
     /**
-     * Returns a list of all transactions across all of the [client] accounts
+     * Returns a set of all transactions across all of the accounts of a [client]
      * */
-    fun getAll(client: Client): List<Transaction>
+    fun getAll(client: Client): Set<Transaction>
 
     /**
-     * Returns a list of all transactions for a given [account]
+     * Returns a set of all transactions belonging to a given [account]
      * */
-    fun getAll(account: Account): List<Transaction>
+    fun getAll(account: Account): Set<Transaction>
 
     /**
      * Adds a transaction.
-     * @return true if such a transaction didn't exist and was inserted, or false when it already exists and wasn't inserted
+     * @return true if such a transaction didn't exist and was inserted, or false when a transaction with the given id exists and wasn't inserted
      * */
     fun add(transaction: Transaction): Boolean
 
 }
 
 class InMemoryTransactionRepository : TransactionRepository {
-    private val transactions: MutableSet<Transaction> = mutableSetOf()
 
-    override fun getAll(client: Client): List<Transaction> {
-        return transactions.filter { it.account.client == client }
+    private val idsToTransactions: MutableMap<Long, Transaction> = mutableMapOf()
+
+    override fun getAll(client: Client): Set<Transaction> {
+        return idsToTransactions.values.filter { it.account.client == client }.toSet()
     }
 
-    override fun getAll(account: Account): List<Transaction> {
-        return transactions.filter { it.account == account }
+    override fun getAll(account: Account): Set<Transaction> {
+        return idsToTransactions.values.filter { it.account == account }.toSet()
     }
 
     override fun add(transaction: Transaction): Boolean {
-        return transactions.add(transaction)
+        return if (transaction.id in idsToTransactions) {
+            false
+        } else {
+            idsToTransactions[transaction.id] = transaction
+            true
+        }
     }
 }

@@ -1,7 +1,8 @@
 package clients.transactions
 
-import money.Money
 import clients.accounts.Account
+import money.CurrencyMismatchException
+import money.Money
 
 /**
  * Represents a monetary transaction in the account.
@@ -19,4 +20,11 @@ data class Transaction internal constructor(
     val mirrorTransactionId: Long? = null,
     val account: Account,
     val money: Money
-)
+) {
+
+    init {
+        if (account.currency != money.currency) {
+            throw CurrencyMismatchException(expected = account.currency, actual = money.currency)
+        }
+    }
+}
