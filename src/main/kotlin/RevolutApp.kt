@@ -1,7 +1,4 @@
-import clients.ClientCreator
-import clients.ClientCreatorImpl
-import clients.ClientRepository
-import clients.InMemoryClientRepository
+import clients.*
 import clients.accounts.*
 import clients.transactions.InMemoryTransactionRepository
 import clients.transactions.TransactionCreator
@@ -16,6 +13,7 @@ import io.javalin.plugin.json.JavalinJackson
 import logging.info
 import transfer.MoneyTransferer
 import transfer.MoneyTransfererImpl
+import transfer.TransferHandler
 import transfer.TransferParamsParser
 
 
@@ -26,9 +24,13 @@ fun main() {
 class RevolutApp {
 
     init {
+        val javalin = RevolutJavalinConfig.app
+
         //clients
         val clientRepository: ClientRepository = InMemoryClientRepository()
         val clientCreator: ClientCreator = ClientCreatorImpl(clientRepository)
+        val createClientHandler = CreateClientHandler(clientCreator)
+        createClientHandler.attach(javalin)
 
         //transactions
         val transactionRepository: TransactionRepository = InMemoryTransactionRepository()
@@ -37,22 +39,18 @@ class RevolutApp {
         //accounts
         val accountRepository: AccountRepository = InMemoryAccountRepository()
         val accountCreator: AccountCreator = AccountCreatorImpl(accountRepository)
-        val accountStateQuerie: AccountStateQuerier = AccountStateQuerierImpl(transactionRepository)
+        val accountStateQuerier: AccountStateQuerier = AccountStateQuerierImpl(transactionRepository)
+        val createAccountHandler = CreateAccountHandler(accountCreator, clientRepository)
+        createAccountHandler.attach(javalin)
 
         //transfer
         val transferParamsParser = TransferParamsParser()
-        val moneyTransferer: MoneyTransferer =
-            MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerie)
-
-        //TODO remove Handlers object
-        val handlers = Handlers(transferParamsParser, clientRepository, clientCreator, moneyTransferer, accountCreator)
+        val moneyTransferer: MoneyTransferer = MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
+        val createTransferHandler = TransferHandler(transferParamsParser, clientRepository, moneyTransferer)
+        createTransferHandler.attach(javalin)
 
         info { "Starting server..." }
-        val app = RevolutJavalinConfig.app.start(7000)
-
-        handlers.all.forEach { handler ->
-            handler.attach(app)
-        }
+        javalin.start(7000)
     }
 }
 
