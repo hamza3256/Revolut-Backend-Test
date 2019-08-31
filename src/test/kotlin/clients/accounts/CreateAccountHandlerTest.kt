@@ -7,8 +7,9 @@ import USD
 import UnirestTestConfig
 import clients.ClientRepository
 import clients.InMemoryClientRepository
+import clients.accounts.CreateAccount.RequestBody
+import clients.accounts.CreateAccount.ResponseBody
 import io.javalin.Javalin
-import kong.unirest.HttpResponse
 import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
@@ -17,7 +18,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.BeforeClass
 import org.junit.Test
-import clients.accounts.AccountCreator.Request as AccountCreatorRequest
 
 class CreateAccountHandlerTest {
 
@@ -64,77 +64,32 @@ class CreateAccountHandlerTest {
         //shouldn't have a USD account yet
         assertNull(accountRepository.getAccount(nikolay, USD))
 
-        val response: HttpResponse<Account> = postAsObject(
-            body = AccountCreatorRequest(100.USD),
-            clientId = "0"
-        )
+        val response = post()
+            .body(RequestBody(clientId = 0, startingMoney = 100.USD))
+            .asObject(ResponseBody::class.java)
 
         assertEquals(OK_200, response.status)
         val expectedAccount = Account(0, nikolay, 100.USD)
-        assertEquals(expectedAccount, response.body)
-    }
-
-    @Test
-    fun `should return error when clientId missing`() {
-        val response = postAsString(
-            body = AccountCreatorRequest(100.USD)
-            //missing clientId
-        )
-
-        assertEquals(BAD_REQUEST_400, response.status)
-    }
-
-    @Test
-    fun `should return error when clientId isn't a number`() {
-        val response = postAsString(
-            body = AccountCreatorRequest(100.USD),
-            clientId = "abc" //must be a number
-        )
-
-        assertEquals(BAD_REQUEST_400, response.status)
+        assertEquals(expectedAccount, response.body.account)
     }
 
     @Test
     fun `should return error when clientId isn't present in repository`() {
-        val response = postAsString(
-            body = AccountCreatorRequest(100.USD),
-            clientId = "1000" //no such Client with id 1000
-        )
+        val response = post()
+            .body(RequestBody(clientId = 1000, startingMoney = 100.USD))
+            .asString()
 
         assertEquals(BAD_REQUEST_400, response.status)
     }
 
     @Test
-    fun `should return error when invalid body given`(){
-        val response = postAsString(
-            body = "a weird body", //not a valid AccountCreatorRequest
-            clientId = "0"
-        )
+    fun `should return error when invalid body given`() {
+        val response = post()
+            .body("a weird body") //not a valid CreateAccount.RequestBody
+            .asString()
 
         assertEquals(BAD_REQUEST_400, response.status)
     }
 
-    private fun postAsString(
-        body: Any? = null,
-        clientId: String? = null
-    ): HttpResponse<String> {
-        return Unirest.post(URL)
-            .body(body)
-            .let { request ->
-                //only add clientId as query string if it's not null
-                clientId?.let { request.queryString("clientId", it).asString() } ?: request.asString()
-            }
-    }
-
-    private inline fun <reified T> postAsObject(
-        body: Any? = null,
-        clientId: String? = null
-    ): HttpResponse<T> {
-        return Unirest.post(URL)
-            .body(body)
-            .let { request ->
-                clientId?.let { request.queryString("clientId", it).asObject(T::class.java) }
-                    ?: request.asObject(T::class.java)
-            }
-    }
+    private fun post() = Unirest.post(URL)
 }

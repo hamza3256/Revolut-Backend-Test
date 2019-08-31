@@ -3,22 +3,21 @@ package clients.accounts
 import BaseHandler
 import clients.ClientRepository
 import clients.accounts.AccountCreator.Result.Created
-import clients.accounts.AccountCreator.Result.Failed
 import clients.accounts.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
 import clients.accounts.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
-import clients.accounts.CreateAccount.PARAM_CLIENT_ID
 import clients.accounts.CreateAccount.PATH
+import clients.accounts.CreateAccount.RequestBody
+import clients.accounts.CreateAccount.ResponseBody
 import clients.accounts.CreateAccountHandler.Result.*
 import clients.getClientOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
-import logging.debug
 import logging.info
 import logging.verbose
+import money.Money
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
-import utils.requireParam
-import utils.toLong
+import clients.accounts.AccountCreator.Result.Failed as CreateAccountFailed
 
 class CreateAccountHandler(
     private val accountCreator: AccountCreator,
@@ -38,56 +37,33 @@ class CreateAccountHandler(
         when (result) {
             is Success -> {
                 verbose { "CreateAccount processed successfully" }
-                ctx.json(result.account)
+                ctx.json(result.responseBody)
             }
-            is MissingParam -> {
-                info { "Missing param: $result" }
-                ctx.result("Missing param=${result.paramName}")
-            }
-            is InvalidParam -> {
-                info { "Invalid: $result" }
-                ctx.result("Invalid param=${result.paramName} with value=${result.paramValue}: ${result.message}")
-            }
-            is Unsatisfiable -> {
-                info { "Unsatisfiable: $result" }
-                ctx.result("Request couldn't be satisfied: ${result.message}")
+            is Failed -> {
+                verbose { "Failed to create account" }
+                ctx.result(result.message)
             }
         }
     }
 
     private fun handleWithResult(ctx: Context): Result {
-
-        debug { "body=${ctx.body()}" }
-
-        val request = ctx.body<AccountCreator.Request>()
-        val clientIdParam = ctx.requireParam(PARAM_CLIENT_ID) { param ->
-            return MissingParam(param)
-        }
-
-        val clientId = clientIdParam.toLong { value ->
-            return InvalidParam(paramName = PARAM_CLIENT_ID, paramValue = value, message = "Not a valid Long")
-        }
+        val (clientId, startingMoney) = ctx.body<RequestBody>()
 
         val client = clientRepository.getClientOrElse(clientId) { id ->
-            return InvalidParam(
-                paramName = PARAM_CLIENT_ID,
-                paramValue = id.toString(),
-                message = "Could not find a client with the given id"
-            )
+            return Failed("Client not found for id=$id")
         }
 
-        return when (val result = accountCreator.create(client, request)) {
-            is Created -> {
-                Success(result.account)
-            }
-            is Failed -> {
+        val accountCreatorRequest = AccountCreator.Request(startingMoney = startingMoney)
+        return when (val result = accountCreator.create(client, accountCreatorRequest)) {
+            is Created -> Success(ResponseBody(result.account))
+            is CreateAccountFailed -> {
                 when (result.cause) {
                     ALREADY_EXISTS -> {
-                        val currencyCode = request.startingMoney.currency.currencyCode
-                        Unsatisfiable("Account with currency $currencyCode already exists")
+                        val currencyCode = startingMoney.currency.currencyCode
+                        Failed("Account with currency $currencyCode already exists")
                     }
                     NEGATIVE_MONEY -> {
-                        Unsatisfiable("Account must start with a non-negative balance")
+                        Failed("Account must start with a non-negative balance")
                     }
                 }
             }
@@ -96,24 +72,16 @@ class CreateAccountHandler(
 
     sealed class Result(val statusCode: Int) {
 
-        data class Success(val account: Account) : Result(OK_200)
-        data class MissingParam(val paramName: String) : Result(BAD_REQUEST_400)
-
-        data class InvalidParam(
-            val paramName: String,
-            val paramValue: String,
-            val message: String
-        ) : Result(BAD_REQUEST_400)
-
-        data class Unsatisfiable(val message: String) : Result(BAD_REQUEST_400)
-
+        data class Success(val responseBody: ResponseBody) : Result(OK_200)
+        data class Failed(val message: String) : Result(BAD_REQUEST_400)
     }
 }
 
-private object CreateAccount {
+object CreateAccount {
 
     const val PATH = "accounts"
 
-    const val PARAM_CLIENT_ID = "clientId"
+    data class RequestBody(val clientId: Long, val startingMoney: Money)
+    data class ResponseBody(val account: Account)
 
 }
