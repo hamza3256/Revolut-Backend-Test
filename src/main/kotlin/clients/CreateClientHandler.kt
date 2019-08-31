@@ -5,10 +5,10 @@ import io.javalin.Javalin
 import io.javalin.http.Context
 import logging.verbose
 
-class ClientHandler(private val clientCreator: ClientCreator) : BaseHandler {
+class CreateClientHandler(private val clientCreator: ClientCreator) : BaseHandler {
 
     override fun attach(app: Javalin) {
-        verbose { "Attaching ClientHandler" }
+        verbose { "Attaching CreateClientHandler" }
         app.post(CreateClient.PATH, this)
     }
 
@@ -24,6 +24,6 @@ class ClientHandler(private val clientCreator: ClientCreator) : BaseHandler {
 
 private object CreateClient {
 
-    const val PATH = "client"
+    const val PATH = "clients"
 
 }

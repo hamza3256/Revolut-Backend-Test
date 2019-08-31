@@ -1,5 +1,5 @@
 import clients.ClientCreator
-import clients.ClientHandler
+import clients.CreateClientHandler
 import clients.ClientRepository
 import clients.accounts.AccountCreator
 import clients.accounts.CreateAccountHandler
@@ -16,7 +16,7 @@ class Handlers(
 ) {
 
     private val transfer = TransferHandler(transferParamsParser, clientRepository, transferer)
-    private val client = ClientHandler(clientCreator)
+    private val client = CreateClientHandler(clientCreator)
     private val account = CreateAccountHandler(accountCreator, clientRepository)
 
     val all = listOf(transfer, client, account)
