@@ -3,10 +3,10 @@ package transfer
 import io.javalin.http.Context
 import money.Money
 import transfer.TransferParamsParser.Result.Failed
-import transfer.TransferPost.QUERY_AMOUNT
-import transfer.TransferPost.QUERY_CURRENCY
-import transfer.TransferPost.QUERY_FROM_ACCOUNT_ID
-import transfer.TransferPost.QUERY_TO_ACCOUNT_ID
+import transfer.CreateTransfer.QUERY_AMOUNT
+import transfer.CreateTransfer.QUERY_CURRENCY
+import transfer.CreateTransfer.QUERY_FROM_ACCOUNT_ID
+import transfer.CreateTransfer.QUERY_TO_ACCOUNT_ID
 import utils.requireParam
 import utils.toLong
 import java.math.BigDecimal

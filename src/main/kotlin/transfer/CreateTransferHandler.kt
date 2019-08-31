@@ -8,17 +8,17 @@ import io.javalin.http.Context
 import logging.info
 import logging.verbose
 import logging.warn
+import transfer.CreateTransfer.PATH
 import transfer.TransferParamsParser.Result.Failed
-import transfer.TransferPost.PATH
 
-class TransferHandler(
+class CreateTransferHandler(
     private val transferParamsParser: TransferParamsParser,
     private val clientRepository: ClientRepository,
     private val transferer: MoneyTransferer
 ) : BaseHandler {
 
     override fun attach(app: Javalin) {
-        verbose { "Attaching TransferHandler" }
+        verbose { "Attaching CreateTransferHandler" }
         app.post(PATH, this)
     }
 
@@ -68,9 +68,9 @@ class TransferHandler(
     }
 }
 
-internal object TransferPost {
+internal object CreateTransfer {
 
-    const val PATH = "transfer"
+    const val PATH = "transfers"
 
     const val QUERY_FROM_ACCOUNT_ID = "from"
     const val QUERY_TO_ACCOUNT_ID = "to"

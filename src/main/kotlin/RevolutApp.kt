@@ -13,7 +13,7 @@ import io.javalin.plugin.json.JavalinJackson
 import logging.info
 import transfer.MoneyTransferer
 import transfer.MoneyTransfererImpl
-import transfer.TransferHandler
+import transfer.CreateTransferHandler
 import transfer.TransferParamsParser
 
 
@@ -47,7 +47,7 @@ class RevolutApp {
         val transferParamsParser = TransferParamsParser()
         val moneyTransferer: MoneyTransferer =
             MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
-        val createTransferHandler = TransferHandler(transferParamsParser, clientRepository, moneyTransferer)
+        val createTransferHandler = CreateTransferHandler(transferParamsParser, clientRepository, moneyTransferer)
         createTransferHandler.attach(javalin)
 
         info { "Starting server..." }
