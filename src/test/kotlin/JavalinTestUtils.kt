@@ -23,8 +23,8 @@ private fun com.fasterxml.jackson.databind.ObjectMapper.toUnirestObjectMapper():
 
 object UnirestTestConfig {
 
-    fun init() {
-        Unirest.config().objectMapper = RevolutJavalinConfig.objectMapper.toUnirestObjectMapper()
+    fun init(objectMapper: com.fasterxml.jackson.databind.ObjectMapper) {
+        Unirest.config().objectMapper = objectMapper.toUnirestObjectMapper()
     }
 
     fun shutdown() {

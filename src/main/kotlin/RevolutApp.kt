@@ -24,7 +24,7 @@ fun main() {
 class RevolutApp {
 
     init {
-        val javalin = RevolutJavalinConfig.app
+        val javalin = RevolutConfig().javalin
 
         //clients
         val clientRepository: ClientRepository = InMemoryClientRepository()
@@ -45,7 +45,8 @@ class RevolutApp {
 
         //transfer
         val transferParamsParser = TransferParamsParser()
-        val moneyTransferer: MoneyTransferer = MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
+        val moneyTransferer: MoneyTransferer =
+            MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
         val createTransferHandler = TransferHandler(transferParamsParser, clientRepository, moneyTransferer)
         createTransferHandler.attach(javalin)
 
@@ -54,7 +55,7 @@ class RevolutApp {
     }
 }
 
-object RevolutJavalinConfig {
+class RevolutConfig {
 
     //only serialize fields to JSON
     var objectMapper: ObjectMapper = ObjectMapper().registerKotlinModule()
@@ -64,7 +65,7 @@ object RevolutJavalinConfig {
         .setVisibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
         .setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE)
 
-    val app: Javalin by lazy { Javalin.create() }
+    val javalin = Javalin.create()
 
     init {
         JavalinJackson.configure(objectMapper)

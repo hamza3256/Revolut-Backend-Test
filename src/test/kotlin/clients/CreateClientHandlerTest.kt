@@ -1,6 +1,6 @@
 package clients
 
-import RevolutJavalinConfig
+import RevolutConfig
 import UnirestTestConfig
 import clients.CreateClient.RequestBody
 import clients.CreateClient.ResponseBody
@@ -19,24 +19,25 @@ class CreateClientHandlerTest {
 
         private const val URL = "http://localhost:7000/clients"
 
-        private lateinit var app: Javalin
+        private lateinit var javalin: Javalin
 
         @JvmStatic
         @BeforeClass
         fun beforeClass() {
-            UnirestTestConfig.init()
+            val revolutConfig = RevolutConfig()
+            UnirestTestConfig.init(revolutConfig.objectMapper)
             val clientRepository = InMemoryClientRepository()
             val clientCreator = ClientCreatorImpl(clientRepository)
             val handler = CreateClientHandler(clientCreator)
-            app = RevolutJavalinConfig.app.start()
-            handler.attach(app)
+            javalin = revolutConfig.javalin.start()
+            handler.attach(javalin)
         }
 
         @JvmStatic
         @AfterClass
         fun afterClass() {
             UnirestTestConfig.shutdown()
-            app.stop()
+            javalin.stop()
         }
     }
 

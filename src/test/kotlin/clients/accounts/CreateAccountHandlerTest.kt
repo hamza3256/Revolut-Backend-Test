@@ -2,7 +2,7 @@ package clients.accounts
 
 import Clients
 import Currencies.USD
-import RevolutJavalinConfig
+import RevolutConfig
 import USD
 import UnirestTestConfig
 import clients.ClientRepository
@@ -25,7 +25,7 @@ class CreateAccountHandlerTest {
 
         const val URL = "http://localhost:7000/accounts"
 
-        private lateinit var app: Javalin
+        private lateinit var javalin: Javalin
         private lateinit var clientRepository: ClientRepository
         private lateinit var accountRepository: AccountRepository
         private lateinit var accountCreator: AccountCreator
@@ -34,7 +34,8 @@ class CreateAccountHandlerTest {
         @JvmStatic
         @BeforeClass
         fun beforeClass() {
-            UnirestTestConfig.init()
+            val revolutConfig = RevolutConfig()
+            UnirestTestConfig.init(revolutConfig.objectMapper)
 
             clientRepository = InMemoryClientRepository()
             accountRepository = InMemoryAccountRepository()
@@ -44,15 +45,15 @@ class CreateAccountHandlerTest {
                 clientRepository
             )
 
-            app = RevolutJavalinConfig.app.start()
-            createAccountHandler.attach(app)
+            javalin = revolutConfig.javalin.start()
+            createAccountHandler.attach(javalin)
         }
 
         @AfterClass
         @JvmStatic
         fun afterClass() {
             UnirestTestConfig.shutdown()
-            app.stop()
+            javalin.stop()
         }
     }
 
