@@ -20,7 +20,6 @@ interface AccountCreator {
 
         data class Created(val account: Account) : Result()
 
-        //TODO replace with separate classes instead of using enums
         data class Failed(val cause: Cause) : Result() {
 
             enum class Cause {
