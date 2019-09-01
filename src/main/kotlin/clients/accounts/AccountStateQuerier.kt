@@ -11,7 +11,12 @@ import utils.sumBy
  * [money] represents the current amount of money in [account]
  * */
 data class AccountState(val account: Account, val money: Money) {
-    //TODO handle NegativeMoneyException
+
+    /**
+    * Check whether the AccountState has at least [money]
+     * @throws NegativeMoneyException if [money] is negative
+     * @throws CurrencyMismatchException if the currency in [money] doesn't match the currency in this AccountState
+    * */
     infix fun hasFunds(money: Money): Boolean {
         if (money.isNegative()) {
             throw NegativeMoneyException(money)
@@ -23,8 +28,6 @@ data class AccountState(val account: Account, val money: Money) {
                 actual = money.currency
             )
         }
-
-        if (money.isZero()) return true
 
         return this.money.amount >= money.amount
     }
