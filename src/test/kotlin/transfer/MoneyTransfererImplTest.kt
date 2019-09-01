@@ -129,6 +129,32 @@ class MoneyTransfererImplTest {
     }
 
     @Test
+    fun `transferring money should return correct AccountStates in result`(){
+        //vlad has $1000
+        val vlad = Clients.vlad(0)
+        val vladsUsdAccount = Account(0, vlad, 1000.USD)
+        accountRepository.addAccount(vladsUsdAccount)
+
+        //nikolay has $1000
+        val nikolay = Clients.nikolay(1)
+        val nikolaysUsdAccount = Account(1, nikolay, 1000.USD)
+        accountRepository.addAccount(nikolaysUsdAccount)
+
+        //transfer $10 from vlad to nikolay
+        val result = moneyTransferer.transfer(from = vlad, to = nikolay, money = 10.USD)
+        assertTrue(result is Success)
+        result as Success
+
+        //returned fromAccountState should say vlad has $990 now
+        val expectedVladsUsdAccountState = AccountState(vladsUsdAccount, 990.USD)
+        assertEquals(expectedVladsUsdAccountState, result.fromAccountState)
+
+        //returned toAccountState should say nikolay has $1010 now
+        val expectedNikolaysUsdAccountState = AccountState(nikolaysUsdAccount, 1010.USD)
+        assertEquals(expectedNikolaysUsdAccountState, result.toAccountState)
+    }
+
+    @Test
     fun `transferring money should deduct from senders account`() {
         //vlad has $1000
         val vlad = Clients.vlad(0)

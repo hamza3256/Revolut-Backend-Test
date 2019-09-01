@@ -29,7 +29,6 @@ interface MoneyTransferer {
 
 sealed class TransferResult {
 
-    //TODO test returned fields have expected values
     data class Success(val fromAccountState: AccountState, val toAccountState: AccountState) : TransferResult()
     object SameAccount : TransferResult()
     object InsufficientFunds : TransferResult()
