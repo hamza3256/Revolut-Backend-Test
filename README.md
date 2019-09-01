@@ -7,18 +7,18 @@ for money transfers between accounts.
 ---
 
 ### Clients:
-Creata a client: `POST` to `/clients` with body of form:
+Creat a client: `POST` to `/clients` with body of form:
 ```
 {
-	"name": "The name of the client",
-	"surname": "The surname of the client"
+    "name": "The name of the client",
+    "surname": "The surname of the client"
 }
 ```
 
 
 #### Example:
 
-Create Vlad Yatsenko:
+##### Create Vlad Yatsenko:
 
 `curl --request POST
    --url http://localhost:7000/clients
@@ -27,7 +27,7 @@ Create Vlad Yatsenko:
  	"name": "Vlad",
  	"surname": "Yatsenko"
  }'`
-##### Response
+
 ```
 {
   "client": {
@@ -46,7 +46,7 @@ Create Vlad Yatsenko:
  	"name": "Nikolay",
  	"surname": "Storonsky"
  }'`
- ##### Response
+ 
  ```
  {
    "client": {
@@ -72,8 +72,8 @@ Create an account for a Client: `POST` to `/accounts` with body of form:
 }
 ```
 
-####Example:
-Create a USD account with $1000 for Vlad Yatsenko:
+#### Example:
+##### Create a USD account with $1000 for Vlad Yatsenko:
 
 `curl --request POST
    --url http://localhost:7000/accounts
@@ -85,8 +85,7 @@ Create a USD account with $1000 for Vlad Yatsenko:
  		"currency": "USD"
  	}
  }'`
- 
-Response:
+
 ```
 {
   "account": {
@@ -105,7 +104,7 @@ Response:
 }
 ```
  
- Create a USD account with $5000 for Nikolay Yatsenko:
+#####  Create a USD account with $5000 for Nikolay Yatsenko:
  
  `curl --request POST 
     --url http://localhost:7000/accounts 
@@ -117,8 +116,7 @@ Response:
   		"currency": "USD"
   	}
   }'`
-  
-  Response:
+
   ```
   {
     "account": {
@@ -150,7 +148,7 @@ To transfer money between clients: `POST` to `/transfer` with body of form:
 }
 ```
 #### Example:
-Transfer $10 from Vlad Yatsenko to Nikolay Storonsky:
+##### Transfer $10 from Vlad Yatsenko to Nikolay Storonsky:
 
 `curl --request POST 
    --url http://localhost:7000/transfers 
@@ -163,8 +161,7 @@ Transfer $10 from Vlad Yatsenko to Nikolay Storonsky:
  		"currency": "USD"
  	}
  }'`
- 
- Response:
+
  ```
  {
    "fromAccountState": {
@@ -208,7 +205,7 @@ Transfer $10 from Vlad Yatsenko to Nikolay Storonsky:
  }
  ```
  
- Transfer $10 from Nikolay Storonsky to Vlad Yatsenko:
+##### Transfer $10 from Nikolay Storonsky to Vlad Yatsenko:
  
  `curl --request POST 
     --url http://localhost:7000/transfers 
@@ -221,8 +218,7 @@ Transfer $10 from Vlad Yatsenko to Nikolay Storonsky:
   		"currency": "USD"
   	}
   }'`
-  
-  Response:
+
   ```
   {
     "fromAccountState": {
