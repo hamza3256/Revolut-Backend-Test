@@ -142,4 +142,13 @@ class InMemoryTransactionRepositoryTest {
             repository.getAll(vladsUsdAccount)
         )
     }
+
+    @Test
+    fun `deleteAll() implies getAll() is empty`() {
+        val vlad = Clients.vlad()
+        repository.add(Transaction(0, account = Account(0, vlad, USD), money = 100.USD))
+        assertTrue(repository.getAll(vlad).isNotEmpty())
+        repository.deleteAll()
+        assertTrue(repository.getAll(vlad).isEmpty())
+    }
 }

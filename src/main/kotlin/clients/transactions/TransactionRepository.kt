@@ -21,7 +21,9 @@ interface TransactionRepository {
      * */
     fun add(transaction: Transaction): Boolean
 
-    //TODO test
+    /**
+     * Delete all transactions.
+     * */
     fun deleteAll()
 
 }
