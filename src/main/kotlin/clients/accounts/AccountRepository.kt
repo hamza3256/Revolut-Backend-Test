@@ -21,7 +21,9 @@ interface AccountRepository {
      * */
     fun getAccount(client: Client, currency: Currency): Account?
 
-    //TODO test
+    /**
+     * Delete all Accounts. Does not delete any transactions for the Accounts.
+     * */
     fun deleteAll()
 
 }

@@ -56,4 +56,13 @@ class InMemoryAccountRepositoryTest {
     fun `getAccounts() should be empty when no accounts created`() {
         assertTrue(repository.getAccounts(client).isEmpty())
     }
+
+    @Test
+    fun `deleteAll() implies getAccounts() is empty`(){
+        val vlad = Clients.vlad()
+        assertTrue(repository.addAccount(Account(0, vlad, USD)))
+        assertEquals(1, repository.getAccounts(vlad).size)
+        repository.deleteAll()
+        assertTrue(repository.getAccounts(vlad).isEmpty())
+    }
 }
