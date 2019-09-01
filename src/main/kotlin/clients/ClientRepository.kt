@@ -16,7 +16,9 @@ interface ClientRepository {
      * */
     fun getClient(id: Long): Client?
 
-    //TODO test
+    /**
+     * Delete all Clients, but does not delete corresponding Accounts or Transactions
+     * */
     fun deleteAll()
 
 }

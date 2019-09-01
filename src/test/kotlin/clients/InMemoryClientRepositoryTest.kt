@@ -50,4 +50,13 @@ class InMemoryClientRepositoryTest {
     fun `getting a client for an invalid id should return null`() {
         assertNull(repository.getClient(0))
     }
+
+    @Test
+    fun `deleteAll() deletes all clients`(){
+        repository.addClient(Clients.vlad(0))
+        assertNotNull(repository.getClient(0))
+
+        repository.deleteAll()
+        assertNull(repository.getClient(0))
+    }
 }
