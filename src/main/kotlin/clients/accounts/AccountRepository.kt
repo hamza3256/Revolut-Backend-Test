@@ -21,6 +21,9 @@ interface AccountRepository {
      * */
     fun getAccount(client: Client, currency: Currency): Account?
 
+    //TODO test
+    fun deleteAll()
+
 }
 
 inline fun AccountRepository.getAccountOrElse(
@@ -54,4 +57,6 @@ class InMemoryAccountRepository : AccountRepository {
     override fun getAccount(client: Client, currency: Currency): Account? {
         return clientIdsToAccounts[client.id]?.get(currency)
     }
+
+    override fun deleteAll() = clientIdsToAccounts.clear()
 }

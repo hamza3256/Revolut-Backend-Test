@@ -21,6 +21,9 @@ interface TransactionRepository {
      * */
     fun add(transaction: Transaction): Boolean
 
+    //TODO test
+    fun deleteAll()
+
 }
 
 class InMemoryTransactionRepository : TransactionRepository {
@@ -43,4 +46,6 @@ class InMemoryTransactionRepository : TransactionRepository {
             true
         }
     }
+
+    override fun deleteAll() = idsToTransactions.clear()
 }

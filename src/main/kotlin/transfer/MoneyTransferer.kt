@@ -4,6 +4,7 @@ import clients.Client
 import logging.verbose
 import money.Money
 import clients.accounts.AccountRepository
+import clients.accounts.AccountState
 import clients.accounts.AccountStateQuerier
 import clients.accounts.getAccountOrElse
 import clients.transactions.TransactionCreator
@@ -28,7 +29,8 @@ interface MoneyTransferer {
 
 sealed class TransferResult {
 
-    object Success : TransferResult()
+    //TODO test returned fields have expected values
+    data class Success(val fromAccountState: AccountState, val toAccountState: AccountState) : TransferResult()
     object SameAccount : TransferResult()
     object InsufficientFunds : TransferResult()
     data class MissingAccount(val client: Client) : TransferResult()
@@ -55,11 +57,6 @@ class MoneyTransfererImpl(
             return NegativeMoney
         }
 
-        if (money.isZero()) {
-            verbose { "Requested to transfer no money, ignoring request" }
-            return Success
-        }
-
         val currency = money.currency
         val fromAccount = accountRepository.getAccountOrElse(from, currency) {
             verbose { "$from doesn't have an account for currency=$currency" }
@@ -72,14 +69,23 @@ class MoneyTransfererImpl(
             return MissingAccount(to)
         }
 
-        val fromAccountState = accountStateQuerier.getCurrentState(fromAccount)
+        var fromAccountState = accountStateQuerier.getCurrentState(fromAccount)
+
+        if (money.isZero()) {
+            verbose { "Requested to transfer no money, ignoring request" }
+            val toAccountState = accountStateQuerier.getCurrentState(toAccount)
+            return Success(fromAccountState = fromAccountState, toAccountState = toAccountState)
+        }
 
         return if (fromAccountState hasFunds money) {
             verbose { "$from has sufficient funds to send $money. Transferring to $to" }
 
             val request = TransactionCreator.Request(money, from = fromAccount, to = toAccount)
             transactionCreator.createTransferTransactions(request)
-            Success
+
+            fromAccountState = accountStateQuerier.getCurrentState(fromAccount)
+            val toAccountState = accountStateQuerier.getCurrentState(toAccount)
+            Success(fromAccountState= fromAccountState, toAccountState = toAccountState)
         } else {
             verbose { "$from has insufficient funds to transfer $money to $to" }
             InsufficientFunds

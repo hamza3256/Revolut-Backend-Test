@@ -16,6 +16,9 @@ interface ClientRepository {
      * */
     fun getClient(id: Long): Client?
 
+    //TODO test
+    fun deleteAll()
+
 }
 
 /**
@@ -37,6 +40,8 @@ class InMemoryClientRepository : ClientRepository {
     }
 
     override fun getClient(id: Long): Client? = idsToClient[id]
+
+    override fun deleteAll() = idsToClient.clear()
 }
 
 inline fun ClientRepository.getClientOrElse(id: Long, whenNoSuchClient: (Long) -> Client): Client {

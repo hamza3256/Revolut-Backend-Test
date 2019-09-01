@@ -11,10 +11,9 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.javalin.Javalin
 import io.javalin.plugin.json.JavalinJackson
 import logging.info
+import transfer.CreateTransferHandler
 import transfer.MoneyTransferer
 import transfer.MoneyTransfererImpl
-import transfer.CreateTransferHandler
-import transfer.TransferParamsParser
 
 
 fun main() {
@@ -44,10 +43,9 @@ class RevolutApp {
         createAccountHandler.attach(javalin)
 
         //transfer
-        val transferParamsParser = TransferParamsParser()
         val moneyTransferer: MoneyTransferer =
             MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
-        val createTransferHandler = CreateTransferHandler(transferParamsParser, clientRepository, moneyTransferer)
+        val createTransferHandler = CreateTransferHandler(clientRepository, moneyTransferer)
         createTransferHandler.attach(javalin)
 
         info { "Starting server..." }

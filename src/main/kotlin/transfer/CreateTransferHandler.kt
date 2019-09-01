@@ -2,17 +2,23 @@ package transfer
 
 import BaseHandler
 import clients.ClientRepository
+import clients.accounts.AccountState
 import clients.getClientOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
 import logging.info
 import logging.verbose
 import logging.warn
+import money.Money
+import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
+import org.eclipse.jetty.http.HttpStatus.OK_200
 import transfer.CreateTransfer.PATH
-import transfer.TransferParamsParser.Result.Failed
+import transfer.CreateTransfer.RequestBody
+import transfer.CreateTransfer.ResponseBody
+import transfer.CreateTransferHandler.Result.Failed
+import transfer.CreateTransferHandler.Result.Success
 
 class CreateTransferHandler(
-    private val transferParamsParser: TransferParamsParser,
     private val clientRepository: ClientRepository,
     private val transferer: MoneyTransferer
 ) : BaseHandler {
@@ -23,58 +29,77 @@ class CreateTransferHandler(
     }
 
     override fun handle(ctx: Context) {
-        verbose { "Transfer requested with params: ${ctx.queryParamMap()}" }
+        val result = handleWithResult(ctx)
 
-        when (val result = transferParamsParser.parseParams(ctx)) {
-            is Failed -> {
-                ctx.status(400)
-                ctx.result(result.message)
-                warn { "Invalid params for transfer: ${ctx.queryString()}" }
-                return
+        with(ctx) {
+            status(result.statusCode)
+
+            when (result) {
+                is Success -> json(result.responseBody)
+                is Failed -> result(result.message)
             }
-            is TransferParamsParser.Result.Success -> {
-                val request = result.params
+        }
+    }
 
-                //check if client ids are valid
-                val fromClient = clientRepository.getClientOrElse(request.fromClientId) {
-                    warn { "Could not find a fromClient for id=${request.fromClientId}" }
-                    ctx.status(400)
-                    ctx.result("Could not find a valid client for id=${request.fromClientId}")
-                    return
-                }
-                val toClient = clientRepository.getClientOrElse(request.toClientId) {
-                    warn { "Could not find a toClient for id=${request.toClientId}" }
-                    ctx.status(400)
-                    ctx.result("Could not find a valid client for id=${request.toClientId}")
-                    return
-                }
+    sealed class Result(val statusCode: Int) {
+        data class Success(val responseBody: ResponseBody) : Result(OK_200)
+        data class Failed(val message: String) : Result(BAD_REQUEST_400)
+    }
 
-                verbose { "Valid transfer request $request, transferring ${request.money} from $fromClient to $toClient" }
-                when (val transferResult = transferer.transfer(request.money, from = fromClient, to = toClient)) {
-                    is TransferResult.Success -> {
-                        verbose { "Successfully completed transfer for request $request" }
-                        ctx.status(200)
-                        return
-                    }
-                    else -> {
-                        info { "Failed to perform transfer for request $request: $transferResult" }
-                        ctx.status(400)
-                        ctx.result("Failed to perform transfer: $transferResult")
-                        return
-                    }
+    private fun handleWithResult(ctx: Context): Result {
+        val requestBody = ctx.body<RequestBody>()
+        val transferRequest = requestBody.toTransferRequest()
+
+        with(transferRequest) {
+            //check if client ids are valid
+            val fromClient = clientRepository.getClientOrElse(fromClientId) {
+                warn { "Could not find a fromClient for id=${fromClientId}" }
+                return Failed("Could not find a valid client for id=${fromClientId}")
+            }
+            val toClient = clientRepository.getClientOrElse(toClientId) {
+                warn { "Could not find a toClient for id=${toClientId}" }
+                return Failed("Could not find a valid client for id=${toClientId}")
+            }
+
+            verbose { "Valid transfer request $this, transferring $money from $fromClient to $toClient" }
+            return when (val transferResult = transferer.transfer(money, from = fromClient, to = toClient)) {
+                is TransferResult.Success -> {
+                    verbose { "Successfully completed transfer for request $this" }
+                    val responseBody = ResponseBody(
+                        fromAccountState = transferResult.fromAccountState,
+                        toAccountState = transferResult.toAccountState
+                    )
+                    Success(responseBody)
+                }
+                else -> {
+                    info { "Failed to perform transfer for request $this: $transferResult" }
+                    Failed("Failed to perform transfer: $transferResult")
                 }
             }
         }
     }
 }
 
-internal object CreateTransfer {
+private fun RequestBody.toTransferRequest(): TransferRequest {
+    return TransferRequest(
+        fromClientId = fromClientId,
+        toClientId = toClientId,
+        money = money
+    )
+}
+
+object CreateTransfer {
 
     const val PATH = "transfers"
 
-    const val QUERY_FROM_ACCOUNT_ID = "from"
-    const val QUERY_TO_ACCOUNT_ID = "to"
-    const val QUERY_AMOUNT = "amount"
-    const val QUERY_CURRENCY = "currency"
+    data class RequestBody(
+        val fromClientId: Long,
+        val toClientId: Long,
+        val money: Money
+    )
 
+    data class ResponseBody(
+        val fromAccountState: AccountState,
+        val toAccountState: AccountState
+    )
 }

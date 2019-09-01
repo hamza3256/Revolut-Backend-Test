@@ -39,9 +39,23 @@ class MoneyTransfererImplTest {
     }
 
     @Test
-    fun `transfering zero money from client without an account for the given currency should succeed`() {
+    fun `transfering zero money from client without an account for the given currency should fail`() {
         val vlad = Clients.vlad(0)
         val nikolay = Clients.nikolay(1)
+
+        val result = moneyTransferer.transfer(0.USD, from = vlad, to = nikolay)
+        assertTrue(result is MissingAccount)
+    }
+
+    @Test
+    fun `transfering zero money should succeed when accounts exists for currency`(){
+        val vlad  = Clients.vlad(0)
+        val vladsUsdAccount = Account(0, vlad, 0.USD)
+        accountRepository.addAccount(vladsUsdAccount)
+
+        val nikolay = Clients.nikolay(1)
+        val nikolaysUsdAccount = Account(1, nikolay, 0.USD)
+        accountRepository.addAccount(nikolaysUsdAccount)
 
         val result = moneyTransferer.transfer(0.USD, from = vlad, to = nikolay)
         assertTrue(result is Success)
