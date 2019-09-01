@@ -143,11 +143,11 @@ Create an account for a Client: `POST` to `/accounts` with body of form:
   ```
   
 ### Transfer
-To transfer money between clients: `POST` to `/transfer` with body of form:
+To transfer money between accounts: `POST` to `/transfer` with body of form:
 ```
 {
-    "fromClientId": 0,
-    "toClientId": 1,
+    "fromAccountId": 0,
+    "fromAccountId": 1,
     "money":{
         "amount": "10",
         "currency": "USD"
@@ -155,14 +155,14 @@ To transfer money between clients: `POST` to `/transfer` with body of form:
 }
 ```
 #### Example:
-##### Transfer $10 from Vlad Yatsenko to Nikolay Storonsky:
+##### Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:
 
 `curl --request POST 
    --url http://localhost:7000/transfers 
    --header 'content-type: application/json' 
    --data '{
- 	"fromClientId": 0,
- 	"toClientId": 1,
+ 	"fromAccountId": 0,
+ 	"toAccountId": 1,
  	"money":{
  		"amount"	: "10",
  		"currency": "USD"
@@ -212,14 +212,14 @@ To transfer money between clients: `POST` to `/transfer` with body of form:
  }
  ```
  
-##### Transfer $10 from Nikolay Storonsky to Vlad Yatsenko:
+##### Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:
  
  `curl --request POST 
     --url http://localhost:7000/transfers 
     --header 'content-type: application/json' 
     --data '{
-  	"fromClientId": 1,
-  	"toClientId": 0,
+  	"fromAccountId": 1,
+  	"toAccountId": 0,
   	"money":{
   		"amount"	: "10",
   		"currency": "USD"
