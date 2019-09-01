@@ -1,3 +1,5 @@
+@file:JvmName("App")
+
 import clients.*
 import clients.accounts.*
 import clients.transactions.InMemoryTransactionRepository
@@ -14,7 +16,6 @@ import logging.info
 import transfer.CreateTransferHandler
 import transfer.MoneyTransferer
 import transfer.MoneyTransfererImpl
-
 
 fun main() {
     RevolutApp()

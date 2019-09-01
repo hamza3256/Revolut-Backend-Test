@@ -6,6 +6,13 @@ for money transfers between accounts.
 
 ---
 
+### Building/Running:
+Build: `./gradlew build`
+
+Run: `java -jar build/libs/revolut-backend-1.0-SNAPSHOT.jar`
+
+---
+
 ### Clients:
 Creat a client: `POST` to `/clients` with body of form:
 ```
