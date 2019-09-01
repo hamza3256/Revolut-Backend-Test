@@ -1,7 +1,6 @@
 package clients.accounts
 
 import Clients
-import Currencies.USD
 import RevolutConfig
 import USD
 import UnirestTestConfig
@@ -14,8 +13,7 @@ import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
 import org.junit.AfterClass
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -62,8 +60,8 @@ class CreateAccountHandlerTest {
         val nikolay = Clients.nikolay(0)
         clientRepository.addClient(nikolay)
 
-        //shouldn't have a USD account yet
-        assertNull(accountRepository.getAccount(nikolay, USD))
+        //shouldn't have any accounts yet
+        assertTrue(accountRepository.getAccounts(nikolay).isEmpty())
 
         val response = post()
             .body(RequestBody(clientId = 0, startingMoney = 100.USD))

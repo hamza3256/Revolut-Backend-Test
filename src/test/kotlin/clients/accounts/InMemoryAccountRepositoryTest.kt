@@ -22,16 +22,16 @@ class InMemoryAccountRepositoryTest {
         val account = Account(0, client, USD)
 
         assertTrue(repository.addAccount(account))
-        assertEquals(account, repository.getAccount(client, USD))
+        assertEquals(account, repository.getAccount(0))
     }
 
     @Test
-    fun `adding an account when the client already has an account with the given currency should return false`() {
+    fun `adding another account with the same currency should succeed`() {
         val usdAccount = Account(0, client, USD)
         val usdAccountCopy = usdAccount.copy(id = 1)
 
         assertTrue(repository.addAccount(usdAccount))
-        assertFalse(repository.addAccount(usdAccountCopy))
+        assertTrue(repository.addAccount(usdAccountCopy))
     }
 
     @Test
@@ -45,11 +45,8 @@ class InMemoryAccountRepositoryTest {
     }
 
     @Test
-    fun `getAccount() should return null for client without an account for the given currency`() {
-        val usdAccount = Account(0, client, USD)
-        repository.addAccount(usdAccount)
-
-        assertNull(repository.getAccount(client, GBP))
+    fun `getAccount(accountId) should return null when no such account exists`() {
+        assertNull(repository.getAccount(1000))
     }
 
     @Test

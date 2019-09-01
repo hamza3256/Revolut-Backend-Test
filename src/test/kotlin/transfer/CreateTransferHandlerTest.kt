@@ -49,8 +49,8 @@ class CreateTransferHandlerTest {
             clientRepository = InMemoryClientRepository()
             accountRepository = InMemoryAccountRepository()
 
-            val transferer = MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
-            createTransferHandler = CreateTransferHandler(clientRepository, transferer)
+            val transferer = MoneyTransfererImpl(transactionCreator, accountStateQuerier)
+            createTransferHandler = CreateTransferHandler(accountRepository, transferer)
 
             javalin = revolutConfig.javalin.start()
             createTransferHandler.attach(javalin)
@@ -72,7 +72,7 @@ class CreateTransferHandlerTest {
     }
 
     @Test
-    fun `should correctly transfer money when all requirements met`() {
+    fun `should correctly transfer money between 2 different clients when all requirements met`() {
         //create nikolay with an account containing 1000USD
         val nikolay = Clients.nikolay(0)
         clientRepository.addClient(nikolay)
@@ -87,8 +87,8 @@ class CreateTransferHandlerTest {
 
         //transfer $500 from nikolay to vlad
         val body = RequestBody(
-            fromClientId = nikolay.id,
-            toClientId = vlad.id,
+            fromAccountId = nikolaysUsdAccount.id,
+            toAccountId = vladsUsdAccount.id,
             money = 500.USD
         )
         val response = post()
@@ -110,14 +110,54 @@ class CreateTransferHandlerTest {
     }
 
     @Test
-    fun `should fail when fromClient not found for id`() {
+    fun `should correctly transfer money between two accounts of the same Client`(){
+        //create nikolay with 2 accounts
         val nikolay = Clients.nikolay(0)
         clientRepository.addClient(nikolay)
 
-        assertNull(clientRepository.getClient(1000)) //should not exist
+        //first has $1000
+        val fromAccount = Account(0, nikolay, 1000.USD)
+        accountRepository.addAccount(fromAccount)
+
+        //second has $3000
+        val toAccount = Account(1, nikolay, 3000.USD)
+        accountRepository.addAccount(toAccount)
+
+        //transfer $500 from first to second
         val body = RequestBody(
-            fromClientId = 1000,
-            toClientId = nikolay.id,
+            fromAccountId = fromAccount.id,
+            toAccountId = toAccount.id,
+            money = 500.USD
+        )
+        val response = post()
+            .body(body)
+            .asObject(ResponseBody::class.java)
+
+        val expectedResponseBody = ResponseBody(
+            fromAccountState = AccountState(
+                account = fromAccount,
+                money = 500.USD //$1000 - $500 = $500
+            ),
+            toAccountState = AccountState(
+                account = toAccount,
+                money = 3500.USD //$3000 + $500 = $3500
+            )
+        )
+
+        assertEquals(expectedResponseBody, response.body)
+    }
+
+    @Test
+    fun `should fail when fromAccount not found for id`() {
+        val nikolay = Clients.nikolay(0)
+        clientRepository.addClient(nikolay)
+        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        accountRepository.addAccount(nikolaysAccount)
+
+        assertNull(accountRepository.getAccount(1000)) //should not exist
+        val body = RequestBody(
+            fromAccountId = 1000,
+            toAccountId = nikolaysAccount.id,
             money = 100.USD
         )
 
@@ -126,14 +166,16 @@ class CreateTransferHandlerTest {
     }
 
     @Test
-    fun `should fail when toClient not found for id`() {
+    fun `should fail when toAccount not found for id`() {
         val nikolay = Clients.nikolay(0)
         clientRepository.addClient(nikolay)
+        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        accountRepository.addAccount(nikolaysAccount)
 
-        assertNull(clientRepository.getClient(1000)) //should not exist
+        assertNull(accountRepository.getAccount(1000)) //should not exist
         val body = RequestBody(
-            fromClientId = nikolay.id,
-            toClientId = 1000,
+            fromAccountId = nikolaysAccount.id,
+            toAccountId = 1000,
             money = 100.USD
         )
 
@@ -142,14 +184,15 @@ class CreateTransferHandlerTest {
     }
 
     @Test
-    fun `should fail when attempting to transfer between same client`() {
+    fun `should fail when attempting to transfer between same account`() {
         val nikolay = Clients.nikolay(0)
         clientRepository.addClient(nikolay)
-        accountRepository.addAccount(Account(0, nikolay, 100.USD))
+        val account = Account(0, nikolay, 100.USD)
+        accountRepository.addAccount(account)
 
         val body = RequestBody(
-            fromClientId = nikolay.id,
-            toClientId = nikolay.id,
+            fromAccountId = account.id,
+            toAccountId = account.id,
             money = 100.USD
         )
 
@@ -171,8 +214,8 @@ class CreateTransferHandlerTest {
         accountRepository.addAccount(vladsUsdAccount)
 
         val body = RequestBody(
-            fromClientId = nikolay.id,
-            toClientId = vlad.id,
+            fromAccountId = nikolaysUsdAccount.id,
+            toAccountId = vladsUsdAccount.id,
             money = (-100).USD
         )
 
@@ -182,7 +225,7 @@ class CreateTransferHandlerTest {
     }
 
     @Test
-    fun `should fail when attempting to transfer too much money`(){
+    fun `should fail when attempting to transfer too much money`() {
         val nikolay = Clients.nikolay(0)
         clientRepository.addClient(nikolay)
         val nikolaysUsdAccount = Account(0, nikolay, 100.USD)
@@ -194,53 +237,9 @@ class CreateTransferHandlerTest {
         accountRepository.addAccount(vladsUsdAccount)
 
         val body = RequestBody(
-            fromClientId = nikolay.id,
-            toClientId = vlad.id,
+            fromAccountId = nikolaysUsdAccount.id,
+            toAccountId = vladsUsdAccount.id,
             money = 99999.USD //nikolay doesn't have that much money
-        )
-
-        val response = post().body(body).asString()
-
-        assertEquals(BAD_REQUEST_400, response.status)
-    }
-
-    @Test
-    fun `should fail when fromClient doesn't have an account for the given currency`(){
-        //nikolay doesn't have any accounts
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
-
-        val vlad = Clients.vlad(1)
-        clientRepository.addClient(vlad)
-        val vladsUsdAccount = Account(1, vlad, 100.USD)
-        accountRepository.addAccount(vladsUsdAccount)
-
-        val body = RequestBody(
-            fromClientId = nikolay.id,
-            toClientId = vlad.id,
-            money = 10.USD //nikolay doesn't have a USD account
-        )
-
-        val response = post().body(body).asString()
-
-        assertEquals(BAD_REQUEST_400, response.status)
-    }
-
-    @Test
-    fun `should fail when toClient doesn't have an account to accept funds`(){
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
-        val nikolaysUsdAccount = Account(0, nikolay, 100.USD)
-        accountRepository.addAccount(nikolaysUsdAccount)
-
-        //vlad doesn't have a USD account to accept transfer
-        val vlad = Clients.vlad(1)
-        clientRepository.addClient(vlad)
-
-        val body = RequestBody(
-            fromClientId = nikolay.id,
-            toClientId = vlad.id,
-            money = 10.USD
         )
 
         val response = post().body(body).asString()

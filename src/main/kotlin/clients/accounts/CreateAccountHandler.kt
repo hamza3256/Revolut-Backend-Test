@@ -3,12 +3,12 @@ package clients.accounts
 import BaseHandler
 import clients.ClientRepository
 import clients.accounts.AccountCreator.Result.Created
-import clients.accounts.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
-import clients.accounts.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
+import clients.accounts.AccountCreator.Result.NegativeMoney
 import clients.accounts.CreateAccount.PATH
 import clients.accounts.CreateAccount.RequestBody
 import clients.accounts.CreateAccount.ResponseBody
-import clients.accounts.CreateAccountHandler.Result.*
+import clients.accounts.CreateAccountHandler.Result.Failed
+import clients.accounts.CreateAccountHandler.Result.Success
 import clients.getClientOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
@@ -17,7 +17,6 @@ import logging.verbose
 import money.Money
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
-import clients.accounts.AccountCreator.Result.Failed as CreateAccountFailed
 
 class CreateAccountHandler(
     private val accountCreator: AccountCreator,
@@ -56,17 +55,7 @@ class CreateAccountHandler(
         val accountCreatorRequest = AccountCreator.Request(startingMoney = startingMoney)
         return when (val result = accountCreator.create(client, accountCreatorRequest)) {
             is Created -> Success(ResponseBody(result.account))
-            is CreateAccountFailed -> {
-                when (result.cause) {
-                    ALREADY_EXISTS -> {
-                        val currencyCode = startingMoney.currency.currencyCode
-                        Failed("Account with currency $currencyCode already exists")
-                    }
-                    NEGATIVE_MONEY -> {
-                        Failed("Account must start with a non-negative balance")
-                    }
-                }
-            }
+            is NegativeMoney -> Failed("Account must start with a non-negative balance")
         }
     }
 

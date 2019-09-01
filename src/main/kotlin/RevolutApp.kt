@@ -44,9 +44,8 @@ class RevolutApp {
         createAccountHandler.attach(javalin)
 
         //transfer
-        val moneyTransferer: MoneyTransferer =
-            MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
-        val createTransferHandler = CreateTransferHandler(clientRepository, moneyTransferer)
+        val moneyTransferer: MoneyTransferer = MoneyTransfererImpl(transactionCreator, accountStateQuerier)
+        val createTransferHandler = CreateTransferHandler(accountRepository, moneyTransferer)
         createTransferHandler.attach(javalin)
 
         info { "Starting server..." }

@@ -1,9 +1,9 @@
 package transfer
 
 import BaseHandler
-import clients.ClientRepository
+import clients.accounts.AccountRepository
 import clients.accounts.AccountState
-import clients.getClientOrElse
+import clients.accounts.getAccountOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
 import logging.info
@@ -19,7 +19,7 @@ import transfer.CreateTransferHandler.Result.Failed
 import transfer.CreateTransferHandler.Result.Success
 
 class CreateTransferHandler(
-    private val clientRepository: ClientRepository,
+    private val accountRepository: AccountRepository,
     private val transferer: MoneyTransferer
 ) : BaseHandler {
 
@@ -48,21 +48,20 @@ class CreateTransferHandler(
 
     private fun handleWithResult(ctx: Context): Result {
         val requestBody = ctx.body<RequestBody>()
-        val transferRequest = requestBody.toTransferRequest()
 
-        with(transferRequest) {
+        with(requestBody) {
             //check if client ids are valid
-            val fromClient = clientRepository.getClientOrElse(fromClientId) {
-                warn { "Could not find a fromClient for id=${fromClientId}" }
-                return Failed("Could not find a valid client for id=${fromClientId}")
+            val fromAccount = accountRepository.getAccountOrElse(fromAccountId) {
+                warn { "Could not find a fromAccount for id=${fromAccountId}" }
+                return Failed("Could not find a valid account for id=${fromAccountId}")
             }
-            val toClient = clientRepository.getClientOrElse(toClientId) {
-                warn { "Could not find a toClient for id=${toClientId}" }
-                return Failed("Could not find a valid client for id=${toClientId}")
+            val toAccount = accountRepository.getAccountOrElse(toAccountId) {
+                warn { "Could not find a toAccount for id=${toAccountId}" }
+                return Failed("Could not find a valid account for id=${toAccountId}")
             }
 
-            verbose { "Valid transfer request $this, transferring $money from $fromClient to $toClient" }
-            return when (val transferResult = transferer.transfer(money, from = fromClient, to = toClient)) {
+            verbose { "Valid transfer request $this, transferring $money from $fromAccount to $toAccount" }
+            return when (val transferResult = transferer.transfer(money, from = fromAccount, to = toAccount)) {
                 is TransferResult.Success -> {
                     verbose { "Successfully completed transfer for request $this" }
                     val responseBody = ResponseBody(
@@ -80,21 +79,13 @@ class CreateTransferHandler(
     }
 }
 
-private fun RequestBody.toTransferRequest(): TransferRequest {
-    return TransferRequest(
-        fromClientId = fromClientId,
-        toClientId = toClientId,
-        money = money
-    )
-}
-
 object CreateTransfer {
 
     const val PATH = "transfers"
 
     data class RequestBody(
-        val fromClientId: Long,
-        val toClientId: Long,
+        val fromAccountId: Long,
+        val toAccountId: Long,
         val money: Money
     )
 

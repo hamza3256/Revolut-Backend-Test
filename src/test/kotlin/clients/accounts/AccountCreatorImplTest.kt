@@ -7,9 +7,7 @@ import GBP
 import USD
 import clients.accounts.AccountCreator.Request
 import clients.accounts.AccountCreator.Result.Created
-import clients.accounts.AccountCreator.Result.Failed
-import clients.accounts.AccountCreator.Result.Failed.Cause.ALREADY_EXISTS
-import clients.accounts.AccountCreator.Result.Failed.Cause.NEGATIVE_MONEY
+import clients.accounts.AccountCreator.Result.NegativeMoney
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -68,48 +66,44 @@ class AccountCreatorImplTest {
         val request = Request((-1).USD)
         val result = accountCreator.create(client, request)
 
-        assertTrue(result is Failed)
-        result as Failed
-
-        assertEquals(NEGATIVE_MONEY, result.cause)
+        assertTrue(result is NegativeMoney)
     }
 
     @Test
-    fun `creating account with same currency should fail`() {
+    fun `creating account with same currency should succeed`() {
         val usdAccountRequest = Request(1.USD)
         accountCreator.create(client, usdAccountRequest)
 
         val secondUsdAccountRequest = Request(2.USD)
         val result = accountCreator.create(client, secondUsdAccountRequest)
 
-        assertTrue(result is Failed)
-        result as Failed
-
-        assertEquals(ALREADY_EXISTS, result.cause)
+        assertTrue(result is Created)
     }
 
     @Test
     fun `creating account with same currency shouldn't overwrite previous account`() {
         val usdAccountRequest = Request(1.USD)
-        accountCreator.create(client, usdAccountRequest)
+        val result = accountCreator.create(client, usdAccountRequest)
+        val firstUsdAccount = (result as Created).account
 
-        val secondUsdAccountRequest = Request(2.USD)
-        accountCreator.create(client, secondUsdAccountRequest)
+        val secondUsdAccountRequest = Request(1.USD)
+        val secondResult = accountCreator.create(client, secondUsdAccountRequest)
+        val secondUsdAccount = (secondResult as Created).account
 
-        assertEquals(1.USD, accountRepository.getAccount(client, USD)?.startingMoney)
+        assertNotEquals(firstUsdAccount, secondUsdAccount)
     }
 
     @Test
     fun `creating account should insert into repository`() {
-        //repository shouldn't contain account
-        var account = accountRepository.getAccount(client, USD)
-        assertNull(account)
+        //repository shouldn't contain any accounts for client yet
+        val accounts = accountRepository.getAccounts(client)
+        assertTrue(accounts.isEmpty())
 
         val request = Request(1.USD)
-        accountCreator.create(client, request)
+        val createdAccount = (accountCreator.create(client, request) as Created).account
 
-        account = accountRepository.getAccount(client, USD)
-        assertNotNull(account)
+        val accountById = accountRepository.getAccount(createdAccount.id)
+        assertEquals(createdAccount, accountById)
     }
 }
 

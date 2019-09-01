@@ -7,19 +7,19 @@ interface AccountRepository {
 
     /**
      * Adds an account for the given client if they do not have an account with such a currency.
-     * @return true if the account was added, or false when the client already has an account with the given currency
+     * @return true if an account with such an id didn't exist, and the account was added, or false when an account already exists with the id and wasn't added
      * */
     fun addAccount(account: Account): Boolean
 
     /**
-     * @return a set of all distinct accounts by currency for [client]. Can be empty.
+     * @return a set of all accounts belonging to [client]. Can be empty.
      * */
     fun getAccounts(client: Client): Set<Account>
 
     /**
-     * Gets [client]s Account for the given [currency], or null if [client] doesn't have an account for such a [currency]
+     * Gets an [Account] for [id], or null if there is no such [Account]
      * */
-    fun getAccount(client: Client, currency: Currency): Account?
+    fun getAccount(id: Long): Account?
 
     /**
      * Delete all Accounts. Does not delete any transactions for the Accounts.
@@ -29,36 +29,33 @@ interface AccountRepository {
 }
 
 inline fun AccountRepository.getAccountOrElse(
-    client: Client,
-    currency: Currency,
+    accountId: Long,
     whenNoAccount: () -> Account
 ): Account {
-    return this.getAccount(client, currency) ?: whenNoAccount()
+    return this.getAccount(accountId) ?: whenNoAccount()
 }
 
 class InMemoryAccountRepository : AccountRepository {
 
-    private val clientIdsToAccounts = mutableMapOf<Long, MutableMap<Currency, Account>>()
+    private val idsToAccount = mutableMapOf<Long, Account>()
 
     override fun addAccount(account: Account): Boolean {
-        val currency = account.currency
-        val accountsForClient = clientIdsToAccounts.getOrPut(account.client.id) { mutableMapOf() }
-        return if (currency in accountsForClient) {
-            //account with given currency already exists
+        return if (account.id in idsToAccount) {
+            //account already exists with this id
             false
         } else {
-            accountsForClient[currency] = account
+            idsToAccount[account.id] = account
             true
         }
     }
 
     override fun getAccounts(client: Client): Set<Account> {
-        return clientIdsToAccounts[client.id]?.values?.toSet() ?: emptySet()
+        return idsToAccount.values.filter{ it.client == client }.toSet()
     }
 
-    override fun getAccount(client: Client, currency: Currency): Account? {
-        return clientIdsToAccounts[client.id]?.get(currency)
+    override fun getAccount(id: Long): Account? {
+        return idsToAccount[id]
     }
 
-    override fun deleteAll() = clientIdsToAccounts.clear()
+    override fun deleteAll() = idsToAccount.clear()
 }

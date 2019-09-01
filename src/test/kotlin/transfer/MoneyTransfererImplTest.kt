@@ -1,6 +1,8 @@
 package transfer
 
+import Currencies.GBP
 import Currencies.USD
+import GBP
 import USD
 import clients.accounts.*
 import clients.transactions.InMemoryTransactionRepository
@@ -26,38 +28,63 @@ class MoneyTransfererImplTest {
         transactionRepository = InMemoryTransactionRepository()
         accountStateQuerier = AccountStateQuerierImpl(transactionRepository)
         transactionCreator = TransactionCreatorImpl(transactionRepository)
-        moneyTransferer = MoneyTransfererImpl(accountRepository, transactionCreator, accountStateQuerier)
+        moneyTransferer = MoneyTransfererImpl(transactionCreator, accountStateQuerier)
     }
 
     @Test
-    fun `transfering money from client without an account for the given currency should fail`() {
+    fun `transfering money from account with incorrect currency should fail`() {
         val vlad = Clients.vlad(0)
+        val vladsAccount = Account(0, vlad, GBP) //gbp
         val nikolay = Clients.nikolay(1)
+        val nikolaysAccount = Account(1, nikolay, USD) //usd
 
-        val result = moneyTransferer.transfer(10.USD, from = vlad, to = nikolay)
-        assertTrue(result is MissingAccount)
+        val result = moneyTransferer.transfer(10.USD, from = vladsAccount, to = nikolaysAccount)
+        assertTrue(result is CurrencyMismatch)
     }
 
     @Test
-    fun `transfering zero money from client without an account for the given currency should fail`() {
+    fun `transfering money to account with incorrect currency should fail`(){
         val vlad = Clients.vlad(0)
+        val vladsAccount = Account(0, vlad, GBP) //gbp
         val nikolay = Clients.nikolay(1)
+        val nikolaysAccount = Account(1, nikolay, USD) //usd
 
-        val result = moneyTransferer.transfer(0.USD, from = vlad, to = nikolay)
-        assertTrue(result is MissingAccount)
+        val result = moneyTransferer.transfer(10.GBP, from = vladsAccount, to = nikolaysAccount)
+        assertTrue(result is CurrencyMismatch)
     }
 
     @Test
-    fun `transfering zero money should succeed when accounts exists for currency`(){
+    fun `transfering zero money should fail when source account has wrong currency`() {
+        val vlad = Clients.vlad(0)
+        val vladsAccount = Account(0, vlad, USD)
+        val nikolay = Clients.nikolay(1)
+        val nikolaysAccount = Account(1, nikolay, GBP)
+
+        val result = moneyTransferer.transfer(0.GBP, from = vladsAccount, to = nikolaysAccount)
+        assertTrue(result is CurrencyMismatch)
+    }
+
+
+    @Test
+    fun `transfering zero money should fail when target account has wrong currency`() {
+        val vlad = Clients.vlad(0)
+        val vladsAccount = Account(0, vlad, USD)
+        val nikolay = Clients.nikolay(1)
+        val nikolaysAccount = Account(1, nikolay, GBP)
+
+        val result = moneyTransferer.transfer(0.USD, from = vladsAccount, to = nikolaysAccount)
+        assertTrue(result is CurrencyMismatch)
+    }
+
+    @Test
+    fun `transfering zero money should succeed when accounts have same currency`(){
         val vlad  = Clients.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 0.USD)
-        accountRepository.addAccount(vladsUsdAccount)
 
         val nikolay = Clients.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, 0.USD)
-        accountRepository.addAccount(nikolaysUsdAccount)
 
-        val result = moneyTransferer.transfer(0.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(0.USD, from = vladsUsdAccount, to = nikolaysUsdAccount)
         assertTrue(result is Success)
     }
 
@@ -65,9 +92,8 @@ class MoneyTransfererImplTest {
     fun `transfering between same account shouldn't create a transaction`() {
         val vlad = Clients.vlad()
         val account = Account(0, vlad, 1000.USD)
-        accountRepository.addAccount(account)
 
-        val result = moneyTransferer.transfer(10.USD, from = vlad, to = vlad)
+        val result = moneyTransferer.transfer(10.USD, from = account, to = account)
         assertEquals(SameAccount, result)
 
         //check no transactions - we could have also used Mockito's `verifyNoMoreInteractions` were the object mocked
@@ -75,39 +101,17 @@ class MoneyTransfererImplTest {
     }
 
     @Test
-    fun `transfering money to client who doesn't have an account for that currency should return MissingAccount`() {
-        //vlad has $1000
-        val vlad = Clients.vlad(0)
-        val vladsUsdAccount = Account(0, vlad, 1000.USD)
-        accountRepository.addAccount(vladsUsdAccount)
-
-        //nikolay doesn't have a USD account
-        val nikolay = Clients.nikolay(1)
-        assertNull(accountRepository.getAccount(nikolay, USD))
-
-        //transfer $10 from vlad to nikolay
-        val result = moneyTransferer.transfer(10.USD, from = vlad, to = nikolay)
-        assertTrue(result is MissingAccount)
-        result as MissingAccount
-
-        //nikolay doesn't have a USD account
-        assertEquals(nikolay, result.client)
-    }
-
-    @Test
     fun `transfering too much money should fail`() {
         //vlad has $1000
         val vlad = Clients.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
-        accountRepository.addAccount(vladsUsdAccount)
 
         //nikolay has a USD account to accept the transfer
         val nikolay = Clients.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
-        accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer $1001 from vlad to nikolay
-        val result = moneyTransferer.transfer(1001.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(1001.USD, from = vladsUsdAccount, to = nikolaysUsdAccount)
         assertTrue(result is InsufficientFunds)
     }
 
@@ -116,15 +120,13 @@ class MoneyTransfererImplTest {
         //vlad has $1000
         val vlad = Clients.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
-        accountRepository.addAccount(vladsUsdAccount)
 
         //nikolay has a USD account to accept the transfer
         val nikolay = Clients.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
-        accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer all of vlads USD money to nikolay
-        val result = moneyTransferer.transfer(from = vlad, to = nikolay, money = 1000.USD)
+        val result = moneyTransferer.transfer(from = vladsUsdAccount, to = nikolaysUsdAccount, money = 1000.USD)
         assertTrue(result is Success)
     }
 
@@ -133,15 +135,13 @@ class MoneyTransfererImplTest {
         //vlad has $1000
         val vlad = Clients.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
-        accountRepository.addAccount(vladsUsdAccount)
 
         //nikolay has $1000
         val nikolay = Clients.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, 1000.USD)
-        accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer $10 from vlad to nikolay
-        val result = moneyTransferer.transfer(from = vlad, to = nikolay, money = 10.USD)
+        val result = moneyTransferer.transfer(from = vladsUsdAccount, to = nikolaysUsdAccount, money = 10.USD)
         assertTrue(result is Success)
         result as Success
 
@@ -159,15 +159,13 @@ class MoneyTransfererImplTest {
         //vlad has $1000
         val vlad = Clients.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
-        accountRepository.addAccount(vladsUsdAccount)
 
         //nikolay has a USD account to accept the transfer
         val nikolay = Clients.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
-        accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer $500 from vlad to nikolay
-        val result = moneyTransferer.transfer(500.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(500.USD, from = vladsUsdAccount, to = nikolaysUsdAccount)
         assertTrue(result is Success)
 
         //vlad should now have $500
@@ -180,15 +178,13 @@ class MoneyTransfererImplTest {
         //vlad has $1000
         val vlad = Clients.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
-        accountRepository.addAccount(vladsUsdAccount)
 
         //nikolay has a USD account to accept the transfer
         val nikolay = Clients.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
-        accountRepository.addAccount(nikolaysUsdAccount)
 
         //transfer $500 from vlad to nikolay
-        val result = moneyTransferer.transfer(500.USD, from = vlad, to = nikolay)
+        val result = moneyTransferer.transfer(500.USD, from = vladsUsdAccount, to = nikolaysUsdAccount)
         assertTrue(result is Success)
 
         //nikolay should now have $500
