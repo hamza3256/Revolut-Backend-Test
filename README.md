@@ -16,6 +16,14 @@ for money transfers between accounts.
 Since depositing money wasn't part of the requirements, the app automatically adds a 'Bank' Customer & three Accounts (USD, GBP, EUR) with 1 million in each Account.
 You can use these accounts to transfer money to other, new Accounts. [Click here to see the IDs](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/b662efd2a4dfd0d847e2d497f7dd35be2ea51069/src/main/kotlin/RevolutApp.kt#L63)
 
+Each [Customer](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/Customer.kt) in the bank has a set of [Accounts](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/accounts/Account.kt).
+The Account does not store how  much money they have, all it stores are the Account features, such as currency (we could add fields for name, created time, branch name, etc).
+Instead of storing the money in the Account, [we can get](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/29fd5c810f5d236b569eee181295aa6b131926d7/src/main/kotlin/customers/accounts/AccountStateQuerier.kt#L45)
+the [AccountState](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/29fd5c810f5d236b569eee181295aa6b131926d7/src/main/kotlin/customers/accounts/AccountStateQuerier.kt#L13)
+of an Account at any time, which exposes how much money the Account has.
+This way, we can rollback [transactions](https://github.com/maciej-kaznowski/Revolut-Backend-Test/tree/master/src/main/kotlin/customers/accounts/transactions)
+and the Account doesn't have to be updated.
+
 Creators, such as [CustomerCreator](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/CustomerCreator.kt) are responsible for creating and storing entities into a repository for a Request. Most importantly, they provide the ID for new entities.  
 Repositories, such as [TransactionRepository](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/accounts/transactions/TransactionRepository.kt) expose CRUD operations for entities.  
 Handlers, such as [CreateAccountHandler](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/accounts/CreateAccountHandler.kt)  are responsible for handling REST API calls.
