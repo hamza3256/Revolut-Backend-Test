@@ -175,7 +175,7 @@ Get account status for Vlad Yatsenko's account:
   
 ### Transfer
 #### Transfer money between accounts:  
-`POST` to `/transfer` with body of form:
+`POST` to `/transfers` with body of form:
 ```
 {  
    "fromAccountId":0,
