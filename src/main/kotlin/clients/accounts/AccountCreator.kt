@@ -16,7 +16,7 @@ interface AccountCreator {
      * Creates and persist a new [Account] for the given [client] and [request]
      *
      * @return [Created] when a new [Account] was created
-     * @return [NegativeMoney] when requested to create an account with a starting negative balance.
+     * @return [NegativeMoney] when requested to create an account with a negative starting balance.
      * */
     fun create(client: Client, request: Request): Result
 
