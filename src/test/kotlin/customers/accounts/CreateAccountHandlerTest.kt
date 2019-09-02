@@ -13,15 +13,14 @@ import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
 import org.junit.AfterClass
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.Test
 
 class CreateAccountHandlerTest {
 
     companion object {
-
-        const val URL = "http://localhost:7000/accounts"
 
         private lateinit var javalin: Javalin
         private lateinit var customerRepository: CustomerRepository
@@ -63,8 +62,8 @@ class CreateAccountHandlerTest {
         //shouldn't have any accounts yet
         assertTrue(accountRepository.getAccounts(nikolay).isEmpty())
 
-        val response = post()
-            .body(RequestBody(customerId = 0, startingMoney = 100.USD))
+        val response = post(customerIdStr = nikolay.id.toString())
+            .body(RequestBody(startingMoney = 100.USD))
             .asObject(ResponseBody::class.java)
 
         assertEquals(OK_200, response.status)
@@ -74,8 +73,17 @@ class CreateAccountHandlerTest {
 
     @Test
     fun `should return error when customerId isn't present in repository`() {
-        val response = post()
-            .body(RequestBody(customerId = 1000, startingMoney = 100.USD))
+        val response = post(customerIdStr = "1000")
+            .body(RequestBody(startingMoney = 100.USD))
+            .asString()
+
+        assertEquals(BAD_REQUEST_400, response.status)
+    }
+
+    @Test
+    fun `should return error when customerId isn't a Long`() {
+        val response = post(customerIdStr = "notAlong")
+            .body(RequestBody(startingMoney = 100.USD))
             .asString()
 
         assertEquals(BAD_REQUEST_400, response.status)
@@ -83,12 +91,12 @@ class CreateAccountHandlerTest {
 
     @Test
     fun `should return error when invalid body given`() {
-        val response = post()
+        val response = post("0")
             .body("a weird body") //not a valid CreateAccount.RequestBody
             .asString()
 
         assertEquals(BAD_REQUEST_400, response.status)
     }
 
-    private fun post() = Unirest.post(URL)
+    private fun post(customerIdStr: String) = Unirest.post("http://localhost:7000/customers/$customerIdStr/accounts")
 }

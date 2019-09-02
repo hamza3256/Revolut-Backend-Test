@@ -4,6 +4,7 @@ import BaseHandler
 import customers.CustomerRepository
 import customers.accounts.AccountCreator.Result.Created
 import customers.accounts.AccountCreator.Result.NegativeMoney
+import customers.accounts.CreateAccount.PATH_PARAM_CUSTOMER_ID
 import customers.accounts.CreateAccount.RequestBody
 import customers.accounts.CreateAccount.ResponseBody
 import customers.accounts.CreateAccountHandler.Result.Failed
@@ -16,6 +17,7 @@ import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
 import org.slf4j.LoggerFactory
 import utils.info
+import utils.toLong
 
 class CreateAccountHandler(
     private val accountCreator: AccountCreator,
@@ -25,7 +27,7 @@ class CreateAccountHandler(
     private val logger = LoggerFactory.getLogger("CreateAccountHandler")
 
     override fun attach(app: Javalin) {
-        app.post("/accounts", this)
+        app.post("/customers/:$PATH_PARAM_CUSTOMER_ID/accounts", this)
         logger.info { "Attached CreateAccountHandler" }
     }
 
@@ -47,7 +49,13 @@ class CreateAccountHandler(
     }
 
     private fun handleWithResult(ctx: Context): Result {
-        val (customerId, startingMoney) = ctx.body<RequestBody>()
+        val customerIdStr = ctx.pathParam(PATH_PARAM_CUSTOMER_ID)
+        val customerId = customerIdStr.toLong {
+            return Failed("$PATH_PARAM_CUSTOMER_ID isn't a valid Long")
+        }
+
+        val requestBody = ctx.body<RequestBody>()
+        val startingMoney = requestBody.startingMoney
 
         val customer = customerRepository.getCustomerOrElse(customerId) { id ->
             return Failed("Customer not found for id=$id")
@@ -69,7 +77,9 @@ class CreateAccountHandler(
 
 object CreateAccount {
 
-    data class RequestBody(val customerId: Long, val startingMoney: Money)
+    const val PATH_PARAM_CUSTOMER_ID = "customerId"
+
+    data class RequestBody(val startingMoney: Money)
     data class ResponseBody(val account: Account)
 
 }
