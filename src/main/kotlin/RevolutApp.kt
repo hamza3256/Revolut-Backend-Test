@@ -45,6 +45,8 @@ class RevolutApp {
         val accountStateQuerier: AccountStateQuerier = AccountStateQuerierImpl(transactionRepository)
         val createAccountHandler = CreateAccountHandler(accountCreator, customerRepository)
         createAccountHandler.attach(javalin)
+        val accountStateHandler = GetAccountStateHandler(accountRepository, accountStateQuerier)
+        accountStateHandler.attach(javalin)
 
         //transfer
         val moneyTransferer: MoneyTransferer = MoneyTransfererImpl(transactionCreator, accountStateQuerier)
