@@ -69,10 +69,9 @@ Creat a customer: `POST` to `/customers` with body of form:
 
 
 ### Accounts:
-Create an account for a Customer: `POST` to `/accounts` with body of form:
+Create an account for a Customer: `POST` to `/customers/{customer_id}/accounts` with body of form:
 ```
 {
-"customerId": "0 ",
 "startingMoney": {
     "amount": "1000",
     "currency": "USD"
@@ -84,10 +83,9 @@ Create an account for a Customer: `POST` to `/accounts` with body of form:
 ##### Create a USD account with $1000 for Vlad Yatsenko:
 
 `curl --request POST
-   --url http://localhost:7000/accounts
+   --url http://localhost:7000/customers/0/accounts
    --header 'content-type: application/json'
    --data '{
- 	"customer": "0",
  	"startingMoney": {
  		"amount": "1000",
  		"currency": "USD"
@@ -115,10 +113,9 @@ Create an account for a Customer: `POST` to `/accounts` with body of form:
 #####  Create a USD account with $5000 for Nikolay Yatsenko:
  
  `curl --request POST 
-    --url http://localhost:7000/accounts 
+    --url http://localhost:7000/customers/1/accounts 
     --header 'content-type: application/json' 
     --data '{
-  	"customerId": "1",
   	"startingMoney": {
   		"amount": "5000",
   		"currency": "USD"
@@ -142,6 +139,37 @@ Create an account for a Customer: `POST` to `/accounts` with body of form:
     }
   }
   ```
+  
+Get state of an Account: `GET` to `/accounts/{account_id}`
+
+#### Example:
+##### Get account status for Vlad Yatsenko's account:
+`curl --request GET --url http://localhost:7000/accounts/0`
+
+```
+{
+    "accountState": {
+        "account":{
+            "id":0,
+            "customer":{
+                "id":0,
+                "name":"Vlad",
+                "surname":"Yatsenko"
+            },
+            "startingMoney":{
+                "amount":1000,
+                "currency":"USD"
+            },
+            "currency":"USD"
+        },
+        "money":{
+            "amount":1000,
+            "currency":"USD"
+        }
+    }
+}
+```
+
   
 ### Transfer
 To transfer money between accounts: `POST` to `/transfer` with body of form:
