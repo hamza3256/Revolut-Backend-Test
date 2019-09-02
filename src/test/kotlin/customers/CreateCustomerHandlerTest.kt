@@ -1,9 +1,9 @@
-package clients
+package customers
 
 import RevolutConfig
 import UnirestTestConfig
-import clients.CreateClient.RequestBody
-import clients.CreateClient.ResponseBody
+import customers.CreateCustomer.RequestBody
+import customers.CreateCustomer.ResponseBody
 import io.javalin.Javalin
 import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
@@ -13,11 +13,11 @@ import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
 import org.junit.Test
 
-class CreateClientHandlerTest {
+class CreateCustomerHandlerTest {
 
     companion object {
 
-        private const val URL = "http://localhost:7000/clients"
+        private const val URL = "http://localhost:7000/customers"
 
         private lateinit var javalin: Javalin
 
@@ -26,9 +26,9 @@ class CreateClientHandlerTest {
         fun beforeClass() {
             val revolutConfig = RevolutConfig()
             UnirestTestConfig.init(revolutConfig.objectMapper)
-            val clientRepository = InMemoryClientRepository()
-            val clientCreator = ClientCreatorImpl(clientRepository)
-            val handler = CreateClientHandler(clientCreator)
+            val customerRepository = InMemoryCustomerRepository()
+            val customerCreator = CustomerCreatorImpl(customerRepository)
+            val handler = CreateCustomerHandler(customerCreator)
             javalin = revolutConfig.javalin.start()
             handler.attach(javalin)
         }
@@ -42,13 +42,13 @@ class CreateClientHandlerTest {
     }
 
     @Test
-    fun `should create correct Client when called with expected body`() {
+    fun `should create correct Customer when called with expected body`() {
         val response = Unirest.post(URL)
             .body(RequestBody(name = "Nikolay", surname = "Storonsky"))
             .asObject(ResponseBody::class.java)
 
         assertEquals(OK_200, response.status)
-        with(response.body.client) {
+        with(response.body.customer) {
             assertEquals("Nikolay", name)
             assertEquals("Storonsky", surname)
         }

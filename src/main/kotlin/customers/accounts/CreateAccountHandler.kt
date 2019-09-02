@@ -1,15 +1,15 @@
-package clients.accounts
+package customers.accounts
 
 import BaseHandler
-import clients.ClientRepository
-import clients.accounts.AccountCreator.Result.Created
-import clients.accounts.AccountCreator.Result.NegativeMoney
-import clients.accounts.CreateAccount.PATH
-import clients.accounts.CreateAccount.RequestBody
-import clients.accounts.CreateAccount.ResponseBody
-import clients.accounts.CreateAccountHandler.Result.Failed
-import clients.accounts.CreateAccountHandler.Result.Success
-import clients.getClientOrElse
+import customers.CustomerRepository
+import customers.accounts.AccountCreator.Result.Created
+import customers.accounts.AccountCreator.Result.NegativeMoney
+import customers.accounts.CreateAccount.PATH
+import customers.accounts.CreateAccount.RequestBody
+import customers.accounts.CreateAccount.ResponseBody
+import customers.accounts.CreateAccountHandler.Result.Failed
+import customers.accounts.CreateAccountHandler.Result.Success
+import customers.getCustomerOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
 import logging.info
@@ -20,7 +20,7 @@ import org.eclipse.jetty.http.HttpStatus.OK_200
 
 class CreateAccountHandler(
     private val accountCreator: AccountCreator,
-    private val clientRepository: ClientRepository
+    private val customerRepository: CustomerRepository
 ) : BaseHandler {
 
     override fun attach(app: Javalin) {
@@ -46,14 +46,14 @@ class CreateAccountHandler(
     }
 
     private fun handleWithResult(ctx: Context): Result {
-        val (clientId, startingMoney) = ctx.body<RequestBody>()
+        val (customerId, startingMoney) = ctx.body<RequestBody>()
 
-        val client = clientRepository.getClientOrElse(clientId) { id ->
-            return Failed("Client not found for id=$id")
+        val customer = customerRepository.getCustomerOrElse(customerId) { id ->
+            return Failed("Customer not found for id=$id")
         }
 
         val accountCreatorRequest = AccountCreator.Request(startingMoney = startingMoney)
-        return when (val result = accountCreator.create(client, accountCreatorRequest)) {
+        return when (val result = accountCreator.create(customer, accountCreatorRequest)) {
             is Created -> Success(ResponseBody(result.account))
             is NegativeMoney -> Failed("Account must start with a non-negative balance")
         }
@@ -70,7 +70,7 @@ object CreateAccount {
 
     const val PATH = "accounts"
 
-    data class RequestBody(val clientId: Long, val startingMoney: Money)
+    data class RequestBody(val customerId: Long, val startingMoney: Money)
     data class ResponseBody(val account: Account)
 
 }

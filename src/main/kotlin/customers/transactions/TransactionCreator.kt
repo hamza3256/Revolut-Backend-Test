@@ -1,6 +1,6 @@
-package clients.transactions
+package customers.transactions
 
-import clients.accounts.Account
+import customers.accounts.Account
 import money.Money
 import java.util.concurrent.atomic.AtomicLong
 

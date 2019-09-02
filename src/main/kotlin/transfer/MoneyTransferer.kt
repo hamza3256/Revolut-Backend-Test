@@ -1,7 +1,7 @@
 package transfer
 
-import clients.accounts.*
-import clients.transactions.TransactionCreator
+import customers.accounts.*
+import customers.transactions.TransactionCreator
 import logging.verbose
 import money.Money
 import transfer.TransferResult.*

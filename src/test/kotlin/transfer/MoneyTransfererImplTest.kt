@@ -4,11 +4,11 @@ import Currencies.GBP
 import Currencies.USD
 import GBP
 import USD
-import clients.accounts.*
-import clients.transactions.InMemoryTransactionRepository
-import clients.transactions.TransactionCreator
-import clients.transactions.TransactionCreatorImpl
-import clients.transactions.TransactionRepository
+import customers.accounts.*
+import customers.transactions.InMemoryTransactionRepository
+import customers.transactions.TransactionCreator
+import customers.transactions.TransactionCreatorImpl
+import customers.transactions.TransactionRepository
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -33,9 +33,9 @@ class MoneyTransfererImplTest {
 
     @Test
     fun `transfering money from account with incorrect currency should fail`() {
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsAccount = Account(0, vlad, GBP) //gbp
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysAccount = Account(1, nikolay, USD) //usd
 
         val result = moneyTransferer.transfer(10.USD, from = vladsAccount, to = nikolaysAccount)
@@ -44,9 +44,9 @@ class MoneyTransfererImplTest {
 
     @Test
     fun `transfering money to account with incorrect currency should fail`(){
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsAccount = Account(0, vlad, GBP) //gbp
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysAccount = Account(1, nikolay, USD) //usd
 
         val result = moneyTransferer.transfer(10.GBP, from = vladsAccount, to = nikolaysAccount)
@@ -55,9 +55,9 @@ class MoneyTransfererImplTest {
 
     @Test
     fun `transfering zero money should fail when source account has wrong currency`() {
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsAccount = Account(0, vlad, USD)
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysAccount = Account(1, nikolay, GBP)
 
         val result = moneyTransferer.transfer(0.GBP, from = vladsAccount, to = nikolaysAccount)
@@ -67,9 +67,9 @@ class MoneyTransfererImplTest {
 
     @Test
     fun `transfering zero money should fail when target account has wrong currency`() {
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsAccount = Account(0, vlad, USD)
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysAccount = Account(1, nikolay, GBP)
 
         val result = moneyTransferer.transfer(0.USD, from = vladsAccount, to = nikolaysAccount)
@@ -78,10 +78,10 @@ class MoneyTransfererImplTest {
 
     @Test
     fun `transfering zero money should succeed when accounts have same currency`(){
-        val vlad  = Clients.vlad(0)
+        val vlad  = Customers.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 0.USD)
 
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, 0.USD)
 
         val result = moneyTransferer.transfer(0.USD, from = vladsUsdAccount, to = nikolaysUsdAccount)
@@ -90,7 +90,7 @@ class MoneyTransfererImplTest {
 
     @Test
     fun `transfering between same account shouldn't create a transaction`() {
-        val vlad = Clients.vlad()
+        val vlad = Customers.vlad()
         val account = Account(0, vlad, 1000.USD)
 
         val result = moneyTransferer.transfer(10.USD, from = account, to = account)
@@ -103,11 +103,11 @@ class MoneyTransfererImplTest {
     @Test
     fun `transfering too much money should fail`() {
         //vlad has $1000
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
 
         //nikolay has a USD account to accept the transfer
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
 
         //transfer $1001 from vlad to nikolay
@@ -118,11 +118,11 @@ class MoneyTransfererImplTest {
     @Test
     fun `transferring entire accounts funds should succeed`() {
         //vlad has $1000
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
 
         //nikolay has a USD account to accept the transfer
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
 
         //transfer all of vlads USD money to nikolay
@@ -133,11 +133,11 @@ class MoneyTransfererImplTest {
     @Test
     fun `transferring money should return correct AccountStates in result`(){
         //vlad has $1000
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
 
         //nikolay has $1000
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, 1000.USD)
 
         //transfer $10 from vlad to nikolay
@@ -157,11 +157,11 @@ class MoneyTransfererImplTest {
     @Test
     fun `transferring money should deduct from senders account`() {
         //vlad has $1000
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
 
         //nikolay has a USD account to accept the transfer
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
 
         //transfer $500 from vlad to nikolay
@@ -176,11 +176,11 @@ class MoneyTransfererImplTest {
     @Test
     fun `transferring money should add money to targets account`() {
         //vlad has $1000
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
 
         //nikolay has a USD account to accept the transfer
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
 
         //transfer $500 from vlad to nikolay

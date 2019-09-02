@@ -1,6 +1,6 @@
-package clients
+package customers
 
-data class Client internal constructor(
+data class Customer internal constructor(
     val id: Long,
     val name: String,
     val surname: String

@@ -1,11 +1,11 @@
-package clients.transactions
+package customers.transactions
 
-import Clients
+import Customers
 import Currencies.GBP
 import Currencies.USD
 import GBP
 import USD
-import clients.accounts.Account
+import customers.accounts.Account
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -21,8 +21,8 @@ class InMemoryTransactionRepositoryTest {
 
     @Test
     fun `adding unique transactions should succeed`() {
-        val client = Clients.vlad()
-        val account = Account(0, client, USD)
+        val customer = Customers.vlad()
+        val account = Account(0, customer, USD)
 
         val transaction = Transaction(id = 0, account = account, money = 10.USD)
         assertTrue(repository.add(transaction))
@@ -30,8 +30,8 @@ class InMemoryTransactionRepositoryTest {
 
     @Test
     fun `adding a second transaction with the same id should fail`() {
-        val client = Clients.vlad()
-        val account = Account(0, client, USD)
+        val customer = Customers.vlad()
+        val account = Account(0, customer, USD)
 
         val transaction = Transaction(id = 0, account = account, money = 10.USD)
         assertTrue(repository.add(transaction))
@@ -41,16 +41,16 @@ class InMemoryTransactionRepositoryTest {
     }
 
     @Test
-    fun `getAll(client) should return empty list when no transactions have been committed`() {
-        val client = Clients.nikolay()
+    fun `getAll(Customer) should return empty list when no transactions have been committed`() {
+        val customer = Customers.nikolay()
 
-        assertTrue(repository.getAll(client).isEmpty())
+        assertTrue(repository.getAll(customer).isEmpty())
     }
 
     @Test
-    fun `getAll(client) should return transactions which were committed`() {
-        val client = Clients.nikolay()
-        val account = Account(0, client, USD)
+    fun `getAll(Customer) should return transactions which were committed`() {
+        val customer = Customers.nikolay()
+        val account = Account(0, customer, USD)
 
         //prepare transactions to add to repository
         val expected = (1..3).map { index ->
@@ -58,7 +58,7 @@ class InMemoryTransactionRepositoryTest {
         }.toSet()
 
         //make sure the repository doesn't contain those transactions yet
-        assertNotEquals(expected, repository.getAll(client))
+        assertNotEquals(expected, repository.getAll(customer))
 
         //add transactions and verify added correctly
         expected.forEach { transaction ->
@@ -66,47 +66,47 @@ class InMemoryTransactionRepositoryTest {
         }
 
         //should return the same set now
-        assertEquals(expected, repository.getAll(client))
+        assertEquals(expected, repository.getAll(customer))
     }
 
     @Test
-    fun `getAll(client) should return only transactions from respective client`() {
+    fun `getAll(Customer) should return only transactions from respective Customer`() {
         //add a USD transaction for vlad
-        val vlad = Clients.vlad(0)
+        val vlad = Customers.vlad(0)
         val vladsUsdAccounts = Account(0, vlad, USD)
         val vladsUsdTransaction = Transaction(0, account = vladsUsdAccounts, money = 10.USD)
         assertTrue(repository.add(vladsUsdTransaction))
 
         //add a USD transaction for nikolay
-        val nikolay = Clients.nikolay(1)
+        val nikolay = Customers.nikolay(1)
         val nikolaysUsdAccount = Account(1, nikolay, USD)
         val nikolaysUsdTransaction = Transaction(1, account = nikolaysUsdAccount, money = 20.USD)
         assertTrue(repository.add(nikolaysUsdTransaction))
 
-        //getAll() should return respective transactions for each client
+        //getAll() should return respective transactions for each customer
         assertEquals(setOf(vladsUsdTransaction), repository.getAll(vlad))
         assertEquals(setOf(nikolaysUsdTransaction), repository.getAll(nikolay))
     }
 
     @Test
     fun `getAll(account) should return empty list when no transactions have been committed`() {
-        val client = Clients.nikolay()
-        val account = Account(0, client, USD)
+        val customer = Customers.nikolay()
+        val account = Account(0, customer, USD)
 
         assertTrue(repository.getAll(account).isEmpty())
     }
 
     @Test
     fun `getAll(account) should only return transactions only from the given accounts currency`() {
-        val client = Clients.vlad()
+        val customer = Customers.vlad()
 
         //add a transaction for USD
-        val usdAccount = Account(0, client, USD)
+        val usdAccount = Account(0, customer, USD)
         val usdTransaction = Transaction(0, account = usdAccount, money = 0.USD)
         repository.add(usdTransaction)
 
         //add a transaction for GBP
-        val gbpAccount = Account(0, client, GBP)
+        val gbpAccount = Account(0, customer, GBP)
         val gbpTransaction = Transaction(1, account = gbpAccount, money = 0.GBP)
         repository.add(gbpTransaction)
 
@@ -116,11 +116,11 @@ class InMemoryTransactionRepositoryTest {
     }
 
     @Test
-    fun `getAll(account) shouldn't return transactions relating to other clients accounts of the same currency`() {
-        val nikolay = Clients.nikolay(0)
-        val vlad = Clients.vlad(1)
+    fun `getAll(account) shouldn't return transactions relating to other Customers accounts of the same currency`() {
+        val nikolay = Customers.nikolay(0)
+        val vlad = Customers.vlad(1)
 
-        //insert USD transactions for each clients USD account
+        //insert USD transactions for each customers USD account
         //nikolay
         val nikolaysUsdAccount = Account(0, nikolay, USD)
         val nikolaysUsdTransaction = Transaction(0, account = nikolaysUsdAccount, money = 10.USD).also { transaction ->
@@ -145,7 +145,7 @@ class InMemoryTransactionRepositoryTest {
 
     @Test
     fun `deleteAll() implies getAll() is empty`() {
-        val vlad = Clients.vlad()
+        val vlad = Customers.vlad()
         repository.add(Transaction(0, account = Account(0, vlad, USD), money = 100.USD))
         assertTrue(repository.getAll(vlad).isNotEmpty())
         repository.deleteAll()

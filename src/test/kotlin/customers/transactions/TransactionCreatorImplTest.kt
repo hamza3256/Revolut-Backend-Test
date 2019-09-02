@@ -1,8 +1,8 @@
-package clients.transactions
+package customers.transactions
 
-import Clients
+import Customers
 import USD
-import clients.accounts.Account
+import customers.accounts.Account
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -21,9 +21,9 @@ class TransactionCreatorImplTest {
 
     @Test
     fun `should insert 2 transactions into the repository`() {
-        val nikolay = Clients.nikolay(0)
+        val nikolay = Customers.nikolay(0)
         val nikolaysAccount = Account(0, nikolay, 100.USD)
-        val vlad = Clients.vlad(1)
+        val vlad = Customers.vlad(1)
         val vladsAccount = Account(1, vlad, 100.USD)
 
         val request = TransactionCreator.Request(
@@ -45,9 +45,9 @@ class TransactionCreatorImplTest {
 
     @Test
     fun `should be able to resolve both transactions from one another`(){
-        val nikolay = Clients.nikolay(0)
+        val nikolay = Customers.nikolay(0)
         val nikolaysAccount = Account(0, nikolay, 100.USD)
-        val vlad = Clients.vlad(1)
+        val vlad = Customers.vlad(1)
         val vladsAccount = Account(1, vlad, 100.USD)
 
         val request = TransactionCreator.Request(

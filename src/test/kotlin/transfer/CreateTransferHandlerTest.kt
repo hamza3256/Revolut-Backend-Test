@@ -1,15 +1,15 @@
 package transfer
 
-import Clients
+import Customers
 import RevolutConfig
 import USD
 import UnirestTestConfig
-import clients.ClientRepository
-import clients.InMemoryClientRepository
-import clients.accounts.*
-import clients.transactions.InMemoryTransactionRepository
-import clients.transactions.TransactionCreatorImpl
-import clients.transactions.TransactionRepository
+import customers.CustomerRepository
+import customers.InMemoryCustomerRepository
+import customers.accounts.*
+import customers.transactions.InMemoryTransactionRepository
+import customers.transactions.TransactionCreatorImpl
+import customers.transactions.TransactionRepository
 import io.javalin.Javalin
 import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
@@ -32,7 +32,7 @@ class CreateTransferHandlerTest {
         private lateinit var javalin: Javalin
 
         private lateinit var transactionRepository: TransactionRepository
-        private lateinit var clientRepository: ClientRepository
+        private lateinit var customerRepository: CustomerRepository
         private lateinit var accountRepository: AccountRepository
         private lateinit var createTransferHandler: CreateTransferHandler
 
@@ -46,7 +46,7 @@ class CreateTransferHandlerTest {
             val transactionCreator = TransactionCreatorImpl(transactionRepository)
             val accountStateQuerier = AccountStateQuerierImpl(transactionRepository)
 
-            clientRepository = InMemoryClientRepository()
+            customerRepository = InMemoryCustomerRepository()
             accountRepository = InMemoryAccountRepository()
 
             val transferer = MoneyTransfererImpl(transactionCreator, accountStateQuerier)
@@ -68,20 +68,20 @@ class CreateTransferHandlerTest {
     fun beforeEachTest() {
         transactionRepository.deleteAll()
         accountRepository.deleteAll()
-        clientRepository.deleteAll()
+        customerRepository.deleteAll()
     }
 
     @Test
-    fun `should correctly transfer money between 2 different clients when all requirements met`() {
+    fun `should correctly transfer money between 2 different customers when all requirements met`() {
         //create nikolay with an account containing 1000USD
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
         val nikolaysUsdAccount = Account(0, nikolay, 1000.USD)
         accountRepository.addAccount(nikolaysUsdAccount)
 
         //create vlad with an account containing 1000USD
-        val vlad = Clients.vlad(1)
-        clientRepository.addClient(vlad)
+        val vlad = Customers.vlad(1)
+        customerRepository.addCustomer(vlad)
         val vladsUsdAccount = Account(1, vlad, 1000.USD)
         accountRepository.addAccount(vladsUsdAccount)
 
@@ -110,10 +110,10 @@ class CreateTransferHandlerTest {
     }
 
     @Test
-    fun `should correctly transfer money between two accounts of the same Client`(){
+    fun `should correctly transfer money between two accounts of the same Customer`(){
         //create nikolay with 2 accounts
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
 
         //first has $1000
         val fromAccount = Account(0, nikolay, 1000.USD)
@@ -149,8 +149,8 @@ class CreateTransferHandlerTest {
 
     @Test
     fun `should fail when fromAccount not found for id`() {
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
         val nikolaysAccount = Account(0, nikolay, 100.USD)
         accountRepository.addAccount(nikolaysAccount)
 
@@ -167,8 +167,8 @@ class CreateTransferHandlerTest {
 
     @Test
     fun `should fail when toAccount not found for id`() {
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
         val nikolaysAccount = Account(0, nikolay, 100.USD)
         accountRepository.addAccount(nikolaysAccount)
 
@@ -185,8 +185,8 @@ class CreateTransferHandlerTest {
 
     @Test
     fun `should fail when attempting to transfer between same account`() {
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
         val account = Account(0, nikolay, 100.USD)
         accountRepository.addAccount(account)
 
@@ -203,13 +203,13 @@ class CreateTransferHandlerTest {
 
     @Test
     fun `should fail when attempting to transfer negative funds`() {
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
         val nikolaysUsdAccount = Account(0, nikolay, 100.USD)
         accountRepository.addAccount(nikolaysUsdAccount)
 
-        val vlad = Clients.vlad(1)
-        clientRepository.addClient(vlad)
+        val vlad = Customers.vlad(1)
+        customerRepository.addCustomer(vlad)
         val vladsUsdAccount = Account(1, vlad, 100.USD)
         accountRepository.addAccount(vladsUsdAccount)
 
@@ -226,13 +226,13 @@ class CreateTransferHandlerTest {
 
     @Test
     fun `should fail when attempting to transfer too much money`() {
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
         val nikolaysUsdAccount = Account(0, nikolay, 100.USD)
         accountRepository.addAccount(nikolaysUsdAccount)
 
-        val vlad = Clients.vlad(1)
-        clientRepository.addClient(vlad)
+        val vlad = Customers.vlad(1)
+        customerRepository.addCustomer(vlad)
         val vladsUsdAccount = Account(1, vlad, 100.USD)
         accountRepository.addAccount(vladsUsdAccount)
 

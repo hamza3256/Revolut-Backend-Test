@@ -1,10 +1,10 @@
-package clients.accounts
+package customers.accounts
 
-import Clients
+import Customers
 import USD
-import clients.transactions.InMemoryTransactionRepository
-import clients.transactions.Transaction
-import clients.transactions.TransactionRepository
+import customers.transactions.InMemoryTransactionRepository
+import customers.transactions.Transaction
+import customers.transactions.TransactionRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -22,8 +22,8 @@ class AccountStateQuerierImplTest {
 
     @Test
     fun `account state should show starting balance when no transactions`() {
-        val client = Clients.nikolay()
-        val account = Account(0, client, 100.USD)
+        val customer = Customers.nikolay()
+        val account = Account(0, customer, 100.USD)
 
         val actualAccountState = querier.getCurrentState(account)
         val expectedAccountState = AccountState(account, 100.USD)
@@ -32,8 +32,8 @@ class AccountStateQuerierImplTest {
 
     @Test
     fun `account state should show be correct when we have transactions`() {
-        val client = Clients.nikolay()
-        val account = Account(0, client, 100.USD)  //starting balance of $100
+        val customer = Customers.nikolay()
+        val account = Account(0, customer, 100.USD)  //starting balance of $100
 
         //insert some transactions
         transactionRepository.apply {
@@ -50,8 +50,8 @@ class AccountStateQuerierImplTest {
 
     @Test
     fun `account state should be different before and after adding transactions`() {
-        val client = Clients.nikolay()
-        val account = Account(0, client, 100.USD) //starting balance of $100
+        val customer = Customers.nikolay()
+        val account = Account(0, customer, 100.USD) //starting balance of $100
 
         //insert some transactions
         transactionRepository.apply {

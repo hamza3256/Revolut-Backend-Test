@@ -1,11 +1,11 @@
 @file:JvmName("App")
 
-import clients.*
-import clients.accounts.*
-import clients.transactions.InMemoryTransactionRepository
-import clients.transactions.TransactionCreator
-import clients.transactions.TransactionCreatorImpl
-import clients.transactions.TransactionRepository
+import customers.*
+import customers.accounts.*
+import customers.transactions.InMemoryTransactionRepository
+import customers.transactions.TransactionCreator
+import customers.transactions.TransactionCreatorImpl
+import customers.transactions.TransactionRepository
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -26,11 +26,11 @@ class RevolutApp {
     init {
         val javalin = RevolutConfig().javalin
 
-        //clients
-        val clientRepository: ClientRepository = InMemoryClientRepository()
-        val clientCreator: ClientCreator = ClientCreatorImpl(clientRepository)
-        val createClientHandler = CreateClientHandler(clientCreator)
-        createClientHandler.attach(javalin)
+        //customers
+        val customerRepository: CustomerRepository = InMemoryCustomerRepository()
+        val customerCreator: CustomerCreator = CustomerCreatorImpl(customerRepository)
+        val createCustomerHandler = CreateCustomerHandler(customerCreator)
+        createCustomerHandler.attach(javalin)
 
         //transactions
         val transactionRepository: TransactionRepository = InMemoryTransactionRepository()
@@ -40,7 +40,7 @@ class RevolutApp {
         val accountRepository: AccountRepository = InMemoryAccountRepository()
         val accountCreator: AccountCreator = AccountCreatorImpl(accountRepository)
         val accountStateQuerier: AccountStateQuerier = AccountStateQuerierImpl(transactionRepository)
-        val createAccountHandler = CreateAccountHandler(accountCreator, clientRepository)
+        val createAccountHandler = CreateAccountHandler(accountCreator, customerRepository)
         createAccountHandler.attach(javalin)
 
         //transfer

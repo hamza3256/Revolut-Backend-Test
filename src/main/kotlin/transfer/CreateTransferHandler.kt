@@ -1,9 +1,9 @@
 package transfer
 
 import BaseHandler
-import clients.accounts.AccountRepository
-import clients.accounts.AccountState
-import clients.accounts.getAccountOrElse
+import customers.accounts.AccountRepository
+import customers.accounts.AccountState
+import customers.accounts.getAccountOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
 import logging.info
@@ -50,7 +50,7 @@ class CreateTransferHandler(
         val requestBody = ctx.body<RequestBody>()
 
         with(requestBody) {
-            //check if client ids are valid
+            //check if customer ids are valid
             val fromAccount = accountRepository.getAccountOrElse(fromAccountId) {
                 warn { "Could not find a fromAccount for id=${fromAccountId}" }
                 return Failed("Could not find a valid account for id=${fromAccountId}")

@@ -1,18 +1,18 @@
-package clients
+package customers
 
 import BaseHandler
-import clients.CreateClient.ResponseBody
-import clients.CreateClientHandler.Result.Success
+import customers.CreateCustomer.ResponseBody
+import customers.CreateCustomerHandler.Result.Success
 import io.javalin.Javalin
 import io.javalin.http.Context
 import logging.verbose
 import org.eclipse.jetty.http.HttpStatus.OK_200
 
-class CreateClientHandler(private val clientCreator: ClientCreator) : BaseHandler {
+class CreateCustomerHandler(private val customerCreator: CustomerCreator) : BaseHandler {
 
     override fun attach(app: Javalin) {
-        verbose { "Attaching CreateClientHandler" }
-        app.post(CreateClient.PATH, this)
+        verbose { "Attaching CreateCustomerHandler" }
+        app.post(CreateCustomer.PATH, this)
     }
 
     override fun handle(ctx: Context) {
@@ -26,12 +26,12 @@ class CreateClientHandler(private val clientCreator: ClientCreator) : BaseHandle
     }
 
     private fun handleWithResult(ctx: Context): Success {
-        verbose { "Requested to create new Client" }
-        val body = ctx.body<CreateClient.RequestBody>()
-        val createClientRequest = ClientCreator.Request(name = body.name, surname = body.surname)
-        val client = clientCreator.create(createClientRequest)
-        verbose { "Created $client for $body" }
-        return Success(ResponseBody(client))
+        verbose { "Requested to create new Customer" }
+        val body = ctx.body<CreateCustomer.RequestBody>()
+        val createCustomerRequest = CustomerCreator.Request(name = body.name, surname = body.surname)
+        val customer = customerCreator.create(createCustomerRequest)
+        verbose { "Created $customer for $body" }
+        return Success(ResponseBody(customer))
     }
 
 
@@ -42,11 +42,11 @@ class CreateClientHandler(private val clientCreator: ClientCreator) : BaseHandle
     }
 }
 
-object CreateClient {
+object CreateCustomer {
 
-    const val PATH = "clients"
+    const val PATH = "customers"
 
     data class RequestBody(val name: String, val surname: String)
-    data class ResponseBody(val client: Client)
+    data class ResponseBody(val customer: Customer)
 
 }

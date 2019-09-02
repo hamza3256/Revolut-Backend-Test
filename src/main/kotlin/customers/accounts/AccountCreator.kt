@@ -1,11 +1,11 @@
-package clients.accounts
+package customers.accounts
 
-import clients.Client
+import customers.Customer
 import money.Money
-import clients.accounts.AccountCreator.Request
-import clients.accounts.AccountCreator.Result
-import clients.accounts.AccountCreator.Result.Created
-import clients.accounts.AccountCreator.Result.NegativeMoney
+import customers.accounts.AccountCreator.Request
+import customers.accounts.AccountCreator.Result
+import customers.accounts.AccountCreator.Result.Created
+import customers.accounts.AccountCreator.Result.NegativeMoney
 import java.util.concurrent.atomic.AtomicLong
 
 interface AccountCreator {
@@ -13,12 +13,12 @@ interface AccountCreator {
     data class Request(val startingMoney: Money)
 
     /**
-     * Creates and persist a new [Account] for the given [client] and [request]
+     * Creates and persist a new [Account] for the given [customer] and [request]
      *
      * @return [Created] when a new [Account] was created
      * @return [NegativeMoney] when requested to create an account with a negative starting balance.
      * */
-    fun create(client: Client, request: Request): Result
+    fun create(customer: Customer, request: Request): Result
 
     sealed class Result {
 
@@ -31,7 +31,7 @@ class AccountCreatorImpl(private val accountRepository: AccountRepository) : Acc
 
     private val nextId = AtomicLong()
 
-    override fun create(client: Client, request: Request): Result {
+    override fun create(customer: Customer, request: Request): Result {
         with(request) {
             if (startingMoney.isNegative()) {
                 return NegativeMoney
@@ -40,7 +40,7 @@ class AccountCreatorImpl(private val accountRepository: AccountRepository) : Acc
             return Account(
                 id = nextId.getAndIncrement(),
                 startingMoney = request.startingMoney,
-                client = client
+                customer = customer
             ).let { account ->
                 if (accountRepository.addAccount(account)) {
                     //added

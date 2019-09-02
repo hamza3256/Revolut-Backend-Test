@@ -1,14 +1,14 @@
-package clients.transactions
+package customers.transactions
 
-import clients.Client
-import clients.accounts.Account
+import customers.Customer
+import customers.accounts.Account
 
 interface TransactionRepository {
 
     /**
-     * Returns a set of all transactions across all of the accounts of a [client]
+     * Returns a set of all transactions across all of the accounts of a [customer]
      * */
-    fun getAll(client: Client): Set<Transaction>
+    fun getAll(customer: Customer): Set<Transaction>
 
     /**
      * Returns a set of all transactions belonging to a given [account]
@@ -32,8 +32,8 @@ class InMemoryTransactionRepository : TransactionRepository {
 
     private val idsToTransactions: MutableMap<Long, Transaction> = mutableMapOf()
 
-    override fun getAll(client: Client): Set<Transaction> {
-        return idsToTransactions.values.filter { it.account.client == client }.toSet()
+    override fun getAll(customer: Customer): Set<Transaction> {
+        return idsToTransactions.values.filter { it.account.customer == customer }.toSet()
     }
 
     override fun getAll(account: Account): Set<Transaction> {

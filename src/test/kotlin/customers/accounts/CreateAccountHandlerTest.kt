@@ -1,13 +1,13 @@
-package clients.accounts
+package customers.accounts
 
-import Clients
+import Customers
 import RevolutConfig
 import USD
 import UnirestTestConfig
-import clients.ClientRepository
-import clients.InMemoryClientRepository
-import clients.accounts.CreateAccount.RequestBody
-import clients.accounts.CreateAccount.ResponseBody
+import customers.CustomerRepository
+import customers.InMemoryCustomerRepository
+import customers.accounts.CreateAccount.RequestBody
+import customers.accounts.CreateAccount.ResponseBody
 import io.javalin.Javalin
 import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
@@ -24,7 +24,7 @@ class CreateAccountHandlerTest {
         const val URL = "http://localhost:7000/accounts"
 
         private lateinit var javalin: Javalin
-        private lateinit var clientRepository: ClientRepository
+        private lateinit var customerRepository: CustomerRepository
         private lateinit var accountRepository: AccountRepository
         private lateinit var accountCreator: AccountCreator
         private lateinit var createAccountHandler: CreateAccountHandler
@@ -35,12 +35,12 @@ class CreateAccountHandlerTest {
             val revolutConfig = RevolutConfig()
             UnirestTestConfig.init(revolutConfig.objectMapper)
 
-            clientRepository = InMemoryClientRepository()
+            customerRepository = InMemoryCustomerRepository()
             accountRepository = InMemoryAccountRepository()
             accountCreator = AccountCreatorImpl(accountRepository)
             createAccountHandler = CreateAccountHandler(
                 accountCreator,
-                clientRepository
+                customerRepository
             )
 
             javalin = revolutConfig.javalin.start()
@@ -57,14 +57,14 @@ class CreateAccountHandlerTest {
 
     @Test
     fun `should create Account and return created Account for valid request`() {
-        val nikolay = Clients.nikolay(0)
-        clientRepository.addClient(nikolay)
+        val nikolay = Customers.nikolay(0)
+        customerRepository.addCustomer(nikolay)
 
         //shouldn't have any accounts yet
         assertTrue(accountRepository.getAccounts(nikolay).isEmpty())
 
         val response = post()
-            .body(RequestBody(clientId = 0, startingMoney = 100.USD))
+            .body(RequestBody(customerId = 0, startingMoney = 100.USD))
             .asObject(ResponseBody::class.java)
 
         assertEquals(OK_200, response.status)
@@ -73,9 +73,9 @@ class CreateAccountHandlerTest {
     }
 
     @Test
-    fun `should return error when clientId isn't present in repository`() {
+    fun `should return error when customerId isn't present in repository`() {
         val response = post()
-            .body(RequestBody(clientId = 1000, startingMoney = 100.USD))
+            .body(RequestBody(customerId = 1000, startingMoney = 100.USD))
             .asString()
 
         assertEquals(BAD_REQUEST_400, response.status)

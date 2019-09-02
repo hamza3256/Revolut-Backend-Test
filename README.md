@@ -14,12 +14,12 @@ Run: `java -jar build/libs/revolut-backend-1.0-SNAPSHOT.jar`
 
 ---
 
-### Clients:
-Creat a client: `POST` to `/clients` with body of form:
+### Customers:
+Creat a customer: `POST` to `/customers` with body of form:
 ```
 {
-    "name": "The name of the client",
-    "surname": "The surname of the client"
+    "name": "The name of the customer",
+    "surname": "The surname of the customer"
 }
 ```
 
@@ -29,7 +29,7 @@ Creat a client: `POST` to `/clients` with body of form:
 ##### Create Vlad Yatsenko:
 
 `curl --request POST
-   --url http://localhost:7000/clients
+   --url http://localhost:7000/customers
    --header 'content-type: application/json'
    --data '{
  	"name": "Vlad",
@@ -38,7 +38,7 @@ Creat a client: `POST` to `/clients` with body of form:
 
 ```
 {
-  "client": {
+  "customer": {
     "id": 0,
     "name": "Vlad",
     "surname": "Yatsenko"
@@ -48,7 +48,7 @@ Creat a client: `POST` to `/clients` with body of form:
 
 ##### Create Nikolay Storonsky
 `curl --request POST
-   --url http://localhost:7000/clients
+   --url http://localhost:7000/customers
    --header 'content-type: application/json'
    --data '{
  	"name": "Nikolay",
@@ -57,7 +57,7 @@ Creat a client: `POST` to `/clients` with body of form:
  
  ```
  {
-   "client": {
+   "customer": {
      "id": 1,
      "name": "Nikolay",
      "surname": "Storonsky"
@@ -69,10 +69,10 @@ Creat a client: `POST` to `/clients` with body of form:
 
 
 ### Accounts:
-Create an account for a Client: `POST` to `/accounts` with body of form:
+Create an account for a Customer: `POST` to `/accounts` with body of form:
 ```
 {
-"clientId": "0 ",
+"customerId": "0 ",
 "startingMoney": {
     "amount": "1000",
     "currency": "USD"
@@ -87,7 +87,7 @@ Create an account for a Client: `POST` to `/accounts` with body of form:
    --url http://localhost:7000/accounts
    --header 'content-type: application/json'
    --data '{
- 	"clientId": "0",
+ 	"customer": "0",
  	"startingMoney": {
  		"amount": "1000",
  		"currency": "USD"
@@ -98,7 +98,7 @@ Create an account for a Client: `POST` to `/accounts` with body of form:
 {
   "account": {
     "id": 0,
-    "client": {
+    "customer": {
       "id": 0,
       "name": "Vlad",
       "surname": "Yatsenko"
@@ -118,7 +118,7 @@ Create an account for a Client: `POST` to `/accounts` with body of form:
     --url http://localhost:7000/accounts 
     --header 'content-type: application/json' 
     --data '{
-  	"clientId": "1",
+  	"customerId": "1",
   	"startingMoney": {
   		"amount": "5000",
   		"currency": "USD"
@@ -129,7 +129,7 @@ Create an account for a Client: `POST` to `/accounts` with body of form:
   {
     "account": {
       "id": 1,
-      "client": {
+      "customer": {
         "id": 1,
         "name": "Nikolay",
         "surname": "Storonsky"
@@ -175,7 +175,7 @@ To transfer money between accounts: `POST` to `/transfer` with body of form:
    "fromAccountState": {
      "account": {
        "id": 0,
-       "client": {
+       "customer": {
          "id": 0,
          "name": "Vlad",
          "surname": "Yatsenko"
@@ -194,7 +194,7 @@ To transfer money between accounts: `POST` to `/transfer` with body of form:
    "toAccountState": {
      "account": {
        "id": 2,
-       "client": {
+       "customer": {
          "id": 1,
          "name": "Nikolay",
          "surname": "Storonsky"
@@ -232,7 +232,7 @@ To transfer money between accounts: `POST` to `/transfer` with body of form:
     "fromAccountState": {
       "account": {
         "id": 2,
-        "client": {
+        "customer": {
           "id": 1,
           "name": "Nikolay",
           "surname": "Storonsky"
@@ -251,7 +251,7 @@ To transfer money between accounts: `POST` to `/transfer` with body of form:
     "toAccountState": {
       "account": {
         "id": 0,
-        "client": {
+        "customer": {
           "id": 0,
           "name": "Vlad",
           "surname": "Yatsenko"
