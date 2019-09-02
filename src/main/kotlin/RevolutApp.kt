@@ -61,6 +61,7 @@ class RevolutApp {
     }
 
     private fun addDebugBankCustomer(customerCreator: CustomerCreator, accountCreator: AccountCreator, transactionRepository: TransactionRepository) {
+        //we don't have an API for depositing money into an Account, so to bypass this add 3 Accounts with USD, GBP, and EUR which we can transfer money from
         logger.debug { "ADDING DEBUG BANK CUSTOMER & ACCOUNTS" }
         //Add a 'Bank' Customer & Account with 1 million EUR, USD, GBP
         val bank = customerCreator.create(CustomerCreator.Request(name = "Bank", surname = "Revolut"))
