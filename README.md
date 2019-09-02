@@ -39,7 +39,7 @@ Create Vlad Yatsenko:
 ```
 {  
    "customer":{  
-      "id":0,
+      "id":1,
       "name":"Vlad",
       "surname":"Yatsenko"
    }
@@ -58,7 +58,7 @@ Create Nikolay Storonsky:
  ```
 {  
    "customer":{  
-      "id":1,
+      "id":2,
       "name":"Nikolay",
       "surname":"Storonsky"
    }
@@ -73,67 +73,50 @@ Create Nikolay Storonsky:
 `POST` to `/customers/{customer_id}/accounts` with body of form:
 ```
 {  
-   "startingMoney":{  
-      "amount":"1000",
-      "currency":"USD"
-   }
+   "currency":"USD"
 }
 ```
 
 ##### Examples:
-Create an Account with $1000 for Vlad Yatsenko:  
+Create a USD  Account for Vlad Yatsenko:  
 `curl --request POST
-   --url http://localhost:7000/customers/0/accounts
+   --url http://localhost:7000/customers/1/accounts
    --header 'content-type: application/json'
    --data '{
- 	"startingMoney": {
- 		"amount": "1000",
- 		"currency": "USD"
- 	}
+ 	"currency": "USD"
  }'`
 
 ```
 {  
    "account":{  
-      "id":0,
+      "id":3,
       "customer":{  
-         "id":0,
+         "id":1,
          "name":"Vlad",
          "surname":"Yatsenko"
-      },
-      "startingMoney":{  
-         "amount":1000,
-         "currency":"USD"
       },
       "currency":"USD"
    }
 }
 ```
  
-Create an Account with $5000 for Nikolay Yatsenko:
+Create a USD Account for Nikolay Yatsenko:
  
  `curl --request POST 
-    --url http://localhost:7000/customers/1/accounts 
+    --url http://localhost:7000/customers/2/accounts 
     --header 'content-type: application/json' 
     --data '{
-  	"startingMoney": {
-  		"amount": "5000",
-  		"currency": "USD"
-  	}
+  	"currency": "USD"
   }'`
 
   ```
 {  
    "account":{  
-      "id":1,
+      "id":4,
       "customer":{  
-         "id":1,
+         "id":2,
          "name":"Nikolay",
          "surname":"Storonsky"
-      },
-      "startingMoney":{  
-         "amount":5000,
-         "currency":"USD"
       },
       "currency":"USD"
    }
@@ -146,26 +129,22 @@ Create an Account with $5000 for Nikolay Yatsenko:
 ##### Example:
 
 Get account status for Vlad Yatsenko's account:  
-`curl --request GET --url http://localhost:7000/accounts/0/state`
+`curl --request GET --url http://localhost:7000/accounts/3/state`
 
 ```
 {  
    "accountState":{  
       "account":{  
-         "id":0,
+         "id":3,
          "customer":{  
-            "id":0,
+            "id":1,
             "name":"Vlad",
             "surname":"Yatsenko"
-         },
-         "startingMoney":{  
-            "amount":1000,
-            "currency":"USD"
          },
          "currency":"USD"
       },
       "money":{  
-         "amount":1000,
+         "amount":0,
          "currency":"USD"
       }
    }
@@ -187,13 +166,42 @@ Get account status for Vlad Yatsenko's account:
 }
 ```
 ##### Examples:
-Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:    
+
+###### Note: in this demo, a 'Bank' is automatically added at startup as a customer with 3 Accounts (EUR, GBP, USD) with 1 million in each.
+###### Therefore we can transfer $1000 each to Nikolay & Vlad:  
 `curl --request POST 
    --url http://localhost:7000/transfers 
    --header 'content-type: application/json' 
    --data '{
  	"fromAccountId": 0,
- 	"toAccountId": 1,
+ 	"toAccountId": 3,
+ 	"money":{
+ 		"amount"	: "1000",
+ 		"currency": "USD"
+ 	}
+ }'`  
+ 
+`curl --request POST 
+   --url http://localhost:7000/transfers 
+   --header 'content-type: application/json' 
+   --data '{
+ 	"fromAccountId": 0,
+ 	"toAccountId": 4,
+ 	"money":{
+ 		"amount"	: "1000",
+ 		"currency": "USD"
+ 	}
+ }'`
+
+---
+
+Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:    
+`curl --request POST 
+   --url http://localhost:7000/transfers 
+   --header 'content-type: application/json' 
+   --data '{
+ 	"fromAccountId": 3,
+ 	"toAccountId": 4,
  	"money":{
  		"amount"	: "10",
  		"currency": "USD"
@@ -203,18 +211,14 @@ Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:
  ```
 {  
    "transaction":{  
-      "id":0,
-      "mirrorTransactionId":1,
+      "id":4,
+      "mirrorTransactionId":5,
       "account":{  
-         "id":0,
+         "id":3,
          "customer":{  
-            "id":0,
+            "id":1,
             "name":"Vlad",
             "surname":"Yatsenko"
-         },
-         "startingMoney":{  
-            "amount":1000,
-            "currency":"USD"
          },
          "currency":"USD"
       },
@@ -231,8 +235,8 @@ Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:
     --url http://localhost:7000/transfers 
     --header 'content-type: application/json' 
     --data '{
-  	"fromAccountId": 1,
-  	"toAccountId": 0,
+  	"fromAccountId": 4,
+  	"toAccountId": 3,
   	"money":{
   		"amount"	: "10",
   		"currency": "USD"
@@ -242,18 +246,14 @@ Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:
   ```
 {  
    "transaction":{  
-      "id":2,
-      "mirrorTransactionId":3,
+      "id":6,
+      "mirrorTransactionId":7,
       "account":{  
-         "id":1,
+         "id":4,
          "customer":{  
-            "id":1,
+            "id":2,
             "name":"Nikolay",
             "surname":"Storonsky"
-         },
-         "startingMoney":{  
-            "amount":5000,
-            "currency":"USD"
          },
          "currency":"USD"
       },

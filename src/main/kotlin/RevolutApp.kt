@@ -2,21 +2,21 @@
 
 import customers.*
 import customers.accounts.*
-import customers.accounts.transactions.InMemoryTransactionRepository
-import customers.accounts.transactions.TransactionCreator
-import customers.accounts.transactions.TransactionCreatorImpl
-import customers.accounts.transactions.TransactionRepository
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import customers.accounts.transactions.*
 import io.javalin.Javalin
 import io.javalin.plugin.json.JavalinJackson
+import money.Money
 import org.slf4j.LoggerFactory
 import transfer.CreateTransferHandler
 import transfer.MoneyTransferer
 import transfer.MoneyTransfererImpl
+import utils.debug
 import utils.info
+import java.util.*
 
 fun main() {
     RevolutApp()
@@ -53,8 +53,25 @@ class RevolutApp {
         val createTransferHandler = CreateTransferHandler(accountRepository, moneyTransferer)
         createTransferHandler.attach(javalin)
 
+        //to make it easier to show everything works, we create some Accounts with GBP, EUR, USD
+        addDebugBankCustomer(customerCreator, accountCreator, transactionRepository)
+
         logger.info { "Starting server..." }
         javalin.start(7000)
+    }
+
+    private fun addDebugBankCustomer(customerCreator: CustomerCreator, accountCreator: AccountCreator, transactionRepository: TransactionRepository) {
+        logger.debug { "ADDING DEBUG BANK CUSTOMER & ACCOUNTS" }
+        //Add a 'Bank' Customer & Account with 1 million EUR, USD, GBP
+        val bank = customerCreator.create(CustomerCreator.Request(name = "Bank", surname = "Revolut"))
+
+        val usdAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("USD")))
+        val gbpAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("GBP")))
+        val eurAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("EUR")))
+
+        transactionRepository.add(Transaction(id = -1, account = usdAccount, money = Money(1_000_000.toBigDecimal(), Currency.getInstance("USD"))))
+        transactionRepository.add(Transaction(id = -2, account = gbpAccount, money = Money(1_000_000.toBigDecimal(), Currency.getInstance("GBP"))))
+        transactionRepository.add(Transaction(id = -3, account = eurAccount, money = Money(1_000_000.toBigDecimal(), Currency.getInstance("EUR"))))
     }
 }
 
