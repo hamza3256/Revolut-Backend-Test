@@ -66,7 +66,7 @@ class RevolutConfig {
         .setVisibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
         .setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE)
 
-    val javalin = Javalin.create()
+    val javalin: Javalin = Javalin.create()
 
     init {
         JavalinJackson.configure(objectMapper)

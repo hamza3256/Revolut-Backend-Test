@@ -11,6 +11,7 @@ import customers.transactions.InMemoryTransactionRepository
 import customers.transactions.TransactionCreatorImpl
 import customers.transactions.TransactionRepository
 import io.javalin.Javalin
+import kong.unirest.HttpRequestWithBody
 import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
@@ -247,5 +248,5 @@ class CreateTransferHandlerTest {
         assertEquals(BAD_REQUEST_400, response.status)
     }
 
-    fun post() = Unirest.post(URL)
+    private fun post(): HttpRequestWithBody = Unirest.post(URL)
 }
