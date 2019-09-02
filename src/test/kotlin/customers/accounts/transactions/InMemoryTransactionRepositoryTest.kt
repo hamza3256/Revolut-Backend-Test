@@ -1,4 +1,4 @@
-package customers.transactions
+package customers.accounts.transactions
 
 import Customers
 import Currencies.GBP

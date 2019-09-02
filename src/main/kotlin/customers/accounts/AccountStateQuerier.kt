@@ -1,6 +1,6 @@
 package customers.accounts
 
-import customers.transactions.TransactionRepository
+import customers.accounts.transactions.TransactionRepository
 import money.CurrencyMismatchException
 import money.Money
 import money.NegativeMoneyException

@@ -2,10 +2,10 @@
 
 import customers.*
 import customers.accounts.*
-import customers.transactions.InMemoryTransactionRepository
-import customers.transactions.TransactionCreator
-import customers.transactions.TransactionCreatorImpl
-import customers.transactions.TransactionRepository
+import customers.accounts.transactions.InMemoryTransactionRepository
+import customers.accounts.transactions.TransactionCreator
+import customers.accounts.transactions.TransactionCreatorImpl
+import customers.accounts.transactions.TransactionRepository
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.databind.ObjectMapper

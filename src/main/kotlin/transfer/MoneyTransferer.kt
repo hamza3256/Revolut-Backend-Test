@@ -1,7 +1,7 @@
 package transfer
 
 import customers.accounts.*
-import customers.transactions.TransactionCreator
+import customers.accounts.transactions.TransactionCreator
 import money.Money
 import org.slf4j.LoggerFactory
 import transfer.TransferResult.*

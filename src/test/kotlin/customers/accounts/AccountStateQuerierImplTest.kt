@@ -2,9 +2,9 @@ package customers.accounts
 
 import Customers
 import USD
-import customers.transactions.InMemoryTransactionRepository
-import customers.transactions.Transaction
-import customers.transactions.TransactionRepository
+import customers.accounts.transactions.InMemoryTransactionRepository
+import customers.accounts.transactions.Transaction
+import customers.accounts.transactions.TransactionRepository
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
