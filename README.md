@@ -7,9 +7,11 @@ for money transfers between accounts.
 ---
 
 ### Building/Running:
+
 Run tests: `./gradlew clean test --info`  
 Build: `./gradlew build`  
 Run: `java -jar build/libs/revolut-backend-1.0-SNAPSHOT.jar`
+
 ---
 
 ### Clients:
