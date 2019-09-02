@@ -2,9 +2,10 @@ package transfer
 
 import customers.accounts.*
 import customers.transactions.TransactionCreator
-import logging.verbose
 import money.Money
+import org.slf4j.LoggerFactory
 import transfer.TransferResult.*
+import utils.info
 
 interface MoneyTransferer {
 
@@ -40,16 +41,18 @@ class MoneyTransfererImpl(
     private val accountStateQuerier: AccountStateQuerier
 ) : MoneyTransferer {
 
+    private val logger = LoggerFactory.getLogger("MoneyTransfererImpl")
+
     override fun transfer(money: Money, from: Account, to: Account): TransferResult {
-        verbose { "Money transfer requested: money=$money, from=$from, to=$to" }
+        logger.info { "Money transfer requested: money=$money, from=$from, to=$to" }
 
         if (from.id == to.id) {
-            verbose { "Requested transfer between same account $from" }
+            logger.info { "Requested transfer between same account $from" }
             return SameAccount
         }
 
         if (money.isNegative()) {
-            verbose { "Cannot transfer negative money=$money" }
+            logger.info { "Cannot transfer negative money=$money" }
             return NegativeMoney
         }
 
@@ -57,26 +60,26 @@ class MoneyTransfererImpl(
 
         //check if from is correct currency
         if(from.currency != currency){
-            verbose { "from has incorrect currency. Expected=${currency.currencyCode} but got ${from.currency.currencyCode}" }
+            logger.info { "from has incorrect currency. Expected=${currency.currencyCode} but got ${from.currency.currencyCode}" }
             return CurrencyMismatch
         }
 
         //check if to is correct currency
         if(to.currency != currency){
-            verbose { "to has incorrect currency. Expected=${currency.currencyCode} but got ${to.currency.currencyCode}" }
+            logger.info { "to has incorrect currency. Expected=${currency.currencyCode} but got ${to.currency.currencyCode}" }
             return CurrencyMismatch
         }
 
         var fromAccountState = accountStateQuerier.getCurrentState(from)
 
         if (money.isZero()) {
-            verbose { "Requested to transfer no money, ignoring request" }
+            logger.info { "Requested to transfer no money, ignoring request" }
             val toAccountState = accountStateQuerier.getCurrentState(to)
             return Success(fromAccountState = fromAccountState, toAccountState = toAccountState)
         }
 
         return if (fromAccountState hasFunds money) {
-            verbose { "$from has sufficient funds to send $money. Transferring to $to" }
+            logger.info { "$from has sufficient funds to send $money. Transferring to $to" }
 
             val request = TransactionCreator.Request(money, from = from, to = to)
             transactionCreator.createTransferTransactions(request)
@@ -85,7 +88,7 @@ class MoneyTransfererImpl(
             val toAccountState = accountStateQuerier.getCurrentState(to)
             Success(fromAccountState = fromAccountState, toAccountState = toAccountState)
         } else {
-            verbose { "$from has insufficient funds to transfer $money to $to" }
+            logger.info { "$from has insufficient funds to transfer $money to $to" }
             InsufficientFunds
         }
     }

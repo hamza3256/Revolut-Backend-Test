@@ -12,16 +12,19 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.javalin.Javalin
 import io.javalin.plugin.json.JavalinJackson
-import logging.info
+import org.slf4j.LoggerFactory
 import transfer.CreateTransferHandler
 import transfer.MoneyTransferer
 import transfer.MoneyTransfererImpl
+import utils.info
 
 fun main() {
     RevolutApp()
 }
 
 class RevolutApp {
+
+    private val logger = LoggerFactory.getLogger("RevolutApp")
 
     init {
         val javalin = RevolutConfig().javalin
@@ -48,7 +51,7 @@ class RevolutApp {
         val createTransferHandler = CreateTransferHandler(accountRepository, moneyTransferer)
         createTransferHandler.attach(javalin)
 
-        info { "Starting server..." }
+        logger.info { "Starting server..." }
         javalin.start(7000)
     }
 }

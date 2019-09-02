@@ -12,20 +12,22 @@ import customers.accounts.CreateAccountHandler.Result.Success
 import customers.getCustomerOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
-import logging.info
-import logging.verbose
 import money.Money
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
+import org.slf4j.LoggerFactory
+import utils.info
 
 class CreateAccountHandler(
     private val accountCreator: AccountCreator,
     private val customerRepository: CustomerRepository
 ) : BaseHandler {
 
+    private val logger = LoggerFactory.getLogger("CreateAccountHandler")
+
     override fun attach(app: Javalin) {
         app.post(PATH, this)
-        info { "Attached CreateAccountHandler" }
+        logger.info { "Attached CreateAccountHandler" }
     }
 
     override fun handle(ctx: Context) {
@@ -35,11 +37,11 @@ class CreateAccountHandler(
 
         when (result) {
             is Success -> {
-                verbose { "CreateAccount processed successfully" }
+                logger.info { "CreateAccount processed successfully" }
                 ctx.json(result.responseBody)
             }
             is Failed -> {
-                verbose { "Failed to create account" }
+                logger.info { "Failed to create account" }
                 ctx.result(result.message)
             }
         }

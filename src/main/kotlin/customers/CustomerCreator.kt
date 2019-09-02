@@ -1,7 +1,8 @@
 package customers
 
-import logging.error
-import logging.info
+import org.slf4j.LoggerFactory
+import utils.error
+import utils.info
 import java.util.concurrent.atomic.AtomicLong
 
 interface CustomerCreator {
@@ -22,11 +23,13 @@ interface CustomerCreator {
 
 class CustomerCreatorImpl(private val customerRepository: CustomerRepository) : CustomerCreator {
 
+    private val logger = LoggerFactory.getLogger("CustomerCreatorImpl")
+
     private val nextId = AtomicLong()
 
     override fun create(request: CustomerCreator.Request): Customer {
         with(request) {
-            info { "Creating customer for request $this" }
+            logger.info { "Creating customer for request $this" }
             return Customer(
                 id = nextId.getAndIncrement(),
                 name = name,
@@ -35,7 +38,7 @@ class CustomerCreatorImpl(private val customerRepository: CustomerRepository) : 
                 //insert into repository
                 if (customerRepository.addCustomer(customer).not()) {
                     //this shouldn't ever happen -> we create a new id each time we create a new customer instance
-                    error { "Failed to add customer to repository for request=$request, customer=$customer" }
+                    logger.error { "Failed to add customer to repository for request=$request, customer=$customer" }
                     throw RuntimeException("Could not create customer=$customer as it already exists in the repository")
                 }
             }

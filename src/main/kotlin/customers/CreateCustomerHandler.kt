@@ -5,13 +5,16 @@ import customers.CreateCustomer.ResponseBody
 import customers.CreateCustomerHandler.Result.Success
 import io.javalin.Javalin
 import io.javalin.http.Context
-import logging.verbose
 import org.eclipse.jetty.http.HttpStatus.OK_200
+import org.slf4j.LoggerFactory
+import utils.info
 
 class CreateCustomerHandler(private val customerCreator: CustomerCreator) : BaseHandler {
 
+    private val logger = LoggerFactory.getLogger("CreateCustomerHandler")
+
     override fun attach(app: Javalin) {
-        verbose { "Attaching CreateCustomerHandler" }
+        logger.info { "Attaching CreateCustomerHandler" }
         app.post(CreateCustomer.PATH, this)
     }
 
@@ -26,11 +29,11 @@ class CreateCustomerHandler(private val customerCreator: CustomerCreator) : Base
     }
 
     private fun handleWithResult(ctx: Context): Success {
-        verbose { "Requested to create new Customer" }
+        logger.info { "Requested to create new Customer" }
         val body = ctx.body<CreateCustomer.RequestBody>()
         val createCustomerRequest = CustomerCreator.Request(name = body.name, surname = body.surname)
         val customer = customerCreator.create(createCustomerRequest)
-        verbose { "Created $customer for $body" }
+        logger.info { "Created $customer for $body" }
         return Success(ResponseBody(customer))
     }
 

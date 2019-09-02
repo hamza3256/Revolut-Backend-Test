@@ -1,6 +1,7 @@
 package customers
 
-import logging.info
+import org.slf4j.LoggerFactory
+import utils.info
 
 interface CustomerRepository {
 
@@ -28,15 +29,18 @@ interface CustomerRepository {
  * Project requirements state to use an in-memory datastore. Usually it would be persisted into an SQL database or similar
  * */
 class InMemoryCustomerRepository : CustomerRepository {
+
+    private val logger = LoggerFactory.getLogger("InMemoryCustomerRepository")
+
     private val idsToCustomers = mutableMapOf<Long, Customer>()
 
     override fun addCustomer(customer: Customer): Boolean {
         return if (customer.id in idsToCustomers) {
-            info { "$customer is already present in the repository" }
+            logger.info { "$customer is already present in the repository" }
             false
         } else {
             idsToCustomers[customer.id] = customer
-            info { "$customer added to the repository" }
+            logger.info { "$customer added to the repository" }
             true
         }
     }
