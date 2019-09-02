@@ -15,7 +15,8 @@ Run: `java -jar build/libs/revolut-backend-1.0-SNAPSHOT.jar`
 ---
 
 ### Customers:
-Creat a customer: `POST` to `/customers` with body of form:
+#### Creat a customer:  
+`POST` to `/customers` with body of form:
 ```
 {
     "name": "The name of the customer",
@@ -24,10 +25,9 @@ Creat a customer: `POST` to `/customers` with body of form:
 ```
 
 
-#### Example:
+##### Examples:
 
-##### Create Vlad Yatsenko:
-
+Create Vlad Yatsenko:  
 `curl --request POST
    --url http://localhost:7000/customers
    --header 'content-type: application/json'
@@ -46,7 +46,7 @@ Creat a customer: `POST` to `/customers` with body of form:
 }
 ```
 
-##### Create Nikolay Storonsky
+Create Nikolay Storonsky:  
 `curl --request POST
    --url http://localhost:7000/customers
    --header 'content-type: application/json'
@@ -69,7 +69,8 @@ Creat a customer: `POST` to `/customers` with body of form:
 
 
 ### Accounts:
-Create an account for a Customer: `POST` to `/customers/{customer_id}/accounts` with body of form:
+#### Create an account for a Customer:  
+`POST` to `/customers/{customer_id}/accounts` with body of form:
 ```
 {
 "startingMoney": {
@@ -79,9 +80,8 @@ Create an account for a Customer: `POST` to `/customers/{customer_id}/accounts` 
 }
 ```
 
-#### Example:
-##### Create a USD account with $1000 for Vlad Yatsenko:
-
+##### Example:
+Create an Account with $1000 for Vlad Yatsenko:  
 `curl --request POST
    --url http://localhost:7000/customers/0/accounts
    --header 'content-type: application/json'
@@ -110,7 +110,7 @@ Create an account for a Customer: `POST` to `/customers/{customer_id}/accounts` 
 }
 ```
  
-#####  Create a USD account with $5000 for Nikolay Yatsenko:
+Create an Account with $5000 for Nikolay Yatsenko:
  
  `curl --request POST 
     --url http://localhost:7000/customers/1/accounts 
@@ -140,10 +140,12 @@ Create an account for a Customer: `POST` to `/customers/{customer_id}/accounts` 
   }
   ```
   
-Get state of an Account: `GET` to `/accounts/{account_id}`
+#### Get state of an Account:
+`GET` to `/accounts/{account_id}`
 
-#### Example:
-##### Get account status for Vlad Yatsenko's account:
+##### Example:
+
+Get account status for Vlad Yatsenko's account:  
 `curl --request GET --url http://localhost:7000/accounts/0`
 
 ```
@@ -172,7 +174,8 @@ Get state of an Account: `GET` to `/accounts/{account_id}`
 
   
 ### Transfer
-To transfer money between accounts: `POST` to `/transfer` with body of form:
+#### Transfer money between accounts:  
+`POST` to `/transfer` with body of form:
 ```
 {
     "fromAccountId": 0,
@@ -183,9 +186,8 @@ To transfer money between accounts: `POST` to `/transfer` with body of form:
     }
 }
 ```
-#### Example:
-##### Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:
-
+##### Example:
+Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:    
 `curl --request POST 
    --url http://localhost:7000/transfers 
    --header 'content-type: application/json' 
@@ -241,8 +243,7 @@ To transfer money between accounts: `POST` to `/transfer` with body of form:
  }
  ```
  
-##### Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:
- 
+Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:   
  `curl --request POST 
     --url http://localhost:7000/transfers 
     --header 'content-type: application/json' 
