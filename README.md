@@ -6,6 +6,24 @@ for money transfers between accounts.
 
 ---
 
+### Notes on my implementation:
+1. 100% Kotlin 1.3.50 (targeting Java 1.8)
+2. Javalin as a web framework (since Revolut is on their list of companies using it)
+3. Jackson for JSON
+4. JUnit4 for unit testing
+5. Unirest for testing REST API calls
+
+Since depositing money wasn't part of the requirements, the app automatically adds a 'Bank' Customer & three Accounts (USD, GBP, EUR) with 1 million in each Account.
+You can use these accounts to transfer money to other, new Accounts. [Click here to see the IDs](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/b662efd2a4dfd0d847e2d497f7dd35be2ea51069/src/main/kotlin/RevolutApp.kt#L63)
+
+Creators, such as [CustomerCreator](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/CustomerCreator.kt) are responsible for creating and storing entities into a repository for a Request. Most importantly, they provide the ID for new entities.  
+Repositories, such as [TransactionRepository](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/accounts/transactions/TransactionRepository.kt) expose CRUD operations for entities.  
+Handlers, such as [CreateAccountHandler](https://github.com/maciej-kaznowski/Revolut-Backend-Test/blob/master/src/main/kotlin/customers/accounts/CreateAccountHandler.kt)  are responsible for handling REST API calls.
+
+DI wasn't used as I mainly use [Dagger2](https://github.com/google/dagger) which is more Android-specific
+
+---
+
 ### Building/Running:
 
 Run tests: `./gradlew clean test --info`  
