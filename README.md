@@ -18,9 +18,9 @@ Run: `java -jar build/libs/revolut-backend-1.0-SNAPSHOT.jar`
 #### Creat a customer:  
 `POST` to `/customers` with body of form:
 ```
-{
-    "name": "The name of the customer",
-    "surname": "The surname of the customer"
+{  
+   "name":"The name of the customer",
+   "surname":"The surname of the customer"
 }
 ```
 
@@ -37,12 +37,12 @@ Create Vlad Yatsenko:
  }'`
 
 ```
-{
-  "customer": {
-    "id": 0,
-    "name": "Vlad",
-    "surname": "Yatsenko"
-  }
+{  
+   "customer":{  
+      "id":0,
+      "name":"Vlad",
+      "surname":"Yatsenko"
+   }
 }
 ```
 
@@ -56,13 +56,13 @@ Create Nikolay Storonsky:
  }'`
  
  ```
- {
-   "customer": {
-     "id": 1,
-     "name": "Nikolay",
-     "surname": "Storonsky"
+{  
+   "customer":{  
+      "id":1,
+      "name":"Nikolay",
+      "surname":"Storonsky"
    }
- }
+}
  ```
 
 
@@ -72,11 +72,11 @@ Create Nikolay Storonsky:
 #### Create an account for a Customer:  
 `POST` to `/customers/{customer_id}/accounts` with body of form:
 ```
-{
-"startingMoney": {
-    "amount": "1000",
-    "currency": "USD"
-    }
+{  
+   "startingMoney":{  
+      "amount":"1000",
+      "currency":"USD"
+   }
 }
 ```
 
@@ -93,20 +93,20 @@ Create an Account with $1000 for Vlad Yatsenko:
  }'`
 
 ```
-{
-  "account": {
-    "id": 0,
-    "customer": {
-      "id": 0,
-      "name": "Vlad",
-      "surname": "Yatsenko"
-    },
-    "startingMoney": {
-      "amount": 1000,
-      "currency": "USD"
-    },
-    "currency": "USD"
-  }
+{  
+   "account":{  
+      "id":0,
+      "customer":{  
+         "id":0,
+         "name":"Vlad",
+         "surname":"Yatsenko"
+      },
+      "startingMoney":{  
+         "amount":1000,
+         "currency":"USD"
+      },
+      "currency":"USD"
+   }
 }
 ```
  
@@ -123,21 +123,21 @@ Create an Account with $5000 for Nikolay Yatsenko:
   }'`
 
   ```
-  {
-    "account": {
-      "id": 1,
-      "customer": {
-        "id": 1,
-        "name": "Nikolay",
-        "surname": "Storonsky"
+{  
+   "account":{  
+      "id":1,
+      "customer":{  
+         "id":1,
+         "name":"Nikolay",
+         "surname":"Storonsky"
       },
-      "startingMoney": {
-        "amount": 5000,
-        "currency": "USD"
+      "startingMoney":{  
+         "amount":5000,
+         "currency":"USD"
       },
-      "currency": "USD"
-    }
-  }
+      "currency":"USD"
+   }
+}
   ```
   
 #### Get state of an Account:
@@ -149,26 +149,26 @@ Get account status for Vlad Yatsenko's account:
 `curl --request GET --url http://localhost:7000/accounts/0/state`
 
 ```
-{
-    "accountState": {
-        "account":{
+{  
+   "accountState":{  
+      "account":{  
+         "id":0,
+         "customer":{  
             "id":0,
-            "customer":{
-                "id":0,
-                "name":"Vlad",
-                "surname":"Yatsenko"
-            },
-            "startingMoney":{
-                "amount":1000,
-                "currency":"USD"
-            },
-            "currency":"USD"
-        },
-        "money":{
+            "name":"Vlad",
+            "surname":"Yatsenko"
+         },
+         "startingMoney":{  
             "amount":1000,
             "currency":"USD"
-        }
-    }
+         },
+         "currency":"USD"
+      },
+      "money":{  
+         "amount":1000,
+         "currency":"USD"
+      }
+   }
 }
 ```
 
@@ -177,13 +177,13 @@ Get account status for Vlad Yatsenko's account:
 #### Transfer money between accounts:  
 `POST` to `/transfer` with body of form:
 ```
-{
-    "fromAccountId": 0,
-    "fromAccountId": 1,
-    "money":{
-        "amount": "10",
-        "currency": "USD"
-    }
+{  
+   "fromAccountId":0,
+   "toAccountId":1,
+   "money":{  
+      "amount":"10",
+      "currency":"USD"
+   }
 }
 ```
 ##### Examples:
@@ -240,27 +240,27 @@ Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:
   }'`
 
   ```
- {  
-    "transaction":{  
-       "id":2,
-       "mirrorTransactionId":3,
-       "account":{  
-          "id":1,
-          "customer":{  
-             "id":1,
-             "name":"Nikolay",
-             "surname":"Storonsky"
-          },
-          "startingMoney":{  
-             "amount":5000,
-             "currency":"USD"
-          },
-          "currency":"USD"
-       },
-       "money":{  
-          "amount":-10,
-          "currency":"USD"
-       }
-    }
- }
+{  
+   "transaction":{  
+      "id":2,
+      "mirrorTransactionId":3,
+      "account":{  
+         "id":1,
+         "customer":{  
+            "id":1,
+            "name":"Nikolay",
+            "surname":"Storonsky"
+         },
+         "startingMoney":{  
+            "amount":5000,
+            "currency":"USD"
+         },
+         "currency":"USD"
+      },
+      "money":{  
+         "amount":-10,
+         "currency":"USD"
+      }
+   }
+}
   ```
