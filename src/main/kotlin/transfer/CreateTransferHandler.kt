@@ -2,8 +2,8 @@ package transfer
 
 import BaseHandler
 import customers.accounts.AccountRepository
-import customers.accounts.AccountState
 import customers.accounts.getAccountOrElse
+import customers.accounts.transactions.Transaction
 import io.javalin.Javalin
 import io.javalin.http.Context
 import money.Money
@@ -65,10 +65,7 @@ class CreateTransferHandler(
             return when (val transferResult = transferer.transfer(money, from = fromAccount, to = toAccount)) {
                 is TransferResult.Success -> {
                     logger.info { "Successfully completed transfer for request $this" }
-                    val responseBody = ResponseBody(
-                        fromAccountState = transferResult.fromAccountState,
-                        toAccountState = transferResult.toAccountState
-                    )
+                    val responseBody = ResponseBody(transaction = transferResult.fromTransaction)
                     Success(responseBody)
                 }
                 else -> {
@@ -88,8 +85,5 @@ object CreateTransfer {
         val money: Money
     )
 
-    data class ResponseBody(
-        val fromAccountState: AccountState,
-        val toAccountState: AccountState
-    )
+    data class ResponseBody(val transaction: Transaction)
 }

@@ -1,6 +1,7 @@
 package transfer
 
 import customers.accounts.*
+import customers.accounts.transactions.Transaction
 import customers.accounts.transactions.TransactionCreator
 import money.Money
 import org.slf4j.LoggerFactory
@@ -10,8 +11,7 @@ import utils.info
 interface MoneyTransferer {
 
     /**
-     * Transfers a positive amount of [money] from account [from] to another account [to].
-     * If [money] is zero, then [Success] is immediately returned, but not transactions occur.
+     * Transfers a non-negative amount of [money] from account [from] to another account [to].
      * Attempting to transfer money between the same accounts will be ignored and a [SameAccount] result will be returned.
      * If the source account doesn't have enough money, then it will return [TransferResult.InsufficientFunds]
      * If [money] is negative, then [NegativeMoney] is returned
@@ -28,7 +28,7 @@ interface MoneyTransferer {
 
 sealed class TransferResult {
 
-    data class Success(val fromAccountState: AccountState, val toAccountState: AccountState) : TransferResult()
+    data class Success(val fromTransaction: Transaction, val toTransaction: Transaction) : TransferResult()
     object SameAccount : TransferResult()
     object InsufficientFunds : TransferResult()
     object NegativeMoney : TransferResult()
@@ -70,23 +70,15 @@ class MoneyTransfererImpl(
             return CurrencyMismatch
         }
 
-        var fromAccountState = accountStateQuerier.getCurrentState(from)
-
-        if (money.isZero()) {
-            logger.info { "Requested to transfer no money, ignoring request" }
-            val toAccountState = accountStateQuerier.getCurrentState(to)
-            return Success(fromAccountState = fromAccountState, toAccountState = toAccountState)
-        }
+        val fromAccountState = accountStateQuerier.getCurrentState(from)
 
         return if (fromAccountState hasFunds money) {
             logger.info { "$from has sufficient funds to send $money. Transferring to $to" }
 
             val request = TransactionCreator.Request(money, from = from, to = to)
-            transactionCreator.createTransferTransactions(request)
+            val createdTransactions = transactionCreator.createTransferTransactions(request)
 
-            fromAccountState = accountStateQuerier.getCurrentState(from)
-            val toAccountState = accountStateQuerier.getCurrentState(to)
-            Success(fromAccountState = fromAccountState, toAccountState = toAccountState)
+            Success(fromTransaction = createdTransactions.fromTransaction, toTransaction = createdTransactions.toTransaction)
         } else {
             logger.info { "$from has insufficient funds to transfer $money to $to" }
             InsufficientFunds

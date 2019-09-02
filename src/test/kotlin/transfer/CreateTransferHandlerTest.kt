@@ -97,21 +97,12 @@ class CreateTransferHandlerTest {
             .asObject(ResponseBody::class.java)
 
         assertEquals(OK_200, response.status)
-        val expectedResponseBody = ResponseBody(
-            fromAccountState = AccountState(
-                account = nikolaysUsdAccount,
-                money = 500.USD //should have $1000 - $500 = $500 after transferring
-            ),
-            toAccountState = AccountState(
-                account = vladsUsdAccount,
-                money = 1500.USD //should have $1000 + $500 = $1500 after transferring
-            )
-        )
+        val expectedResponseBody = ResponseBody(transaction = transactionRepository.getAll(nikolaysUsdAccount).first())
         assertEquals(expectedResponseBody, response.body)
     }
 
     @Test
-    fun `should correctly transfer money between two accounts of the same Customer`(){
+    fun `should correctly transfer money between two accounts of the same Customer`() {
         //create nikolay with 2 accounts
         val nikolay = Customers.nikolay(0)
         customerRepository.addCustomer(nikolay)
@@ -134,17 +125,7 @@ class CreateTransferHandlerTest {
             .body(body)
             .asObject(ResponseBody::class.java)
 
-        val expectedResponseBody = ResponseBody(
-            fromAccountState = AccountState(
-                account = fromAccount,
-                money = 500.USD //$1000 - $500 = $500
-            ),
-            toAccountState = AccountState(
-                account = toAccount,
-                money = 3500.USD //$3000 + $500 = $3500
-            )
-        )
-
+        val expectedResponseBody = ResponseBody(transaction = transactionRepository.getAll(fromAccount).first())
         assertEquals(expectedResponseBody, response.body)
     }
 

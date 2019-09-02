@@ -66,4 +66,28 @@ class TransactionCreatorImplTest {
             assertEquals(nikolaysTransaction.id, vladsTransaction.mirrorTransactionId)
         }
     }
+
+    @Test
+    fun `returned transactions should be correct`(){
+        val nikolay = Customers.nikolay(0)
+        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        val vlad = Customers.vlad(1)
+        val vladsAccount = Account(1, vlad, 100.USD)
+
+        val request = TransactionCreator.Request(
+            money = 100.USD,
+            from = nikolaysAccount,
+            to = vladsAccount
+        )
+
+        val createdTransactions = transactionCreator.createTransferTransactions(request)
+
+        transactionRepository.run {
+            val nikolaysTransaction = getAll(nikolaysAccount).first()
+            val vladsTransaction = getAll(vladsAccount).first()
+
+            assertEquals(createdTransactions.fromTransaction, nikolaysTransaction)
+            assertEquals(createdTransactions.toTransaction, vladsTransaction)
+        }
+    }
 }

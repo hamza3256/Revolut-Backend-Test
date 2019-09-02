@@ -201,46 +201,29 @@ Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:
  }'`
 
  ```
- {
-   "fromAccountState": {
-     "account": {
-       "id": 0,
-       "customer": {
-         "id": 0,
-         "name": "Vlad",
-         "surname": "Yatsenko"
-       },
-       "startingMoney": {
-         "amount": 1000,
-         "currency": "USD"
-       },
-       "currency": "USD"
-     },
-     "money": {
-       "amount": 990,
-       "currency": "USD"
-     }
-   },
-   "toAccountState": {
-     "account": {
-       "id": 2,
-       "customer": {
-         "id": 1,
-         "name": "Nikolay",
-         "surname": "Storonsky"
-       },
-       "startingMoney": {
-         "amount": 5000,
-         "currency": "USD"
-       },
-       "currency": "USD"
-     },
-     "money": {
-       "amount": 5010,
-       "currency": "USD"
-     }
+{  
+   "transaction":{  
+      "id":0,
+      "mirrorTransactionId":1,
+      "account":{  
+         "id":0,
+         "customer":{  
+            "id":0,
+            "name":"Vlad",
+            "surname":"Yatsenko"
+         },
+         "startingMoney":{  
+            "amount":1000,
+            "currency":"USD"
+         },
+         "currency":"USD"
+      },
+      "money":{  
+         "amount":-10,
+         "currency":"USD"
+      }
    }
- }
+}
  ```
  
 Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:   
@@ -257,44 +240,27 @@ Transfer $10 from Nikolay Storonsky's account to Vlad Yatsenko's account:
   }'`
 
   ```
-  {
-    "fromAccountState": {
-      "account": {
-        "id": 2,
-        "customer": {
-          "id": 1,
-          "name": "Nikolay",
-          "surname": "Storonsky"
-        },
-        "startingMoney": {
-          "amount": 5000,
-          "currency": "USD"
-        },
-        "currency": "USD"
-      },
-      "money": {
-        "amount": 5000,
-        "currency": "USD"
-      }
-    },
-    "toAccountState": {
-      "account": {
-        "id": 0,
-        "customer": {
-          "id": 0,
-          "name": "Vlad",
-          "surname": "Yatsenko"
-        },
-        "startingMoney": {
-          "amount": 1000,
-          "currency": "USD"
-        },
-        "currency": "USD"
-      },
-      "money": {
-        "amount": 1000,
-        "currency": "USD"
-      }
+ {  
+    "transaction":{  
+       "id":2,
+       "mirrorTransactionId":3,
+       "account":{  
+          "id":1,
+          "customer":{  
+             "id":1,
+             "name":"Nikolay",
+             "surname":"Storonsky"
+          },
+          "startingMoney":{  
+             "amount":5000,
+             "currency":"USD"
+          },
+          "currency":"USD"
+       },
+       "money":{  
+          "amount":-10,
+          "currency":"USD"
+       }
     }
-  }
+ }
   ```

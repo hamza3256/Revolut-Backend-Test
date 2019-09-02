@@ -1,6 +1,7 @@
 package customers.accounts.transactions
 
 import customers.accounts.Account
+import customers.accounts.transactions.TransactionCreator.CreatedTransactions
 import money.Money
 import java.util.concurrent.atomic.AtomicLong
 
@@ -16,8 +17,11 @@ interface TransactionCreator {
 
     /**
      * Create and persists Transactions for the given [request]
+     * @return the created Transactions
      * */
-    fun createTransferTransactions(request: Request)
+    fun createTransferTransactions(request: Request): CreatedTransactions
+
+    data class CreatedTransactions(val fromTransaction: Transaction, val toTransaction: Transaction)
 
 }
 
@@ -25,7 +29,7 @@ class TransactionCreatorImpl(private val repository: TransactionRepository) : Tr
 
     private val nextId = AtomicLong()
 
-    override fun createTransferTransactions(request: TransactionCreator.Request) {
+    override fun createTransferTransactions(request: TransactionCreator.Request): CreatedTransactions {
         with(request) {
             val fromId = nextId.getAndIncrement()
             val toId = nextId.getAndIncrement()
@@ -35,6 +39,8 @@ class TransactionCreatorImpl(private val repository: TransactionRepository) : Tr
 
             repository.add(withdraw)
             repository.add(deposit)
+
+            return CreatedTransactions(fromTransaction = withdraw, toTransaction = deposit)
         }
     }
 }

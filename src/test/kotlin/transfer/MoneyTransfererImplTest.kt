@@ -5,10 +5,7 @@ import Currencies.USD
 import GBP
 import USD
 import customers.accounts.*
-import customers.accounts.transactions.InMemoryTransactionRepository
-import customers.accounts.transactions.TransactionCreator
-import customers.accounts.transactions.TransactionCreatorImpl
-import customers.accounts.transactions.TransactionRepository
+import customers.accounts.transactions.*
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -131,7 +128,7 @@ class MoneyTransfererImplTest {
     }
 
     @Test
-    fun `transferring money should return correct AccountStates in result`(){
+    fun `transferring money should return correct transactions in result`(){
         //vlad has $1000
         val vlad = Customers.vlad(0)
         val vladsUsdAccount = Account(0, vlad, 1000.USD)
@@ -145,13 +142,13 @@ class MoneyTransfererImplTest {
         assertTrue(result is Success)
         result as Success
 
-        //returned fromAccountState should say vlad has $990 now
-        val expectedVladsUsdAccountState = AccountState(vladsUsdAccount, 990.USD)
-        assertEquals(expectedVladsUsdAccountState, result.fromAccountState)
+        //returned fromTransaction should say we withdrew $10
+        val expectedFromTransaction = Transaction(0, 1, vladsUsdAccount, (-10).USD)
+        assertEquals(expectedFromTransaction, result.fromTransaction)
 
-        //returned toAccountState should say nikolay has $1010 now
-        val expectedNikolaysUsdAccountState = AccountState(nikolaysUsdAccount, 1010.USD)
-        assertEquals(expectedNikolaysUsdAccountState, result.toAccountState)
+        //returned toTransaction should say nikolay received $10
+        val expectedToTransaction = Transaction(1, 0, nikolaysUsdAccount, 10.USD)
+        assertEquals(expectedToTransaction, result.toTransaction)
     }
 
     @Test
