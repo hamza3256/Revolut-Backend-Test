@@ -65,10 +65,11 @@ class RevolutApp {
         //Add a 'Bank' Customer & Account with 1 million EUR, USD, GBP
         val bank = customerCreator.create(CustomerCreator.Request(name = "Bank", surname = "Revolut"))
 
-        val usdAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("USD")))
-        val gbpAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("GBP")))
-        val eurAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("EUR")))
+        val usdAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("USD"))) //id is 0
+        val gbpAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("GBP"))) //id is 1
+        val eurAccount = accountCreator.create(bank, AccountCreator.Request(Currency.getInstance("EUR"))) //id is 2
 
+        //transactionCreator starts IDs from 0, since we bypass that class - use negative ids to avoid collisions
         transactionRepository.add(Transaction(id = -1, account = usdAccount, money = Money(1_000_000.toBigDecimal(), Currency.getInstance("USD"))))
         transactionRepository.add(Transaction(id = -2, account = gbpAccount, money = Money(1_000_000.toBigDecimal(), Currency.getInstance("GBP"))))
         transactionRepository.add(Transaction(id = -3, account = eurAccount, money = Money(1_000_000.toBigDecimal(), Currency.getInstance("EUR"))))
