@@ -15,7 +15,7 @@ class CreateCustomerHandler(private val customerCreator: CustomerCreator) : Base
 
     override fun attach(app: Javalin) {
         logger.info { "Attaching CreateCustomerHandler" }
-        app.post(CreateCustomer.PATH, this)
+        app.post("/customers", this)
     }
 
     override fun handle(ctx: Context) {
@@ -46,8 +46,6 @@ class CreateCustomerHandler(private val customerCreator: CustomerCreator) : Base
 }
 
 object CreateCustomer {
-
-    const val PATH = "customers"
 
     data class RequestBody(val name: String, val surname: String)
     data class ResponseBody(val customer: Customer)

@@ -4,7 +4,6 @@ import BaseHandler
 import customers.CustomerRepository
 import customers.accounts.AccountCreator.Result.Created
 import customers.accounts.AccountCreator.Result.NegativeMoney
-import customers.accounts.CreateAccount.PATH
 import customers.accounts.CreateAccount.RequestBody
 import customers.accounts.CreateAccount.ResponseBody
 import customers.accounts.CreateAccountHandler.Result.Failed
@@ -26,7 +25,7 @@ class CreateAccountHandler(
     private val logger = LoggerFactory.getLogger("CreateAccountHandler")
 
     override fun attach(app: Javalin) {
-        app.post(PATH, this)
+        app.post("/accounts", this)
         logger.info { "Attached CreateAccountHandler" }
     }
 
@@ -69,8 +68,6 @@ class CreateAccountHandler(
 }
 
 object CreateAccount {
-
-    const val PATH = "accounts"
 
     data class RequestBody(val customerId: Long, val startingMoney: Money)
     data class ResponseBody(val account: Account)

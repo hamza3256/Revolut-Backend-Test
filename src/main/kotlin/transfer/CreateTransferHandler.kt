@@ -10,7 +10,6 @@ import money.Money
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
 import org.slf4j.LoggerFactory
-import transfer.CreateTransfer.PATH
 import transfer.CreateTransfer.RequestBody
 import transfer.CreateTransfer.ResponseBody
 import transfer.CreateTransferHandler.Result.Failed
@@ -27,7 +26,7 @@ class CreateTransferHandler(
 
     override fun attach(app: Javalin) {
         logger.info { "Attaching CreateTransferHandler" }
-        app.post(PATH, this)
+        app.post("/transfers", this)
     }
 
     override fun handle(ctx: Context) {
@@ -82,8 +81,6 @@ class CreateTransferHandler(
 }
 
 object CreateTransfer {
-
-    const val PATH = "transfers"
 
     data class RequestBody(
         val fromAccountId: Long,
