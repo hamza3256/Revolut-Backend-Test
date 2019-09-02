@@ -83,6 +83,6 @@ class GetAccountStateHandlerTest {
     }
 
     private fun get(accountIdPathParam: String): GetRequest {
-        return Unirest.get("http://localhost:7000/accounts/$accountIdPathParam")
+        return Unirest.get("http://localhost:7000/accounts/$accountIdPathParam/state")
     }
 }

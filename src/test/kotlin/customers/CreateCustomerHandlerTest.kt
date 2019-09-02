@@ -12,7 +12,6 @@ import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.BeforeClass
 import org.junit.Test
-import org.slf4j.LoggerFactory
 
 class CreateCustomerHandlerTest {
 
@@ -25,23 +24,18 @@ class CreateCustomerHandlerTest {
         @JvmStatic
         @BeforeClass
         fun beforeClass() {
-            LoggerFactory.getLogger(this.javaClass).debug("HEre")
             val revolutConfig = RevolutConfig()
-            LoggerFactory.getLogger(this.javaClass).debug("HEre2")
             UnirestTestConfig.init(revolutConfig.objectMapper)
             val customerRepository = InMemoryCustomerRepository()
             val customerCreator = CustomerCreatorImpl(customerRepository)
             val handler = CreateCustomerHandler(customerCreator)
-            LoggerFactory.getLogger(this.javaClass).debug("HEre3")
             javalin = revolutConfig.javalin.start()
-            LoggerFactory.getLogger(this.javaClass).debug("HEre4")
             handler.attach(javalin)
         }
 
         @JvmStatic
         @AfterClass
         fun afterClass() {
-            LoggerFactory.getLogger(this.javaClass).debug("HEre5")
             UnirestTestConfig.shutdown()
             javalin.stop()
         }

@@ -22,7 +22,7 @@ class GetAccountStateHandler(
 
     override fun attach(app: Javalin) {
         logger.info { "Attaching CreateTransferHandler" }
-        app.get("/accounts/:$PATH_PARAM_ACCOUNT_ID", this)
+        app.get("/accounts/:$PATH_PARAM_ACCOUNT_ID/state", this)
     }
 
     override fun handle(ctx: Context) {

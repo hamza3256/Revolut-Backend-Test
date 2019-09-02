@@ -80,7 +80,7 @@ Create Nikolay Storonsky:
 }
 ```
 
-##### Example:
+##### Examples:
 Create an Account with $1000 for Vlad Yatsenko:  
 `curl --request POST
    --url http://localhost:7000/customers/0/accounts
@@ -141,12 +141,12 @@ Create an Account with $5000 for Nikolay Yatsenko:
   ```
   
 #### Get state of an Account:
-`GET` to `/accounts/{account_id}`
+`GET` to `/accounts/{account_id}/state`
 
 ##### Example:
 
 Get account status for Vlad Yatsenko's account:  
-`curl --request GET --url http://localhost:7000/accounts/0`
+`curl --request GET --url http://localhost:7000/accounts/0/state`
 
 ```
 {
@@ -186,7 +186,7 @@ Get account status for Vlad Yatsenko's account:
     }
 }
 ```
-##### Example:
+##### Examples:
 Transfer $10 from Vlad Yatsenko's account to Nikolay Storonsky's account:    
 `curl --request POST 
    --url http://localhost:7000/transfers 
