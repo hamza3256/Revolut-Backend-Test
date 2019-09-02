@@ -1,5 +1,6 @@
 package transfer
 
+import Currencies.USD
 import Customers
 import RevolutConfig
 import USD
@@ -8,6 +9,7 @@ import customers.CustomerRepository
 import customers.InMemoryCustomerRepository
 import customers.accounts.*
 import customers.accounts.transactions.InMemoryTransactionRepository
+import customers.accounts.transactions.Transaction
 import customers.accounts.transactions.TransactionCreatorImpl
 import customers.accounts.transactions.TransactionRepository
 import io.javalin.Javalin
@@ -77,13 +79,15 @@ class CreateTransferHandlerTest {
         //create nikolay with an account containing 1000USD
         val nikolay = Customers.nikolay(0)
         customerRepository.addCustomer(nikolay)
-        val nikolaysUsdAccount = Account(0, nikolay, 1000.USD)
+        val nikolaysUsdAccount = Account(0, nikolay, USD)
+        transactionRepository.add(Transaction(id = 0, account = nikolaysUsdAccount, money = 1000.USD))
         accountRepository.addAccount(nikolaysUsdAccount)
 
         //create vlad with an account containing 1000USD
         val vlad = Customers.vlad(1)
         customerRepository.addCustomer(vlad)
-        val vladsUsdAccount = Account(1, vlad, 1000.USD)
+        val vladsUsdAccount = Account(1, vlad, USD)
+        transactionRepository.add(Transaction(id = 1, account = vladsUsdAccount, money = 1000.USD))
         accountRepository.addAccount(vladsUsdAccount)
 
         //transfer $500 from nikolay to vlad
@@ -97,7 +101,7 @@ class CreateTransferHandlerTest {
             .asObject(ResponseBody::class.java)
 
         assertEquals(OK_200, response.status)
-        val expectedResponseBody = ResponseBody(transaction = transactionRepository.getAll(nikolaysUsdAccount).first())
+        val expectedResponseBody = ResponseBody(transaction = Transaction(2, 3, nikolaysUsdAccount, (-500).USD))
         assertEquals(expectedResponseBody, response.body)
     }
 
@@ -108,11 +112,13 @@ class CreateTransferHandlerTest {
         customerRepository.addCustomer(nikolay)
 
         //first has $1000
-        val fromAccount = Account(0, nikolay, 1000.USD)
+        val fromAccount = Account(0, nikolay, USD)
+        transactionRepository.add(Transaction(id = -1, account = fromAccount, money = 1000.USD))
         accountRepository.addAccount(fromAccount)
 
         //second has $3000
-        val toAccount = Account(1, nikolay, 3000.USD)
+        val toAccount = Account(1, nikolay, USD)
+        transactionRepository.add(Transaction(id = -2, account = toAccount, money = 3000.USD))
         accountRepository.addAccount(toAccount)
 
         //transfer $500 from first to second
@@ -125,7 +131,7 @@ class CreateTransferHandlerTest {
             .body(body)
             .asObject(ResponseBody::class.java)
 
-        val expectedResponseBody = ResponseBody(transaction = transactionRepository.getAll(fromAccount).first())
+        val expectedResponseBody = ResponseBody(Transaction(id = 0, mirrorTransactionId = 1, account = fromAccount, money = (-500).USD))
         assertEquals(expectedResponseBody, response.body)
     }
 
@@ -133,14 +139,14 @@ class CreateTransferHandlerTest {
     fun `should fail when fromAccount not found for id`() {
         val nikolay = Customers.nikolay(0)
         customerRepository.addCustomer(nikolay)
-        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        val nikolaysAccount = Account(0, nikolay, USD)
         accountRepository.addAccount(nikolaysAccount)
 
         assertNull(accountRepository.getAccount(1000)) //should not exist
         val body = RequestBody(
             fromAccountId = 1000,
             toAccountId = nikolaysAccount.id,
-            money = 100.USD
+            money = 0.USD
         )
 
         val response = post().body(body).asString()
@@ -151,7 +157,7 @@ class CreateTransferHandlerTest {
     fun `should fail when toAccount not found for id`() {
         val nikolay = Customers.nikolay(0)
         customerRepository.addCustomer(nikolay)
-        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        val nikolaysAccount = Account(0, nikolay, USD)
         accountRepository.addAccount(nikolaysAccount)
 
         assertNull(accountRepository.getAccount(1000)) //should not exist
@@ -169,7 +175,8 @@ class CreateTransferHandlerTest {
     fun `should fail when attempting to transfer between same account`() {
         val nikolay = Customers.nikolay(0)
         customerRepository.addCustomer(nikolay)
-        val account = Account(0, nikolay, 100.USD)
+        val account = Account(0, nikolay, USD)
+        transactionRepository.add(Transaction(id = 0, account = account, money = 100.USD))
         accountRepository.addAccount(account)
 
         val body = RequestBody(
@@ -187,12 +194,12 @@ class CreateTransferHandlerTest {
     fun `should fail when attempting to transfer negative funds`() {
         val nikolay = Customers.nikolay(0)
         customerRepository.addCustomer(nikolay)
-        val nikolaysUsdAccount = Account(0, nikolay, 100.USD)
+        val nikolaysUsdAccount = Account(0, nikolay, USD)
         accountRepository.addAccount(nikolaysUsdAccount)
 
         val vlad = Customers.vlad(1)
         customerRepository.addCustomer(vlad)
-        val vladsUsdAccount = Account(1, vlad, 100.USD)
+        val vladsUsdAccount = Account(1, vlad, USD)
         accountRepository.addAccount(vladsUsdAccount)
 
         val body = RequestBody(
@@ -210,12 +217,14 @@ class CreateTransferHandlerTest {
     fun `should fail when attempting to transfer too much money`() {
         val nikolay = Customers.nikolay(0)
         customerRepository.addCustomer(nikolay)
-        val nikolaysUsdAccount = Account(0, nikolay, 100.USD)
+        val nikolaysUsdAccount = Account(0, nikolay, USD)
+        transactionRepository.add(Transaction(id = 0, account = nikolaysUsdAccount, money = 100.USD))
         accountRepository.addAccount(nikolaysUsdAccount)
 
         val vlad = Customers.vlad(1)
         customerRepository.addCustomer(vlad)
-        val vladsUsdAccount = Account(1, vlad, 100.USD)
+        val vladsUsdAccount = Account(1, vlad, USD)
+        transactionRepository.add(Transaction(id = 1, account = vladsUsdAccount, money = 100.USD))
         accountRepository.addAccount(vladsUsdAccount)
 
         val body = RequestBody(

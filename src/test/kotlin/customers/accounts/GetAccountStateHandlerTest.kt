@@ -1,5 +1,6 @@
 package customers.accounts
 
+import Currencies.USD
 import Customers
 import RevolutConfig
 import USD
@@ -7,13 +8,13 @@ import UnirestTestConfig
 import customers.accounts.GetAccount.ResponseBody
 import customers.accounts.transactions.InMemoryTransactionRepository
 import io.javalin.Javalin
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertNull
 import kong.unirest.GetRequest
 import kong.unirest.Unirest
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
 import org.junit.AfterClass
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -51,7 +52,7 @@ class GetAccountStateHandlerTest {
     @Test
     fun `should return account state when all requirements met`() {
         val customer = Customers.nikolay()
-        val account = Account(0, customer, 100.USD)
+        val account = Account(0, customer, USD)
         accountRepository.addAccount(account)
 
         val response = get("0").asObject(ResponseBody::class.java)
@@ -60,7 +61,7 @@ class GetAccountStateHandlerTest {
         val expectedResponseBody = ResponseBody(
             accountState = AccountState(
                 account = account,
-                money = 100.USD
+                money = 0.USD
             )
         )
         assertEquals(expectedResponseBody, response.body)

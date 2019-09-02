@@ -13,10 +13,10 @@ import utils.sumBy
 data class AccountState(val account: Account, val money: Money) {
 
     /**
-    * Check whether the AccountState has at least [money]
+     * Check whether the AccountState has at least [money]
      * @throws NegativeMoneyException if [money] is negative
      * @throws CurrencyMismatchException if the currency in [money] doesn't match the currency in this AccountState
-    * */
+     * */
     infix fun hasFunds(money: Money): Boolean {
         if (money.isNegative()) {
             throw NegativeMoneyException(money)
@@ -53,7 +53,7 @@ class AccountStateQuerierImpl(private val transactionRepository: TransactionRepo
             account,
             Money(
                 currency = account.currency,
-                amount = account.startingMoney.amount + transactionRepository.getAll(account).sumBy { it.money.amount }
+                amount = transactionRepository.getAll(account).sumBy { it.money.amount }
             )
         )
     }

@@ -1,8 +1,8 @@
 package customers.accounts
 
+import Currencies.USD
 import Customers
 import RevolutConfig
-import USD
 import UnirestTestConfig
 import customers.CustomerRepository
 import customers.InMemoryCustomerRepository
@@ -63,18 +63,18 @@ class CreateAccountHandlerTest {
         assertTrue(accountRepository.getAccounts(nikolay).isEmpty())
 
         val response = post(customerIdStr = nikolay.id.toString())
-            .body(RequestBody(startingMoney = 100.USD))
+            .body(RequestBody(currency = USD))
             .asObject(ResponseBody::class.java)
 
         assertEquals(OK_200, response.status)
-        val expectedAccount = Account(0, nikolay, 100.USD)
+        val expectedAccount = Account(0, nikolay, USD)
         assertEquals(expectedAccount, response.body.account)
     }
 
     @Test
     fun `should return error when customerId isn't present in repository`() {
         val response = post(customerIdStr = "1000")
-            .body(RequestBody(startingMoney = 100.USD))
+            .body(RequestBody(currency = USD))
             .asString()
 
         assertEquals(BAD_REQUEST_400, response.status)
@@ -83,7 +83,7 @@ class CreateAccountHandlerTest {
     @Test
     fun `should return error when customerId isn't a Long`() {
         val response = post(customerIdStr = "notAlong")
-            .body(RequestBody(startingMoney = 100.USD))
+            .body(RequestBody(currency = USD))
             .asString()
 
         assertEquals(BAD_REQUEST_400, response.status)

@@ -1,5 +1,6 @@
 package customers.accounts.transactions
 
+import Currencies.USD
 import Customers
 import USD
 import customers.accounts.Account
@@ -22,12 +23,12 @@ class TransactionCreatorImplTest {
     @Test
     fun `should insert 2 transactions into the repository`() {
         val nikolay = Customers.nikolay(0)
-        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        val nikolaysAccount = Account(0, nikolay, USD)
         val vlad = Customers.vlad(1)
-        val vladsAccount = Account(1, vlad, 100.USD)
+        val vladsAccount = Account(1, vlad, USD)
 
         val request = TransactionCreator.Request(
-            money = 100.USD,
+            money = 0.USD,
             from = nikolaysAccount,
             to = vladsAccount
         )
@@ -46,12 +47,12 @@ class TransactionCreatorImplTest {
     @Test
     fun `should be able to resolve both transactions from one another`(){
         val nikolay = Customers.nikolay(0)
-        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        val nikolaysAccount = Account(0, nikolay, USD)
         val vlad = Customers.vlad(1)
-        val vladsAccount = Account(1, vlad, 100.USD)
+        val vladsAccount = Account(1, vlad, USD)
 
         val request = TransactionCreator.Request(
-            money = 100.USD,
+            money = 0.USD,
             from = nikolaysAccount,
             to = vladsAccount
         )
@@ -70,12 +71,12 @@ class TransactionCreatorImplTest {
     @Test
     fun `returned transactions should be correct`(){
         val nikolay = Customers.nikolay(0)
-        val nikolaysAccount = Account(0, nikolay, 100.USD)
+        val nikolaysAccount = Account(0, nikolay, USD)
         val vlad = Customers.vlad(1)
-        val vladsAccount = Account(1, vlad, 100.USD)
+        val vladsAccount = Account(1, vlad, USD)
 
         val request = TransactionCreator.Request(
-            money = 100.USD,
+            money = 0.USD,
             from = nikolaysAccount,
             to = vladsAccount
         )

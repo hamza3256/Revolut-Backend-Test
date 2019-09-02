@@ -1,5 +1,6 @@
 package customers.accounts
 
+import Currencies.USD
 import Customers
 import USD
 import customers.accounts.transactions.InMemoryTransactionRepository
@@ -21,53 +22,53 @@ class AccountStateQuerierImplTest {
     }
 
     @Test
-    fun `account state should show starting balance when no transactions`() {
+    fun `account state should show 0 money when no transactions`() {
         val customer = Customers.nikolay()
-        val account = Account(0, customer, 100.USD)
+        val account = Account(0, customer, USD)
 
         val actualAccountState = querier.getCurrentState(account)
-        val expectedAccountState = AccountState(account, 100.USD)
+        val expectedAccountState = AccountState(account, 0.USD)
         assertEquals(expectedAccountState, actualAccountState)
     }
 
     @Test
     fun `account state should show be correct when we have transactions`() {
         val customer = Customers.nikolay()
-        val account = Account(0, customer, 100.USD)  //starting balance of $100
+        val account = Account(0, customer, USD)
 
         //insert some transactions
         transactionRepository.apply {
-            add(Transaction(id = 0, account = account, money = 100.USD)) //after: $200
-            add(Transaction(id = 1, account = account, money = 200.USD)) //after: $400
-            add(Transaction(id = 2, account = account, money = 600.USD)) //after: $1000
-            add(Transaction(id = 3, account = account, money = (-100).USD)) //after: $900
+            add(Transaction(id = 0, account = account, money = 100.USD)) //after: $100
+            add(Transaction(id = 1, account = account, money = 200.USD)) //after: $300
+            add(Transaction(id = 2, account = account, money = 600.USD)) //after: $900
+            add(Transaction(id = 3, account = account, money = (-100).USD)) //after: $800
         }
 
         val actualAccountState = querier.getCurrentState(account)
-        val expectedAccountState = AccountState(account, 900.USD)
+        val expectedAccountState = AccountState(account, 800.USD)
         assertEquals(expectedAccountState, actualAccountState)
     }
 
     @Test
     fun `account state should be different before and after adding transactions`() {
         val customer = Customers.nikolay()
-        val account = Account(0, customer, 100.USD) //starting balance of $100
+        val account = Account(0, customer, USD)
 
         //insert some transactions
         transactionRepository.apply {
-            add(Transaction(id = 0, account = account, money = 100.USD)) //after: $200
-            add(Transaction(id = 1, account = account, money = 200.USD)) //after: $400
-            add(Transaction(id = 2, account = account, money = 600.USD)) //after: $1000
-            add(Transaction(id = 3, account = account, money = (-100).USD)) //after: $900
+            add(Transaction(id = 0, account = account, money = 100.USD)) //after: $100
+            add(Transaction(id = 1, account = account, money = 200.USD)) //after: $300
+            add(Transaction(id = 2, account = account, money = 600.USD)) //after: $900
+            add(Transaction(id = 3, account = account, money = (-100).USD)) //after: $800
         }
 
         //account should now have $800
         var accountState = querier.getCurrentState(account)
-        var expectedAccountState = AccountState(account, 900.USD)
+        var expectedAccountState = AccountState(account, 800.USD)
         assertEquals(expectedAccountState, accountState)
 
         //add more transactions to verify state changes
-        transactionRepository.add(Transaction(id = 4, account = account, money = 100.USD))
+        transactionRepository.add(Transaction(id = 4, account = account, money = 200.USD))
 
         //account should now have $1000
         accountState = querier.getCurrentState(account)

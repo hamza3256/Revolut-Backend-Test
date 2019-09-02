@@ -2,8 +2,7 @@ package customers.accounts
 
 import BaseHandler
 import customers.CustomerRepository
-import customers.accounts.AccountCreator.Result.Created
-import customers.accounts.AccountCreator.Result.NegativeMoney
+import customers.accounts.AccountCreator.Request
 import customers.accounts.CreateAccount.PATH_PARAM_CUSTOMER_ID
 import customers.accounts.CreateAccount.RequestBody
 import customers.accounts.CreateAccount.ResponseBody
@@ -12,12 +11,12 @@ import customers.accounts.CreateAccountHandler.Result.Success
 import customers.getCustomerOrElse
 import io.javalin.Javalin
 import io.javalin.http.Context
-import money.Money
 import org.eclipse.jetty.http.HttpStatus.BAD_REQUEST_400
 import org.eclipse.jetty.http.HttpStatus.OK_200
 import org.slf4j.LoggerFactory
 import utils.info
 import utils.toLong
+import java.util.*
 
 class CreateAccountHandler(
     private val accountCreator: AccountCreator,
@@ -55,17 +54,16 @@ class CreateAccountHandler(
         }
 
         val requestBody = ctx.body<RequestBody>()
-        val startingMoney = requestBody.startingMoney
+        val currency = requestBody.currency
 
         val customer = customerRepository.getCustomerOrElse(customerId) { id ->
             return Failed("Customer not found for id=$id")
         }
 
-        val accountCreatorRequest = AccountCreator.Request(startingMoney = startingMoney)
-        return when (val result = accountCreator.create(customer, accountCreatorRequest)) {
-            is Created -> Success(ResponseBody(result.account))
-            is NegativeMoney -> Failed("Account must start with a non-negative balance")
-        }
+        val accountCreatorRequest = Request(currency)
+        val account = accountCreator.create(customer, accountCreatorRequest)
+
+        return Success(ResponseBody(account))
     }
 
     sealed class Result(val statusCode: Int) {
@@ -79,7 +77,7 @@ object CreateAccount {
 
     const val PATH_PARAM_CUSTOMER_ID = "customerId"
 
-    data class RequestBody(val startingMoney: Money)
+    data class RequestBody(val currency: Currency)
     data class ResponseBody(val account: Account)
 
 }
